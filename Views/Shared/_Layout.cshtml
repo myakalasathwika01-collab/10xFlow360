@@ -1,0 +1,358 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewBag.Title - 10X Flow360</title>
+
+    @Styles.Render("~/Content/css")
+
+    @Scripts.Render("~/bundles/modernizr")
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+</head>
+
+<body>
+
+    <!-- =========================================================
+         SIDEBAR
+         ========================================================= -->
+
+    <aside class="flow-sidebar" id="flowSidebar">
+
+        <!-- =====================================================
+             LOGO
+             ===================================================== -->
+
+        <div class="flow-brand">
+
+            <img src="@Url.Content("~/Content/img/10XFlow.png")"
+                 class="flow-logo-image"
+                 alt="10X Flow360" />
+
+        </div>
+
+
+        <!-- SUBTITLE -->
+
+        <div class="flow-subtitle">
+            SAP Business Process Automation
+        </div>
+
+
+        <!-- =====================================================
+             WORKSPACE
+             ===================================================== -->
+
+        <div class="flow-section-title">
+            WORKSPACE
+        </div>
+
+
+        <ul class="flow-menu">
+
+            <!-- DASHBOARD -->
+
+            <li class="flow-menu-item
+                @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard"
+                ? "active" : "")">
+
+                <a href="@Url.Action("Index", "Dashboard")">
+
+                    <span class="flow-icon">
+                        <i class="fa-solid fa-table-cells"></i>
+                    </span>
+
+                    <span class="flow-menu-text">
+                        Dashboard
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <!-- DESIGN -->
+
+            <li class="flow-menu-item
+                @(ViewContext.RouteData.Values["controller"]?.ToString() == "Workflow"
+                && ViewContext.RouteData.Values["action"]?.ToString() == "Design"
+                ? "active" : "")">
+
+                <a href="@Url.Action("Design", "Workflow")">
+
+                    <span class="flow-icon">
+                        <i class="fa-solid fa-compass-drafting"></i>
+                    </span>
+
+                    <span class="flow-menu-text">
+                        Design
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <!-- AUTOMATE / TEST -->
+
+            <li class="flow-menu-item
+                @(ViewContext.RouteData.Values["controller"]?.ToString() == "Workflow"
+                && ViewContext.RouteData.Values["action"]?.ToString() == "Test"
+                ? "active" : "")">
+
+                <a href="@Url.Action("Test", "Workflow")">
+
+                    <span class="flow-icon">
+                        <i class="fa-solid fa-circle-play"></i>
+                    </span>
+
+                    <span class="flow-menu-text">
+                        Automate / Test
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <!-- TRACKING -->
+
+            <li class="flow-menu-item
+                @(ViewContext.RouteData.Values["controller"]?.ToString() == "WorkflowTracking"
+                ? "active" : "")">
+
+                <a href="@Url.Action("Index", "WorkflowTracking")">
+
+                    <span class="flow-icon">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </span>
+
+                    <span class="flow-menu-text">
+                        Tracking
+                    </span>
+
+                </a>
+
+            </li>
+
+        </ul>
+
+
+        <!-- =====================================================
+             CONFIGURATION
+             ===================================================== -->
+
+        <div class="flow-section-title configuration-title">
+            CONFIGURATION
+        </div>
+
+
+        <ul class="flow-menu">
+
+            <!-- NOTIFICATIONS -->
+
+            <li class="flow-menu-item">
+
+                <a href="#">
+
+                    <span class="flow-icon">
+                        <i class="fa-regular fa-bell"></i>
+                    </span>
+
+                    <span class="flow-menu-text">
+                        Notifications
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <!-- USERS -->
+
+            <li class="flow-menu-item">
+
+                <a href="#">
+
+                    <span class="flow-icon">
+                        <i class="fa-solid fa-users"></i>
+                    </span>
+
+                    <span class="flow-menu-text">
+                        Users &amp; Teams
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <!-- SETTINGS -->
+
+            <li class="flow-menu-item">
+
+                <a href="#">
+
+                    <span class="flow-icon">
+                        <i class="fa-solid fa-gear"></i>
+                    </span>
+
+                    <span class="flow-menu-text">
+                        Settings
+                    </span>
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+    <!-- =========================================================
+         SIDEBAR TOGGLE
+         ========================================================= -->
+
+    <button type="button"
+            class="flow-sidebar-toggle"
+            id="flowSidebarToggle"
+            title="Collapse Sidebar">
+
+        <i class="fa-solid fa-chevron-left"></i>
+
+    </button>
+
+
+    <!-- =========================================================
+         MAIN CONTENT
+         ========================================================= -->
+
+    <main class="main-content" id="mainContent">
+
+        <!-- TOP BAR -->
+
+        <header class="flow-topbar py-1">
+
+            <div class="flow-topbar-title">
+
+                <div class="flow-title">
+                    10X FLOW360
+                </div>
+
+                <div class="flow-title-sub">
+                    SAP Business Process Automation
+                </div>
+
+            </div>
+
+
+            <!-- USER -->
+
+            <div class="flow-user">
+
+                <i class="fa-regular fa-user flow-user-icon"></i>
+
+                <span class="flow-status"></span>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE -->
+
+        <div class="flow-dashboard">
+
+            @RenderBody()
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================================
+         SCRIPTS
+         ========================================================= -->
+
+    @Scripts.Render("~/bundles/jquery")
+
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @RenderSection("scripts", required: false)
+
+
+    <!-- =========================================================
+         SIDEBAR TOGGLE
+         ========================================================= -->
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            var sidebar =
+                document.getElementById("flowSidebar");
+
+            var mainContent =
+                document.getElementById("mainContent");
+
+            var toggleButton =
+                document.getElementById("flowSidebarToggle");
+
+
+            if (!sidebar ||
+                !mainContent ||
+                !toggleButton) {
+
+                return;
+            }
+
+
+            toggleButton.addEventListener("click", function () {
+
+                var isCollapsed =
+                    sidebar.classList.toggle("collapsed");
+
+
+                mainContent.classList.toggle(
+                    "sidebar-collapsed"
+                );
+
+
+                if (isCollapsed) {
+
+                    toggleButton.title =
+                        "Expand Sidebar";
+
+                    toggleButton.innerHTML =
+                        '<i class="fa-solid fa-chevron-right"></i>';
+
+                }
+                else {
+
+                    toggleButton.title =
+                        "Collapse Sidebar";
+
+                    toggleButton.innerHTML =
+                        '<i class="fa-solid fa-chevron-left"></i>';
+
+                }
+
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>

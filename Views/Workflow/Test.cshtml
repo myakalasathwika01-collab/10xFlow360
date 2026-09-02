@@ -1,0 +1,672 @@
+﻿@{
+    ViewBag.Title = "Workflow Testing";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+<link rel="stylesheet"
+      href="@Url.Content("~/Content/workflow-test.css")" />
+
+
+<div class="workflow-test-page">
+
+    <!-- =====================================================
+         TOP HEADER
+         ===================================================== -->
+
+    <div class="workflow-test-header">
+
+        <div class="workflow-test-header-left">
+
+            <h2>
+                Workflow Automation Testing
+            </h2>
+
+            <p>
+                Design, automate and track your SAP Business One processes
+            </p>
+
+        </div>
+
+
+        <div class="workflow-test-header-right">
+
+            <div class="sap-connected">
+
+                <span class="sap-dot"></span>
+
+                SAP Connected
+
+            </div>
+
+
+            <div class="administrator">
+
+                <i class="bi bi-person-circle"></i>
+
+                <span>Administrator</span>
+
+                <i class="bi bi-caret-down-fill"></i>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PAGE TITLE
+         ===================================================== -->
+
+    <div class="workflow-test-title">
+
+        <div>
+
+            <h1>
+                Workflow Testing
+            </h1>
+
+            <p>
+                Simulate the process before publishing it.
+            </p>
+
+        </div>
+
+
+        <button type="button"
+                class="run-test-btn"
+                onclick="runWorkflowTest()">
+
+            <i class="bi bi-play-fill"></i>
+
+            Run Test
+
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN GRID
+         ===================================================== -->
+
+    <div class="workflow-test-grid">
+
+
+        <!-- =================================================
+             LEFT COLUMN
+             ================================================= -->
+
+        <div class="workflow-test-left">
+
+
+            <!-- =============================================
+                 TEST DATA
+                 ============================================= -->
+
+            <div class="workflow-card">
+
+                <div class="workflow-card-header">
+
+                    <h3>
+                        Test Data
+                    </h3>
+
+                </div>
+
+
+                <div class="workflow-card-body">
+
+
+                    <div class="workflow-field">
+
+                        <label for="salesOrderNumber">
+                            Sales Order Number
+                        </label>
+
+                        <input type="text"
+                               id="salesOrderNumber"
+                               name="salesOrderNumber"
+                               value="10345"
+                               class="workflow-input" />
+
+                    </div>
+
+
+                    <div class="workflow-field">
+
+                        <label for="customer">
+                            Customer
+                        </label>
+
+                        <input type="text"
+                               id="customer"
+                               name="customer"
+                               value="ABC Trading LLC"
+                               class="workflow-input" />
+
+                    </div>
+
+
+                    <div class="workflow-two-fields">
+
+
+                        <div class="workflow-field">
+
+                            <label for="amount">
+                                Amount
+                            </label>
+
+                            <input type="text"
+                                   id="amount"
+                                   name="amount"
+                                   value="AED 25,850"
+                                   class="workflow-input" />
+
+                        </div>
+
+
+                        <div class="workflow-field">
+
+                            <label for="salesman">
+                                Salesman
+                            </label>
+
+                            <input type="text"
+                                   id="salesman"
+                                   name="salesman"
+                                   value="John"
+                                   class="workflow-input" />
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =============================================
+                 EXECUTION STEPS
+                 ============================================= -->
+
+            <div class="workflow-card execution-card">
+
+                <div class="workflow-card-header">
+
+                    <h3>
+                        Execution Steps
+                    </h3>
+
+                </div>
+
+
+                <div class="execution-steps">
+
+
+                    <!-- STEP 1 -->
+
+                    <div class="execution-step">
+
+                        <div class="execution-line"></div>
+
+                        <div class="execution-content">
+
+                            <strong>
+                                1. Sales Order Created
+                            </strong>
+
+                            <span>
+                                Detect SAP Sales Order
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- STEP 2 -->
+
+                    <div class="execution-step">
+
+                        <div class="execution-line"></div>
+
+                        <div class="execution-content">
+
+                            <strong>
+                                2. Notify Delivery Team
+                            </strong>
+
+                            <span>
+                                Simulated notification
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- STEP 3 -->
+
+                    <div class="execution-step">
+
+                        <div class="execution-line"></div>
+
+                        <div class="execution-content">
+
+                            <strong>
+                                3. Delivery Date Updated
+                            </strong>
+
+                            <span>
+                                Test user response
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- STEP 4 -->
+
+                    <div class="execution-step">
+
+                        <div class="execution-line"></div>
+
+                        <div class="execution-content">
+
+                            <strong>
+                                4. Delivery Created
+                            </strong>
+
+                            <span>
+                                SAP Delivery simulation
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- STEP 5 -->
+
+                    <div class="execution-step">
+
+                        <div class="execution-line"></div>
+
+                        <div class="execution-content">
+
+                            <strong>
+                                5. Invoice Created
+                            </strong>
+
+                            <span>
+                                SAP Invoice simulation
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- STEP 6 -->
+
+                    <div class="execution-step">
+
+                        <div class="execution-line"></div>
+
+                        <div class="execution-content">
+
+                            <strong>
+                                6. Accounts Notification
+                            </strong>
+
+                            <span>
+                                Simulated notification
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             RIGHT COLUMN
+             ================================================= -->
+
+        <div class="workflow-test-right">
+
+
+            <!-- =============================================
+                 TEST CONSOLE
+                 ============================================= -->
+
+            <div class="workflow-card console-card">
+
+                <div class="workflow-card-header console-header">
+
+                    <h3>
+
+                        <i class="bi bi-terminal"></i>
+
+                        Test Console
+
+                    </h3>
+
+
+                    <button type="button"
+                            class="clear-btn"
+                            onclick="clearConsole()">
+
+                        Clear
+
+                    </button>
+
+                </div>
+
+
+                <div class="test-console"
+                     id="testConsole">
+
+                    <div>
+                        10X Flow360 Test Engine Ready...
+                    </div>
+
+                    <div>
+                        Click "Run Test" to simulate the workflow.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =============================================
+                 NOTIFICATION PREVIEW
+                 ============================================= -->
+
+            <div class="workflow-card notification-card">
+
+                <div class="workflow-card-header">
+
+                    <h3>
+                        Test Notification Preview
+                    </h3>
+
+                </div>
+
+
+                <div class="notification-container">
+
+
+                    <div class="whatsapp-preview">
+
+
+                        <!-- WhatsApp Header -->
+
+                        <div class="whatsapp-header">
+
+                            <div class="whatsapp-logo">
+
+                                <i class="bi bi-whatsapp"></i>
+
+                            </div>
+
+
+                            <div class="whatsapp-user">
+
+                                <strong>
+                                    Delivery Team
+                                </strong>
+
+                                <span>
+                                    Test Message
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- WhatsApp Message -->
+
+                        <div class="whatsapp-message">
+
+                            <p class="notification-title">
+                                New Sales Order requires action.
+                            </p>
+
+
+                            <p>
+                                Sales Order:
+                                <strong>10345</strong>
+                            </p>
+
+
+                            <p>
+                                Customer:
+                                <strong>ABC Trading LLC</strong>
+                            </p>
+
+
+                            <p>
+                                Amount:
+                                <strong>AED 25,850</strong>
+                            </p>
+
+
+                            <p class="notification-action">
+                                Please update the expected delivery date.
+                            </p>
+
+                        </div>
+
+
+                        <!-- WhatsApp Footer -->
+
+                        <div class="whatsapp-footer">
+
+                            WhatsApp API integration will be connected
+                            during the integration phase.
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
+@section Scripts {
+
+    <script>
+
+        function runWorkflowTest() {
+
+            var consoleBox =
+                document.getElementById("testConsole");
+
+            var salesOrder =
+                document.getElementById("salesOrderNumber").value;
+
+            var customer =
+                document.getElementById("customer").value;
+
+            var amount =
+                document.getElementById("amount").value;
+
+            var salesman =
+                document.getElementById("salesman").value;
+
+
+            consoleBox.innerHTML = "";
+
+
+            addConsoleLine(
+                "10X Flow360 Test Engine Starting..."
+            );
+
+
+            setTimeout(function () {
+
+                addConsoleLine(
+                    "Sales Order " +
+                    salesOrder +
+                    " detected."
+                );
+
+            }, 400);
+
+
+            setTimeout(function () {
+
+                addConsoleLine(
+                    "Customer: " +
+                    customer
+                );
+
+            }, 800);
+
+
+            setTimeout(function () {
+
+                addConsoleLine(
+                    "Amount: " +
+                    amount
+                );
+
+            }, 1200);
+
+
+            setTimeout(function () {
+
+                addConsoleLine(
+                    "Salesman: " +
+                    salesman
+                );
+
+            }, 1600);
+
+
+            setTimeout(function () {
+
+                addConsoleLine(
+                    "Step 1 completed: Sales Order Created."
+                );
+
+            }, 2000);
+
+
+            setTimeout(function () {
+
+                addConsoleLine(
+                    "Step 2 completed: Delivery Team notified."
+                );
+
+            }, 2400);
+
+
+            setTimeout(function () {
+
+                addConsoleLine(
+                    "Step 3 completed: Delivery Date Updated."
+                );
+
+            }, 2800);
+
+
+            setTimeout(function () {
+
+                addConsoleLine(
+                    "Step 4 completed: Delivery Created."
+                );
+
+            }, 3200);
+
+
+            setTimeout(function () {
+
+                addConsoleLine(
+                    "Step 5 completed: Invoice Created."
+                );
+
+            }, 3600);
+
+
+            setTimeout(function () {
+
+                addConsoleLine(
+                    "Step 6 completed: Accounts notified."
+                );
+
+            }, 4000);
+
+
+            setTimeout(function () {
+
+                addConsoleLine(
+                    "Workflow test completed successfully."
+                );
+
+            }, 4400);
+
+        }
+
+
+        function addConsoleLine(message) {
+
+            var consoleBox =
+                document.getElementById("testConsole");
+
+            var line =
+                document.createElement("div");
+
+            line.textContent =
+                message;
+
+            consoleBox.appendChild(line);
+
+            consoleBox.scrollTop =
+                consoleBox.scrollHeight;
+
+        }
+
+
+        function clearConsole() {
+
+            var consoleBox =
+                document.getElementById("testConsole");
+
+            consoleBox.innerHTML =
+                "<div>10X Flow360 Test Engine Ready...</div>" +
+                "<div>Click \"Run Test\" to simulate the workflow.</div>";
+
+        }
+
+    </script>
+
+}

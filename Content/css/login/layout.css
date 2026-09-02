@@ -1,0 +1,984 @@
+﻿/* =========================================================
+   10X FLOW360 - SHARED LAYOUT CSS
+   Sidebar + Topbar + Main Content
+   ========================================================= */
+
+
+/* =========================================================
+   FONT AWESOME
+   ========================================================= */
+
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css");
+
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f5f6fa;
+    color: #172b48;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   BODY / BOOTSTRAP OVERRIDE
+   ========================================================= */
+
+.body-content {
+    margin-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
+}
+
+
+/* Prevent Bootstrap's default max-width
+   from affecting layout form controls */
+
+.flow-sidebar input,
+.flow-sidebar select,
+.flow-sidebar textarea,
+.flow-topbar input,
+.flow-topbar select,
+.flow-topbar textarea,
+.main-content input,
+.main-content select,
+.main-content textarea {
+    max-width: none;
+}
+
+
+/* =========================================================
+   MAIN SIDEBAR
+   ========================================================= */
+
+.flow-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    width: 260px;
+
+    background: #1f2335;
+    color: #ffffff;
+
+    z-index: 1000;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    box-sizing: border-box;
+
+    transition:
+        width 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+/* =========================================================
+   SIDEBAR BRAND / LOGO AREA
+   ========================================================= */
+
+.flow-brand {
+    width: 100%;
+    height: 120px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 15px 16px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   LOGO CONTAINER
+   ========================================================= */
+
+.flow-logo-container {
+    width: 100%;
+    height: 80px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    margin: 0;
+    padding: 0;
+
+    line-height: 0;
+    white-space: nowrap;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   10X LOGO IMAGE
+   ========================================================= */
+
+.flow-logo-10x {
+    display: block;
+
+    width: 58px;
+    height: 58px;
+
+    margin: 0;
+    padding: 0;
+
+    object-fit: contain;
+    object-position: center;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   FLOW360 LOGO IMAGE
+   ========================================================= */
+
+.flow-logo-flow360 {
+    display: block;
+
+    width: 145px;
+    height: 58px;
+
+    margin: 0 0 0 -3px;
+    padding: 0;
+
+    object-fit: contain;
+    object-position: center;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   OLD LOGO CLASS
+   Hide old logo if it still exists somewhere
+   ========================================================= */
+
+.flow-logo-image {
+    display: none;
+}
+
+
+/* =========================================================
+   OLD TEXT LOGO CLASSES
+   ========================================================= */
+
+.flow-logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo-10 {
+    color: #ffffff;
+}
+
+.logo-x {
+    color: #ef233c;
+}
+
+.flow-brand-name {
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   SIDEBAR SUBTITLE
+   ========================================================= */
+
+.flow-subtitle {
+    padding: 0 24px 25px 25px;
+
+    color: #aeb4c8;
+
+    font-size: 11px;
+    font-weight: 400;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   SIDEBAR SECTION TITLE
+   ========================================================= */
+
+.flow-section-title {
+    padding: 27px 25px 12px 25px;
+
+    color: #8188a5;
+
+    font-size: 10px;
+    font-weight: 500;
+
+    letter-spacing: 1px;
+
+    white-space: nowrap;
+}
+
+.configuration-title {
+    margin-top: 5px;
+}
+
+
+/* =========================================================
+   SIDEBAR MENU
+   ========================================================= */
+
+.flow-menu {
+    list-style: none;
+
+    margin: 0;
+    padding: 0 10px;
+}
+
+.flow-menu-item {
+    margin-bottom: 4px;
+}
+
+
+/* =========================================================
+   SIDEBAR MENU LINK
+   ========================================================= */
+
+.flow-menu-item a {
+    width: 100%;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 15px;
+
+    border-radius: 8px;
+
+    color: #b8bdd2;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 400;
+
+    white-space: nowrap;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+/* =========================================================
+   MENU ICON
+   ========================================================= */
+
+.flow-icon {
+    width: 27px;
+    min-width: 27px;
+
+    margin-right: 8px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #aeb4cd;
+
+    font-size: 17px;
+
+    transition: color 0.2s ease;
+}
+
+
+/* =========================================================
+   MENU TEXT
+   ========================================================= */
+
+.flow-menu-text {
+    display: inline-block;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   MENU HOVER
+   ========================================================= */
+
+.flow-menu-item a:hover {
+    background: #292e46;
+
+    color: #ffffff;
+
+    text-decoration: none;
+}
+
+.flow-menu-item a:hover .flow-icon {
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   ACTIVE MENU
+   ========================================================= */
+
+.flow-menu-item.active a {
+    background: #30364f;
+
+    color: #ffffff;
+
+    font-weight: 600;
+}
+
+.flow-menu-item.active .flow-icon {
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   SIDEBAR TOGGLE BUTTON
+   ========================================================= */
+
+.flow-sidebar-toggle {
+    position: fixed;
+
+    top: 48px;
+    left: 243px;
+
+    width: 34px;
+    height: 34px;
+
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 3px solid #1f2335;
+    border-radius: 50%;
+
+    background: #ed0061;
+    color: #ffffff;
+
+    cursor: pointer;
+
+    z-index: 2000;
+
+    box-shadow:
+        0 3px 8px rgba(0, 0, 0, 0.25);
+
+    transition:
+        left 0.25s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+/* =========================================================
+   TOGGLE HOVER
+   ========================================================= */
+
+.flow-sidebar-toggle:hover {
+    background: #ff0870;
+
+    transform: scale(1.08);
+}
+
+
+/* =========================================================
+   TOGGLE ICON
+   ========================================================= */
+
+.flow-sidebar-toggle i {
+    font-size: 13px;
+
+    transition:
+        transform 0.25s ease;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+   ========================================================= */
+
+.main-content {
+    position: relative;
+
+    margin-left: 260px;
+
+    width: calc(100% - 260px);
+
+    min-height: 100vh;
+
+    background: #f5f7fb;
+
+    box-sizing: border-box;
+
+    transition:
+        margin-left 0.25s ease,
+        width 0.25s ease;
+}
+
+
+/* =========================================================
+   TOP BAR
+   ========================================================= */
+
+.flow-topbar {
+    height: 70px;
+
+    margin: 20px 25px 0 25px;
+
+    padding: 0 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: #292d45;
+
+    border-radius: 6px;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.12);
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   TOP BAR LEFT
+   ========================================================= */
+
+.flow-topbar-title {
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    min-width: 0;
+}
+
+
+/* =========================================================
+   TOP BAR TITLE
+   ========================================================= */
+
+.flow-title {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 19px;
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   TOP BAR SUBTITLE
+   ========================================================= */
+
+.flow-title-sub {
+    margin-top: 4px;
+
+    color: #9ea6bd;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    line-height: 1.2;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   TOP BAR RIGHT / USER
+   ========================================================= */
+
+.flow-user {
+    position: relative;
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   USER ICON
+   ========================================================= */
+
+.flow-user-icon {
+    color: #aeb6d0;
+
+    font-size: 25px;
+}
+
+
+/* =========================================================
+   ONLINE STATUS
+   ========================================================= */
+
+.flow-status {
+    position: absolute;
+
+    right: 2px;
+    bottom: 3px;
+
+    width: 9px;
+    height: 9px;
+
+    background: #65d82e;
+
+    border: 2px solid #292d45;
+
+    border-radius: 50%;
+}
+
+
+/* =========================================================
+   PAGE / DASHBOARD CONTAINER
+   ========================================================= */
+
+.flow-dashboard {
+    width: 100%;
+
+    min-height: calc(100vh - 100px);
+
+    padding: 30px 25px 40px 25px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   GENERIC PAGE CONTAINER
+   ========================================================= */
+
+.tracking-page,
+.design-page {
+    width: 100%;
+
+    min-height: calc(100vh - 70px);
+
+    background: #f5f6fa;
+
+    color: #102d50;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   COLLAPSED SIDEBAR
+   ========================================================= */
+
+.flow-sidebar.collapsed {
+    width: 75px;
+}
+
+
+/* =========================================================
+   COLLAPSED BRAND
+   ========================================================= */
+
+.flow-sidebar.collapsed .flow-brand {
+    height: 90px;
+
+    padding: 15px 0;
+
+    justify-content: center;
+}
+
+
+/* =========================================================
+   COLLAPSED LOGO CONTAINER
+   ========================================================= */
+
+.flow-sidebar.collapsed .flow-logo-container {
+    width: 58px;
+    height: 58px;
+
+    justify-content: center;
+}
+
+
+/* =========================================================
+   COLLAPSED 10X LOGO
+   ========================================================= */
+
+.flow-sidebar.collapsed .flow-logo-10x {
+    width: 55px;
+    height: 55px;
+}
+
+
+/* =========================================================
+   HIDE FLOW360 LOGO WHEN COLLAPSED
+   ========================================================= */
+
+.flow-sidebar.collapsed .flow-logo-flow360 {
+    display: none;
+}
+
+
+/* =========================================================
+   HIDE SIDEBAR TEXT WHEN COLLAPSED
+   ========================================================= */
+
+.flow-sidebar.collapsed .flow-subtitle,
+.flow-sidebar.collapsed .flow-section-title,
+.flow-sidebar.collapsed .flow-menu-text,
+.flow-sidebar.collapsed .flow-brand-name {
+    display: none;
+}
+
+
+/* =========================================================
+   COLLAPSED SECTION TITLE
+   ========================================================= */
+
+.flow-sidebar.collapsed .flow-section-title {
+    height: 12px;
+
+    padding: 15px 0 10px 0;
+
+    font-size: 0;
+}
+
+
+/* =========================================================
+   COLLAPSED MENU
+   ========================================================= */
+
+.flow-sidebar.collapsed .flow-menu {
+    padding: 0 10px;
+}
+
+.flow-sidebar.collapsed .flow-menu-item a {
+    justify-content: center;
+
+    padding: 0;
+}
+
+.flow-sidebar.collapsed .flow-icon {
+    width: 40px;
+    min-width: 40px;
+
+    margin-right: 0;
+}
+
+
+/* =========================================================
+   TOGGLE POSITION WHEN SIDEBAR IS COLLAPSED
+   ========================================================= */
+
+.flow-sidebar.collapsed ~ .flow-sidebar-toggle {
+    left: 58px;
+}
+
+
+/* =========================================================
+   MAIN CONTENT WHEN SIDEBAR IS COLLAPSED
+   ========================================================= */
+
+.main-content.sidebar-collapsed {
+    margin-left: 75px;
+
+    width: calc(100% - 75px);
+}
+
+
+/* =========================================================
+   SIDEBAR SCROLLBAR
+   ========================================================= */
+
+.flow-sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.flow-sidebar::-webkit-scrollbar-track {
+    background: #1f2335;
+}
+
+.flow-sidebar::-webkit-scrollbar-thumb {
+    background: #3a4059;
+
+    border-radius: 10px;
+}
+
+.flow-sidebar {
+    scrollbar-width: thin;
+
+    scrollbar-color:
+        #3a4059
+        #1f2335;
+}
+
+
+/* =========================================================
+   TOPBAR / CONTENT SCROLLBAR
+   ========================================================= */
+
+.main-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.main-content::-webkit-scrollbar-track {
+    background: #f5f7fb;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+    background: #c8ced9;
+
+    border-radius: 10px;
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .flow-dashboard {
+        padding: 25px 20px 35px 20px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - 768px
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    /* Sidebar */
+
+    .flow-sidebar {
+        width: 220px;
+    }
+
+
+    /* Main content */
+
+    .main-content {
+        margin-left: 220px;
+
+        width: calc(100% - 220px);
+    }
+
+
+    /* Toggle */
+
+    .flow-sidebar-toggle {
+        left: 203px;
+    }
+
+
+    /* Logo */
+
+    .flow-logo-10x {
+        width: 52px;
+        height: 52px;
+    }
+
+    .flow-logo-flow360 {
+        width: 125px;
+        height: 52px;
+    }
+
+
+    /* Dashboard */
+
+    .flow-dashboard {
+        padding: 20px 18px 30px 18px;
+    }
+
+
+    /* Topbar */
+
+    .flow-topbar {
+        height: 62px;
+
+        margin: 12px 18px 0 18px;
+
+        padding: 0 18px;
+    }
+
+
+    .flow-title {
+        font-size: 17px;
+    }
+
+    .flow-title-sub {
+        font-size: 11px;
+    }
+
+
+    /* Generic pages */
+
+    .tracking-page,
+    .design-page {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - 576px
+   ========================================================= */
+
+@media (max-width: 576px) {
+
+    /* Hide sidebar */
+
+    .flow-sidebar {
+        width: 0;
+    }
+
+
+    /* Full width content */
+
+    .main-content {
+        margin-left: 0;
+
+        width: 100%;
+    }
+
+
+    /* Toggle */
+
+    .flow-sidebar-toggle {
+        left: 10px;
+    }
+
+
+    /* Dashboard */
+
+    .flow-dashboard {
+        padding: 18px 15px 25px 15px;
+    }
+
+
+    /* Topbar */
+
+    .flow-topbar {
+        height: 58px;
+
+        margin: 10px 15px 0 15px;
+
+        padding: 0 15px;
+    }
+
+
+    .flow-title {
+        font-size: 16px;
+    }
+
+
+    .flow-title-sub {
+        font-size: 10px;
+    }
+
+
+    .flow-user {
+        width: 36px;
+        height: 36px;
+    }
+
+
+    .flow-user-icon {
+        font-size: 22px;
+    }
+
+
+    /* Generic pages */
+
+    .tracking-page,
+    .design-page {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - 400px
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+    .flow-topbar {
+        padding: 0 12px;
+    }
+
+
+    .flow-title {
+        font-size: 15px;
+    }
+
+
+    .flow-title-sub {
+        font-size: 9px;
+    }
+
+
+    .flow-user {
+        width: 32px;
+        height: 32px;
+    }
+
+
+    .flow-user-icon {
+        font-size: 20px;
+    }
+
+}

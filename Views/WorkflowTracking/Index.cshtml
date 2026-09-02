@@ -1,0 +1,500 @@
+﻿@model _10xFlow360.Controllers.WorkflowTrackingViewModel
+
+@{
+    ViewBag.Title = "Process Tracking";
+}
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+
+<div class="tracking-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+
+    <div class="tracking-page-header">
+
+        <div>
+            <h1>Process Tracking</h1>
+
+            <p>
+                Track every running workflow and identify delays.
+            </p>
+        </div>
+
+
+        <div>
+
+            @using (Html.BeginForm(
+                "Refresh",
+                "WorkflowTracking",
+                FormMethod.Post,
+                new { @class = "tracking-refresh-form" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <button type="submit"
+                        class="tracking-refresh-btn">
+
+                    <i class="bi bi-arrow-clockwise"></i>
+
+                    Refresh
+
+                </button>
+            }
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SUCCESS MESSAGE
+         ===================================================== -->
+
+    @if (TempData["TrackingMessage"] != null)
+    {
+        <div class="tracking-success-message">
+
+            <i class="bi bi-check-circle-fill"></i>
+
+            @TempData["TrackingMessage"]
+
+        </div>
+    }
+
+
+    <!-- =====================================================
+         SUMMARY CARDS
+         ===================================================== -->
+
+    <div class="tracking-summary-grid">
+
+
+        <!-- TOTAL -->
+        <div class="tracking-summary-card">
+
+            <div class="tracking-summary-content">
+
+                <span class="tracking-summary-label">
+                    TOTAL INSTANCES
+                </span>
+
+                <strong class="tracking-total-value">
+                    @Model.TotalInstances
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- IN PROGRESS -->
+        <div class="tracking-summary-card">
+
+            <div class="tracking-summary-content">
+
+                <span class="tracking-summary-label">
+                    IN PROGRESS
+                </span>
+
+                <strong class="tracking-progress-value">
+                    @Model.InProgress
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- COMPLETED -->
+        <div class="tracking-summary-card">
+
+            <div class="tracking-summary-content">
+
+                <span class="tracking-summary-label">
+                    COMPLETED
+                </span>
+
+                <strong class="tracking-completed-value">
+                    @Model.Completed
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- OVERDUE -->
+        <div class="tracking-summary-card">
+
+            <div class="tracking-summary-content">
+
+                <span class="tracking-summary-label">
+                    OVERDUE
+                </span>
+
+                <strong class="tracking-overdue-value">
+                    @Model.Overdue
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         WORKFLOW INSTANCES
+         ===================================================== -->
+
+    <div class="tracking-card">
+
+        <div class="tracking-card-title">
+
+            <h2>
+                Workflow Instances
+            </h2>
+
+        </div>
+
+
+        <div class="tracking-table-wrapper">
+
+            <table class="tracking-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Instance</th>
+
+                        <th>Document</th>
+
+                        <th>Customer</th>
+
+                        <th>Current Stage</th>
+
+                        <th>Owner</th>
+
+                        <th>Elapsed</th>
+
+                        <th>Status</th>
+
+                        <th></th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    @foreach (var item in Model.Instances)
+                    {
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    @item.InstanceId
+                                </strong>
+                            </td>
+
+
+                            <td>
+                                @item.Document
+                            </td>
+
+
+                            <td>
+                                @item.Customer
+                            </td>
+
+
+                            <td>
+                                @item.CurrentStage
+                            </td>
+
+
+                            <td>
+                                @item.Owner
+                            </td>
+
+
+                            <td class="@(item.Status == "Overdue"
+                                ? "tracking-elapsed-overdue"
+                                : "")">
+
+                                @item.Elapsed
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="tracking-status
+                                    @(item.Status == "Pending"
+                                        ? "tracking-status-pending"
+                                        : item.Status == "Running"
+                                        ? "tracking-status-running"
+                                        : item.Status == "Overdue"
+                                        ? "tracking-status-overdue"
+                                        : "tracking-status-completed")">
+
+                                    @item.Status
+
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <a href="@Url.Action(
+                                    "Index",
+                                    "WorkflowTracking",
+                                    new { instanceId = item.InstanceId })"
+                                   class="tracking-view-btn">
+
+                                    View
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         LOWER SECTION
+         ===================================================== -->
+
+    <div class="tracking-lower-grid">
+
+
+        <!-- =================================================
+             TIMELINE
+             ================================================= -->
+
+        <div class="tracking-card timeline-card">
+
+            <div class="tracking-card-title">
+
+                <h2>
+                    Process Timeline - @Model.SelectedInstance.Document
+                </h2>
+
+            </div>
+
+
+            <div class="tracking-timeline">
+
+                @foreach (var step in Model.Timeline)
+                {
+                    <div class="tracking-timeline-item
+                         @(step.IsCurrent
+                            ? "tracking-timeline-current"
+                            : "")">
+
+
+                        <div class="tracking-timeline-dot"></div>
+
+
+                        <div class="tracking-timeline-content">
+
+                            <strong>
+                                @step.Title
+                            </strong>
+
+                            <span class="tracking-timeline-time">
+                                @step.Time
+                            </span>
+
+                            <p>
+                                @step.Description
+                            </p>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             INSTANCE DETAILS
+             ================================================= -->
+
+        <div class="tracking-card instance-details-card">
+
+            <div class="tracking-card-title">
+
+                <h2>
+                    Instance Details
+                </h2>
+
+            </div>
+
+
+            <div class="instance-details-body">
+
+
+                <!-- INSTANCE -->
+
+                <div class="instance-detail-row">
+
+                    <span class="instance-detail-label">
+                        INSTANCE
+                    </span>
+
+                    <strong>
+                        @Model.SelectedInstance.InstanceId
+                    </strong>
+
+                </div>
+
+
+                <!-- WORKFLOW -->
+
+                <div class="instance-detail-row">
+
+                    <span class="instance-detail-label">
+                        WORKFLOW
+                    </span>
+
+                    <strong>
+                        @Model.SelectedInstance.Workflow
+                    </strong>
+
+                </div>
+
+
+                <!-- SAP DOCUMENT -->
+
+                <div class="instance-detail-row">
+
+                    <span class="instance-detail-label">
+                        SAP DOCUMENT
+                    </span>
+
+                    <strong>
+                        @Model.SelectedInstance.SapDocument
+                    </strong>
+
+                </div>
+
+
+                <!-- CURRENT OWNER -->
+
+                <div class="instance-detail-row">
+
+                    <span class="instance-detail-label">
+                        CURRENT OWNER
+                    </span>
+
+                    <strong>
+                        @Model.SelectedInstance.CurrentOwner
+                    </strong>
+
+                </div>
+
+
+                <!-- CURRENT STAGE -->
+
+                <div class="instance-detail-row">
+
+                    <span class="instance-detail-label">
+                        CURRENT STAGE
+                    </span>
+
+                    <span class="tracking-stage-badge">
+                        @Model.SelectedInstance.CurrentStage
+                    </span>
+
+                </div>
+
+
+                <!-- SLA -->
+
+                <div class="instance-sla-section">
+
+                    <div class="instance-sla-heading">
+
+                        <span class="instance-detail-label">
+                            SLA
+                        </span>
+
+                    </div>
+
+
+                    <div class="instance-sla-values">
+
+                        <span>
+                            @Model.SelectedInstance.SlaElapsed
+                        </span>
+
+                        <strong>
+                            @Model.SelectedInstance.SlaLimit
+                        </strong>
+
+                    </div>
+
+
+                    <div class="instance-sla-bar">
+
+                        <div class="instance-sla-progress"
+                             style="width:@Model.SelectedInstance.SlaPercentage%;">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ESCALATE -->
+
+                @using (Html.BeginForm(
+                    "Escalate",
+                    "WorkflowTracking",
+                    FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden"
+                           name="instanceId"
+                           value="@Model.SelectedInstance.InstanceId" />
+
+                    <button type="submit"
+                            class="tracking-escalate-btn">
+
+                        <i class="bi bi-exclamation-triangle"></i>
+
+                        Escalate
+
+                    </button>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,367 @@
+﻿/* =========================================================
+   10X FLOW360 - LOGIN PAGE
+   ========================================================= */
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.login-page {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: #f5f7fa;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+    .login-page,
+    .login-page *,
+    .login-page *::before,
+    .login-page *::after {
+        box-sizing: border-box;
+    }
+
+
+        /* =========================================================
+   LOGIN WRAPPER
+   ========================================================= */
+
+        .login-page .login-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+
+        /* =========================================================
+   LOGIN CARD
+   ========================================================= */
+
+        .login-page .login-card {
+            width: 100%;
+            max-width: 420px;
+            padding: 40px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+
+        /* =========================================================
+   BRAND
+   ========================================================= */
+
+        .login-page .login-brand {
+            width: 100%;
+            margin: 0 0 30px;
+            padding: 0;
+            text-align: center;
+        }
+
+
+        /* =========================================================
+   LOGO CONTAINER
+   ========================================================= */
+
+        .login-page .login-logo-container {
+            width: 100%;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin: 0;
+            padding: 0;
+            line-height: 0;
+            font-size: 0;
+        }
+
+
+            /* =========================================================
+   LOGOS
+   ========================================================= */
+
+            .login-page .login-logo-container img {
+                display: block;
+                margin: 0 !important;
+                padding: 0 !important;
+                border: 0;
+                object-fit: contain;
+                object-position: center center;
+            }
+
+
+        /* =========================================================
+   10X LOGO
+   ========================================================= */
+
+        .login-page .login-logo-10x {
+            width: 75px;
+            height: 75px;
+            flex: 0 0 65px;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+
+        /* =========================================================
+   FLOW360 LOGO
+   ========================================================= */
+
+        .login-page .login-logo-flow360 {
+            width: 135px;
+            height: 55px;
+            flex: 0 0 135px;
+            margin: 0 0 0 -4px !important;
+            padding: 0 !important;
+        }
+
+
+        /* =========================================================
+   BRAND SUBTITLE
+   ========================================================= */
+
+        .login-page .login-brand-subtitle {
+            margin: 7px 0 0;
+            padding: 0;
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 20px;
+            text-align: center;
+        }
+
+
+        /* =========================================================
+   FORM GROUP
+   ========================================================= */
+
+        .login-page .login-form-group {
+            margin: 0 0 20px;
+            padding: 0;
+        }
+
+
+        /* =========================================================
+   LABEL
+   ========================================================= */
+
+        .login-page .login-form-label {
+            display: block;
+            margin: 0 0 7px;
+            padding: 0;
+            color: #374151;
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 20px;
+        }
+
+
+        /* =========================================================
+   INPUT
+   ========================================================= */
+
+        .login-page .login-form-control {
+            display: block;
+            width: 100%;
+            max-width: none !important;
+            height: 44px;
+            margin: 0;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #374151;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+
+            /* =========================================================
+   INPUT PLACEHOLDER
+   ========================================================= */
+
+            .login-page .login-form-control::placeholder {
+                color: #9ca3af;
+            }
+
+
+            /* =========================================================
+   INPUT FOCUS
+   ========================================================= */
+
+            .login-page .login-form-control:focus {
+                border-color: #e5005a;
+                outline: none;
+                box-shadow: 0 0 0 2px rgba(229, 0, 90, 0.12);
+            }
+
+
+        /* =========================================================
+   REMEMBER ME
+   ========================================================= */
+
+        .login-page .login-remember-row {
+            margin: 0 0 20px;
+            padding: 0;
+        }
+
+
+            .login-page .login-remember-row label {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                margin: 0;
+                padding: 0;
+                color: #374151;
+                font-size: 15px;
+                cursor: pointer;
+            }
+
+
+            /* =========================================================
+   CHECKBOX
+   ========================================================= */
+
+            .login-page .login-remember-row input[type="checkbox"] {
+                width: 14px;
+                height: 14px;
+                max-width: none !important;
+                margin: 0;
+                padding: 0;
+                cursor: pointer;
+            }
+
+
+        /* =========================================================
+   LOGIN BUTTON
+   ========================================================= */
+
+        .login-page .login-button {
+            display: block;
+            width: 100%;
+            height: 44px;
+            margin: 0;
+            padding: 0 15px;
+            border: 1px solid #e5005a;
+            border-radius: 6px;
+            background: #e5005a;
+            color: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            text-align: center;
+            line-height: 42px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+
+            /* =========================================================
+   LOGIN BUTTON - HOVER
+   ========================================================= */
+
+            .login-page .login-button:hover {
+                background: #cc0050;
+                border-color: #cc0050;
+                color: #ffffff;
+            }
+
+
+            /* =========================================================
+   LOGIN BUTTON - FOCUS
+   ========================================================= */
+
+            .login-page .login-button:focus {
+                outline: none;
+                background: #e5005a;
+                border-color: #e5005a;
+                color: #ffffff;
+                box-shadow: 0 0 0 3px rgba(229, 0, 90, 0.20);
+            }
+
+
+            /* =========================================================
+   LOGIN BUTTON - ACTIVE
+   ========================================================= */
+
+            .login-page .login-button:active {
+                background: #b80048;
+                border-color: #b80048;
+                color: #ffffff;
+            }
+
+
+        /* =========================================================
+   VALIDATION SUMMARY
+   ========================================================= */
+
+        .login-page .validation-summary {
+            margin: 0 0 15px;
+            padding: 0;
+            color: #dc2626;
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+   FIELD VALIDATION
+   ========================================================= */
+
+        .login-page .field-validation-error {
+            display: block;
+            margin: 5px 0 0;
+            padding: 0;
+            color: #dc2626;
+            font-size: 13px;
+        }
+
+
+        /* =========================================================
+   FOOTER
+   ========================================================= */
+
+        .login-page .login-footer {
+            margin: 25px 0 0;
+            padding: 0;
+            color: #9ca3af;
+            font-size: 12px;
+            text-align: center;
+        }
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .login-page .login-wrapper {
+        padding: 15px;
+    }
+
+    .login-page .login-card {
+        padding: 30px 25px;
+    }
+
+    .login-page .login-logo-container {
+        height: 60px;
+    }
+
+    .login-page .login-logo-10x {
+        width: 65px;
+        height: 70px;
+        flex: 0 0 55px;
+    }
+
+    .login-page .login-logo-flow360 {
+        width: 120px;
+        height: 50px;
+        flex: 0 0 120px;
+        margin-left: -4px !important;
+    }
+}

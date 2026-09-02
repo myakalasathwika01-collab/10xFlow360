@@ -1,0 +1,325 @@
+﻿@model _10xFlow360.Models.Dashboard
+
+@{
+    ViewBag.Title = "Process Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="dashboard-page">
+
+    <div class="dashboard-heading">
+
+        <div class="dashboard-title">
+
+            <h2>Process Dashboard</h2>
+
+            <p>
+                Design, automate and track your SAP Business One processes
+            </p>
+
+        </div>
+
+        <div class="dashboard-actions">
+
+            <div class="sap-status">
+                <span class="sap-status-dot"></span>
+                SAP Connected
+            </div>
+
+            <div class="administrator">
+
+                <span class="user-icon">👤</span>
+
+                <span>Administrator</span>
+
+                <span class="arrow">▼</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- KPI CARDS -->
+
+    <div class="dashboard-stats">
+
+        <div class="dashboard-stat-card">
+
+            <div>
+
+                <div class="stat-label">
+                    Active Workflows
+                </div>
+
+                <div class="stat-number">
+                    @Model.ActiveWorkflows
+                </div>
+
+                <div class="stat-description success-text">
+                    @Model.CurrentlyProcessing currently processing
+                </div>
+
+            </div>
+
+            <div class="stat-icon blue-icon">
+                ⚯
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-stat-card">
+
+            <div>
+
+                <div class="stat-label">
+                    Running Instances
+                </div>
+
+                <div class="stat-number">
+                    @Model.RunningInstances
+                </div>
+
+                <div class="stat-description">
+                    Across all processes
+                </div>
+
+            </div>
+
+            <div class="stat-icon cyan-icon">
+                ▶
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-stat-card">
+
+            <div>
+
+                <div class="stat-label">
+                    Completed Today
+                </div>
+
+                <div class="stat-number">
+                    @Model.CompletedToday
+                </div>
+
+                <div class="stat-description success-text">
+                    ↑ @Model.CompletedPercentage%
+                </div>
+
+            </div>
+
+            <div class="stat-icon green-icon">
+                ✓
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-stat-card">
+
+            <div>
+
+                <div class="stat-label">
+                    Overdue
+                </div>
+
+                <div class="stat-number">
+                    @Model.Overdue
+                </div>
+
+                <div class="stat-description danger-text">
+                    Requires attention
+                </div>
+
+            </div>
+
+            <div class="stat-icon red-icon">
+                !
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MAIN GRID -->
+
+    <div class="dashboard-main-grid">
+
+        <!-- ACTIVE PROCESSES -->
+
+        <div class="dashboard-panel">
+
+            <div class="panel-header">
+
+                <h5>Active Processes</h5>
+
+                <button type="button"
+                        class="new-workflow-btn">
+
+                    + New Workflow
+
+                </button>
+
+            </div>
+
+
+            <div class="process-table-wrapper">
+
+                <table class="process-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>Workflow</th>
+                            <th>Module</th>
+                            <th>Running</th>
+                            <th>Completed</th>
+                            <th>Status</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var process in Model.ActiveProcesses)
+                        {
+                            <tr>
+
+                                <td>
+
+                                    <div class="workflow-name">
+                                        @process.Workflow
+                                    </div>
+
+                                    <div class="workflow-code">
+                                        @process.WorkflowCode
+                                    </div>
+
+                                </td>
+
+                                <td>
+                                    @process.Module
+                                </td>
+
+                                <td>
+                                    @process.Running
+                                </td>
+
+                                <td>
+                                    @process.Completed
+                                </td>
+
+                                <td>
+
+                                    <span class="process-status">
+                                        @process.Status
+                                    </span>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- PROCESS HEALTH -->
+
+        <div class="dashboard-panel">
+
+            <div class="panel-header">
+
+                <h5>Process Health</h5>
+
+            </div>
+
+
+            <div class="health-body">
+
+                <div class="health-item">
+
+                    <div class="health-title">
+
+                        <span>SLA Compliance</span>
+
+                        <strong>
+                            @Model.SlaCompliance%
+                        </strong>
+
+                    </div>
+
+                    <div class="health-progress">
+
+                        <div class="health-progress-bar green-progress"
+                             style="width:@Model.SlaCompliance%;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="health-item">
+
+                    <div class="health-title">
+
+                        <span>Completed On Time</span>
+
+                        <strong>
+                            @Model.CompletedOnTime%
+                        </strong>
+
+                    </div>
+
+                    <div class="health-progress">
+
+                        <div class="health-progress-bar blue-progress"
+                             style="width:@Model.CompletedOnTime%;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="health-item">
+
+                    <div class="health-title">
+
+                        <span>Escalated</span>
+
+                        <strong>
+                            @Model.Escalated%
+                        </strong>
+
+                    </div>
+
+                    <div class="health-progress">
+
+                        <div class="health-progress-bar red-progress"
+                             style="width:@Model.Escalated%;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
