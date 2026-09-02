@@ -5,316 +5,668 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="dashboard-page">
+<div class="container-fluid py-3">
 
-    <div class="dashboard-heading">
+    <!-- =========================================================
+         MAIN DASHBOARD CARD
+         ========================================================= -->
 
-        <div class="dashboard-title">
+    <div class="card shadow-sm border">
 
-            <h2>Process Dashboard</h2>
+        <!-- =====================================================
+             DASHBOARD HEADER
+             ===================================================== -->
 
-            <p>
-                Design, automate and track your SAP Business One processes
-            </p>
+        <div class="card-header bg-white border-bottom py-3">
 
-        </div>
+            <div class="row align-items-center">
 
-        <div class="dashboard-actions">
+                <!-- TITLE -->
 
-            <div class="sap-status">
-                <span class="sap-status-dot"></span>
-                SAP Connected
-            </div>
+                <div class="col-md-7">
 
-            <div class="administrator">
+                    <h4 class="mb-1 fw-semibold text-dark">
+                        Process Dashboard
+                    </h4>
 
-                <span class="user-icon">👤</span>
+                    <p class="mb-0 text-muted small">
+                        Design, automate and track your SAP Business One processes
+                    </p>
 
-                <span>Administrator</span>
-
-                <span class="arrow">▼</span>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- KPI CARDS -->
-
-    <div class="dashboard-stats">
-
-        <div class="dashboard-stat-card">
-
-            <div>
-
-                <div class="stat-label">
-                    Active Workflows
                 </div>
 
-                <div class="stat-number">
-                    @Model.ActiveWorkflows
+
+                <!-- RIGHT SIDE -->
+
+                <div class="col-md-5">
+
+                    <div class="d-flex
+                                justify-content-md-end
+                                align-items-center
+                                gap-2
+                                mt-3 mt-md-0">
+
+                        <!-- SAP STATUS -->
+
+                        <span class="badge bg-success px-3 py-2">
+
+                            <i class="fa-solid fa-circle me-1"
+                               style="font-size:7px;">
+                            </i>
+
+                            SAP Connected
+
+                        </span>
+
+
+                        <!-- ADMINISTRATOR -->
+
+                        <div class="dropdown">
+
+                            <button class="btn btn-flow-pink dropdown-toggle"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+
+                                <i class="fa-regular fa-user me-2"></i>
+
+                                Administrator
+
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fa-regular fa-user me-2"></i>
+                                        Profile
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fa-solid fa-gear me-2"></i>
+                                        Settings
+                                    </a>
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
                 </div>
 
-                <div class="stat-description success-text">
-                    @Model.CurrentlyProcessing currently processing
-                </div>
-
-            </div>
-
-            <div class="stat-icon blue-icon">
-                ⚯
-            </div>
-
-        </div>
-
-
-        <div class="dashboard-stat-card">
-
-            <div>
-
-                <div class="stat-label">
-                    Running Instances
-                </div>
-
-                <div class="stat-number">
-                    @Model.RunningInstances
-                </div>
-
-                <div class="stat-description">
-                    Across all processes
-                </div>
-
-            </div>
-
-            <div class="stat-icon cyan-icon">
-                ▶
-            </div>
-
-        </div>
-
-
-        <div class="dashboard-stat-card">
-
-            <div>
-
-                <div class="stat-label">
-                    Completed Today
-                </div>
-
-                <div class="stat-number">
-                    @Model.CompletedToday
-                </div>
-
-                <div class="stat-description success-text">
-                    ↑ @Model.CompletedPercentage%
-                </div>
-
-            </div>
-
-            <div class="stat-icon green-icon">
-                ✓
             </div>
 
         </div>
 
 
-        <div class="dashboard-stat-card">
+        <!-- =====================================================
+             DASHBOARD BODY
+             ===================================================== -->
 
-            <div>
-
-                <div class="stat-label">
-                    Overdue
-                </div>
-
-                <div class="stat-number">
-                    @Model.Overdue
-                </div>
-
-                <div class="stat-description danger-text">
-                    Requires attention
-                </div>
-
-            </div>
-
-            <div class="stat-icon red-icon">
-                !
-            </div>
-
-        </div>
-
-    </div>
+        <div class="card-body">
 
 
-    <!-- MAIN GRID -->
+            <!-- =================================================
+                 KPI CARDS
+                 ================================================= -->
 
-    <div class="dashboard-main-grid">
-
-        <!-- ACTIVE PROCESSES -->
-
-        <div class="dashboard-panel">
-
-            <div class="panel-header">
-
-                <h5>Active Processes</h5>
-
-                <button type="button"
-                        class="new-workflow-btn">
-
-                    + New Workflow
-
-                </button>
-
-            </div>
+            <div class="row g-3 mb-4">
 
 
-            <div class="process-table-wrapper">
+                <!-- =================================================
+                     ACTIVE WORKFLOWS
+                     ================================================= -->
 
-                <table class="process-table">
+                <div class="col-12 col-sm-6 col-xl-3">
 
-                    <thead>
+                    <div class="card border h-100 shadow-sm dashboard-kpi-card">
 
-                        <tr>
-                            <th>Workflow</th>
-                            <th>Module</th>
-                            <th>Running</th>
-                            <th>Completed</th>
-                            <th>Status</th>
-                        </tr>
+                        <div class="card-body">
 
-                    </thead>
+                            <div class="d-flex
+                                        justify-content-between
+                                        align-items-start">
 
-                    <tbody>
+                                <div>
 
-                        @foreach (var process in Model.ActiveProcesses)
-                        {
-                            <tr>
+                                    <div class="text-muted
+                                                text-uppercase
+                                                small
+                                                fw-semibold
+                                                mb-2">
 
-                                <td>
+                                        Active Workflows
 
-                                    <div class="workflow-name">
-                                        @process.Workflow
                                     </div>
 
-                                    <div class="workflow-code">
-                                        @process.WorkflowCode
+                                    <div class="fs-3 fw-bold text-dark">
+
+                                        @Model.ActiveWorkflows
+
                                     </div>
 
-                                </td>
+                                    <div class="small text-success mt-2">
 
-                                <td>
-                                    @process.Module
-                                </td>
+                                        <i class="fa-solid fa-circle-check me-1"></i>
 
-                                <td>
-                                    @process.Running
-                                </td>
+                                        @Model.CurrentlyProcessing currently processing
 
-                                <td>
-                                    @process.Completed
-                                </td>
+                                    </div>
 
-                                <td>
+                                </div>
 
-                                    <span class="process-status">
-                                        @process.Status
+
+                                <!-- ICON -->
+
+                                <div class="bg-flow-pink-subtle text-flow-pink rounded p-3">
+                                    <i class="fa-solid fa-diagram-project fs-5"></i>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     RUNNING INSTANCES
+                     ================================================= -->
+
+                <div class="col-12 col-sm-6 col-xl-3">
+
+                    <div class="card border h-100 shadow-sm dashboard-kpi-card">
+
+                        <div class="card-body">
+
+                            <div class="d-flex
+                                        justify-content-between
+                                        align-items-start">
+
+                                <div>
+
+                                    <div class="text-muted
+                                                text-uppercase
+                                                small
+                                                fw-semibold
+                                                mb-2">
+
+                                        Running Instances
+
+                                    </div>
+
+                                    <div class="fs-3 fw-bold text-dark">
+
+                                        @Model.RunningInstances
+
+                                    </div>
+
+                                    <div class="small text-muted mt-2">
+
+                                        Across all processes
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- ICON -->
+
+                                <div class="bg-info-subtle
+                                            text-info
+                                            rounded
+                                            p-3">
+
+                                    <i class="fa-solid fa-play fs-5"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     COMPLETED TODAY
+                     ================================================= -->
+
+                <div class="col-12 col-sm-6 col-xl-3">
+
+                    <div class="card border h-100 shadow-sm dashboard-kpi-card">
+
+                        <div class="card-body">
+
+                            <div class="d-flex
+                                        justify-content-between
+                                        align-items-start">
+
+                                <div>
+
+                                    <div class="text-muted
+                                                text-uppercase
+                                                small
+                                                fw-semibold
+                                                mb-2">
+
+                                        Completed Today
+
+                                    </div>
+
+                                    <div class="fs-3 fw-bold text-dark">
+
+                                        @Model.CompletedToday
+
+                                    </div>
+
+                                    <div class="small text-success mt-2">
+
+                                        <i class="fa-solid fa-arrow-up me-1"></i>
+
+                                        @Model.CompletedPercentage%
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- ICON -->
+
+                                <div class="bg-success-subtle
+                                            text-success
+                                            rounded
+                                            p-3">
+
+                                    <i class="fa-solid fa-check fs-5"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     OVERDUE
+                     ================================================= -->
+
+                <div class="col-12 col-sm-6 col-xl-3">
+
+                    <div class="card border h-100 shadow-sm dashboard-kpi-card">
+
+                        <div class="card-body">
+
+                            <div class="d-flex
+                                        justify-content-between
+                                        align-items-start">
+
+                                <div>
+
+                                    <div class="text-muted
+                                                text-uppercase
+                                                small
+                                                fw-semibold
+                                                mb-2">
+
+                                        Overdue
+
+                                    </div>
+
+                                    <div class="fs-3 fw-bold text-dark">
+
+                                        @Model.Overdue
+
+                                    </div>
+
+                                    <div class="small text-danger mt-2">
+
+                                        <i class="fa-solid fa-triangle-exclamation me-1"></i>
+
+                                        Requires attention
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- ICON -->
+
+                                <div class="bg-danger-subtle
+                                            text-danger
+                                            rounded
+                                            p-3">
+
+                                    <i class="fa-solid fa-exclamation fs-5"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 ACTIVE PROCESSES + PROCESS HEALTH
+                 ================================================= -->
+
+            <div class="row g-4">
+
+
+                <!-- =================================================
+                     ACTIVE PROCESSES
+                     ================================================= -->
+
+                <div class="col-12 col-xl-8">
+
+                    <div class="card border shadow-sm h-100">
+
+                        <!-- HEADER -->
+
+                        <div class="card-header bg-white
+                                    d-flex
+                                    justify-content-between
+                                    align-items-center
+                                    py-3">
+
+                            <h5 class="mb-0 fw-semibold">
+                                Active Processes
+                            </h5>
+
+                            <button type="button" class="btn btn-flow-pink btn-sm">
+                                <i class="fa-solid fa-plus me-1"></i>
+                                New Workflow
+                            </button>
+
+                        </div>
+
+
+                        <!-- TABLE -->
+
+                        <div class="card-body p-0">
+
+                            <div class="table-responsive">
+
+                                <table class="table
+                                              table-hover
+                                              align-middle
+                                              mb-0">
+
+                                    <thead class="table-light">
+
+                                        <tr>
+
+                                            <th class="px-3">
+                                                Workflow
+                                            </th>
+
+                                            <th>
+                                                Module
+                                            </th>
+
+                                            <th>
+                                                Running
+                                            </th>
+
+                                            <th>
+                                                Completed
+                                            </th>
+
+                                            <th>
+                                                Status
+                                            </th>
+
+                                        </tr>
+
+                                    </thead>
+
+
+                                    <tbody>
+
+                                        @foreach (var process in Model.ActiveProcesses)
+                                        {
+                                            <tr>
+
+                                                <!-- WORKFLOW -->
+
+                                                <td class="px-3">
+
+                                                    <div class="fw-semibold text-dark">
+
+                                                        @process.Workflow
+
+                                                    </div>
+
+                                                    <small class="text-muted">
+
+                                                        @process.WorkflowCode
+
+                                                    </small>
+
+                                                </td>
+
+
+                                                <!-- MODULE -->
+
+                                                <td>
+
+                                                    @process.Module
+
+                                                </td>
+
+
+                                                <!-- RUNNING -->
+
+                                                <td>
+
+                                                    @process.Running
+
+                                                </td>
+
+
+                                                <!-- COMPLETED -->
+
+                                                <td>
+
+                                                    @process.Completed
+
+                                                </td>
+
+
+                                                <!-- STATUS -->
+
+                                                <td>
+
+                                                    <span class="badge
+             bg-flow-pink-subtle
+             text-flow-pink
+             rounded-pill
+             px-3
+             py-2">
+                                                        @process.Status
+                                                    </span>
+
+                                                </td>
+
+                                            </tr>
+                                        }
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     PROCESS HEALTH
+                     ================================================= -->
+
+                <div class="col-12 col-xl-4">
+
+                    <div class="card border shadow-sm h-100">
+
+
+                        <!-- HEADER -->
+
+                        <div class="card-header bg-white py-3">
+
+                            <h5 class="mb-0 fw-semibold">
+                                Process Health
+                            </h5>
+
+                        </div>
+
+
+                        <!-- BODY -->
+
+                        <div class="card-body">
+
+
+                            <!-- SLA COMPLIANCE -->
+
+                            <div class="mb-4">
+
+                                <div class="d-flex
+                                            justify-content-between
+                                            align-items-center
+                                            mb-2">
+
+                                    <span class="small text-dark">
+
+                                        SLA Compliance
+
                                     </span>
 
-                                </td>
+                                    <strong class="small">
 
-                            </tr>
-                        }
+                                        @Model.SlaCompliance%
 
-                    </tbody>
+                                    </strong>
 
-                </table>
-
-            </div>
-
-        </div>
+                                </div>
 
 
-        <!-- PROCESS HEALTH -->
+                                <div class="progress-bar bg-flow-pink"
+                                     role="progressbar"
+                                     style="width:@Model.CompletedOnTime%;"
+                                     aria-valuenow="@Model.CompletedOnTime"
+                                     aria-valuemin="0"
+                                     aria-valuemax="100">
+                                </div>
 
-        <div class="dashboard-panel">
-
-            <div class="panel-header">
-
-                <h5>Process Health</h5>
-
-            </div>
+                            </div>
 
 
-            <div class="health-body">
+                            <!-- COMPLETED ON TIME -->
 
-                <div class="health-item">
+                            <div class="mb-4">
 
-                    <div class="health-title">
+                                <div class="d-flex
+                                            justify-content-between
+                                            align-items-center
+                                            mb-2">
 
-                        <span>SLA Compliance</span>
+                                    <span class="small text-dark">
 
-                        <strong>
-                            @Model.SlaCompliance%
-                        </strong>
+                                        Completed On Time
 
-                    </div>
+                                    </span>
 
-                    <div class="health-progress">
+                                    <strong class="small">
 
-                        <div class="health-progress-bar green-progress"
-                             style="width:@Model.SlaCompliance%;">
+                                        @Model.CompletedOnTime%
+
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="progress"
+                                     style="height:7px;">
+
+                                    <div class="progress-bar bg-primary"
+                                         role="progressbar"
+                                         style="width:@Model.CompletedOnTime%;"
+                                         aria-valuenow="@Model.CompletedOnTime"
+                                         aria-valuemin="0"
+                                         aria-valuemax="100">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ESCALATED -->
+
+                            <div>
+
+                                <div class="d-flex
+                                            justify-content-between
+                                            align-items-center
+                                            mb-2">
+
+                                    <span class="small text-dark">
+
+                                        Escalated
+
+                                    </span>
+
+                                    <strong class="small">
+
+                                        @Model.Escalated%
+
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="progress"
+                                     style="height:7px;">
+
+                                    <div class="progress-bar bg-danger"
+                                         role="progressbar"
+                                         style="width:@Model.Escalated%;"
+                                         aria-valuenow="@Model.Escalated"
+                                         aria-valuemin="0"
+                                         aria-valuemax="100">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
                         </div>
 
                     </div>
 
                 </div>
 
-
-                <div class="health-item">
-
-                    <div class="health-title">
-
-                        <span>Completed On Time</span>
-
-                        <strong>
-                            @Model.CompletedOnTime%
-                        </strong>
-
-                    </div>
-
-                    <div class="health-progress">
-
-                        <div class="health-progress-bar blue-progress"
-                             style="width:@Model.CompletedOnTime%;">
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="health-item">
-
-                    <div class="health-title">
-
-                        <span>Escalated</span>
-
-                        <strong>
-                            @Model.Escalated%
-                        </strong>
-
-                    </div>
-
-                    <div class="health-progress">
-
-                        <div class="health-progress-bar red-progress"
-                             style="width:@Model.Escalated%;">
-                        </div>
-
-                    </div>
-
-                </div>
 
             </div>
 
@@ -323,3 +675,45 @@
     </div>
 
 </div>
+
+
+<style>
+
+    .btn-flow-pink {
+        background-color: #e91e63;
+        border-color: #e91e63;
+        color: #ffffff;
+        font-weight: 500;
+    }
+
+        .btn-flow-pink:hover,
+        .btn-flow-pink:focus {
+            background-color: #d81b60;
+            border-color: #d81b60;
+            color: #ffffff;
+        }
+
+    .bg-flow-pink {
+        background-color: #e91e63 !important;
+    }
+
+    .text-flow-pink {
+        color: #e91e63 !important;
+    }
+
+    .bg-flow-pink-subtle {
+        background-color: #fce4ec !important;
+    }
+
+
+    /* KPI CARD HOVER */
+
+    .dashboard-kpi-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .dashboard-kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        }
+</style>

@@ -41,10 +41,14 @@
         </div>
 
 
-        <!-- SUBTITLE -->
+        <!-- =====================================================
+             SUBTITLE
+             ===================================================== -->
 
         <div class="flow-subtitle">
+
             SAP Business Process Automation
+
         </div>
 
 
@@ -53,26 +57,40 @@
              ===================================================== -->
 
         <div class="flow-section-title">
+
             WORKSPACE
+
         </div>
 
 
+        <!-- =====================================================
+             WORKSPACE MENU
+             ===================================================== -->
+
         <ul class="flow-menu">
 
-            <!-- DASHBOARD -->
+
+            <!-- =================================================
+                 DASHBOARD
+                 ================================================= -->
 
             <li class="flow-menu-item
                 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard"
-                ? "active" : "")">
+                    ? "active"
+                    : "")">
 
                 <a href="@Url.Action("Index", "Dashboard")">
 
                     <span class="flow-icon">
+
                         <i class="fa-solid fa-table-cells"></i>
+
                     </span>
 
                     <span class="flow-menu-text">
+
                         Dashboard
+
                     </span>
 
                 </a>
@@ -80,21 +98,28 @@
             </li>
 
 
-            <!-- DESIGN -->
+            <!-- =================================================
+                 DESIGN
+                 ================================================= -->
 
             <li class="flow-menu-item
                 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Workflow"
-                && ViewContext.RouteData.Values["action"]?.ToString() == "Design"
-                ? "active" : "")">
+                    && ViewContext.RouteData.Values["action"]?.ToString() == "Design"
+                    ? "active"
+                    : "")">
 
                 <a href="@Url.Action("Design", "Workflow")">
 
                     <span class="flow-icon">
+
                         <i class="fa-solid fa-compass-drafting"></i>
+
                     </span>
 
                     <span class="flow-menu-text">
+
                         Design
+
                     </span>
 
                 </a>
@@ -102,21 +127,28 @@
             </li>
 
 
-            <!-- AUTOMATE / TEST -->
+            <!-- =================================================
+                 AUTOMATE / TEST
+                 ================================================= -->
 
             <li class="flow-menu-item
                 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Workflow"
-                && ViewContext.RouteData.Values["action"]?.ToString() == "Test"
-                ? "active" : "")">
+                    && ViewContext.RouteData.Values["action"]?.ToString() == "Test"
+                    ? "active"
+                    : "")">
 
                 <a href="@Url.Action("Test", "Workflow")">
 
                     <span class="flow-icon">
+
                         <i class="fa-solid fa-circle-play"></i>
+
                     </span>
 
                     <span class="flow-menu-text">
+
                         Automate / Test
+
                     </span>
 
                 </a>
@@ -124,20 +156,27 @@
             </li>
 
 
-            <!-- TRACKING -->
+            <!-- =================================================
+                 TRACKING
+                 ================================================= -->
 
             <li class="flow-menu-item
                 @(ViewContext.RouteData.Values["controller"]?.ToString() == "WorkflowTracking"
-                ? "active" : "")">
+                    ? "active"
+                    : "")">
 
                 <a href="@Url.Action("Index", "WorkflowTracking")">
 
                     <span class="flow-icon">
+
                         <i class="fa-solid fa-chart-line"></i>
+
                     </span>
 
                     <span class="flow-menu-text">
+
                         Tracking
+
                     </span>
 
                 </a>
@@ -152,24 +191,33 @@
              ===================================================== -->
 
         <div class="flow-section-title configuration-title">
+
             CONFIGURATION
+
         </div>
 
 
         <ul class="flow-menu">
 
-            <!-- NOTIFICATIONS -->
+
+            <!-- =================================================
+                 NOTIFICATIONS
+                 ================================================= -->
 
             <li class="flow-menu-item">
 
                 <a href="#">
 
                     <span class="flow-icon">
+
                         <i class="fa-regular fa-bell"></i>
+
                     </span>
 
                     <span class="flow-menu-text">
+
                         Notifications
+
                     </span>
 
                 </a>
@@ -177,18 +225,24 @@
             </li>
 
 
-            <!-- USERS -->
+            <!-- =================================================
+                 USERS
+                 ================================================= -->
 
             <li class="flow-menu-item">
 
                 <a href="#">
 
                     <span class="flow-icon">
+
                         <i class="fa-solid fa-users"></i>
+
                     </span>
 
                     <span class="flow-menu-text">
+
                         Users &amp; Teams
+
                     </span>
 
                 </a>
@@ -196,18 +250,24 @@
             </li>
 
 
-            <!-- SETTINGS -->
+            <!-- =================================================
+                 SETTINGS
+                 ================================================= -->
 
             <li class="flow-menu-item">
 
                 <a href="#">
 
                     <span class="flow-icon">
+
                         <i class="fa-solid fa-gear"></i>
+
                     </span>
 
                     <span class="flow-menu-text">
+
                         Settings
+
                     </span>
 
                 </a>
@@ -239,24 +299,33 @@
 
     <main class="main-content" id="mainContent">
 
-        <!-- TOP BAR -->
 
-        <header class="flow-topbar py-1">
+        <!-- =====================================================
+             TOP BAR
+             ===================================================== -->
+
+        <header class="flow-topbar">
 
             <div class="flow-topbar-title">
 
                 <div class="flow-title">
+
                     10X FLOW360
+
                 </div>
 
                 <div class="flow-title-sub">
+
                     SAP Business Process Automation
+
                 </div>
 
             </div>
 
 
-            <!-- USER -->
+            <!-- =================================================
+                 USER
+                 ================================================= -->
 
             <div class="flow-user">
 
@@ -269,7 +338,9 @@
         </header>
 
 
-        <!-- PAGE -->
+        <!-- =====================================================
+             PAGE CONTENT
+             ===================================================== -->
 
         <div class="flow-dashboard">
 
@@ -292,7 +363,7 @@
 
 
     <!-- =========================================================
-         SIDEBAR TOGGLE
+         SIDEBAR SCRIPT
          ========================================================= -->
 
     <script>
@@ -352,6 +423,7 @@
         });
 
     </script>
+
 
 </body>
 

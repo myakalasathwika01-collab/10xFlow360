@@ -39,2251 +39,41 @@ textarea {
     max-width: 280px;
 }
 
-/* =========================================================
-10X FLOW360 DASHBOARD
-========================================================= */
 
-.dashboard-page {
-    width: 100%;
-}
+
+
+
 
 /* =========================================================
-DASHBOARD HEADER
-========================================================= */
+   SPACE BETWEEN SIDEBAR AND TOPBAR
+   ========================================================= */
 
-.dashboard-heading {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 22px;
-}
-
-.dashboard-title h2 {
-    margin: 0;
-    color: #172554;
-    font-size: 23px;
-    font-weight: 600;
-}
-
-.dashboard-title p {
-    margin: 4px 0 0;
-    color: #64748b;
-    font-size: 14px;
-}
-
-/* =========================================================
-RIGHT HEADER
-========================================================= */
-
-.dashboard-actions {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.sap-status {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    padding: 6px 12px;
+.flow-topbar {
+    margin-top: 0 !important;
+    /* Space from sidebar */
+    margin-left: 15px !important;
+    /* Keep right-side spacing */
+    margin-right: 25px !important;
+    width: auto;
+    height: 70px;
+    padding: 0 25px;
+    background: #292d45;
     border-radius: 6px;
-    background: #168b5b;
-    color: white;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.sap-status-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: white;
-}
-
-.administrator {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    background: #ffffff;
-    border-radius: 7px;
-    color: #111827;
-    font-size: 14px;
-}
-
-    .administrator .user-icon {
-        font-size: 17px;
-    }
-
-    .administrator .arrow {
-        font-size: 10px;
-    }
-
-/* =========================================================
-KPI CARDS
-========================================================= */
-
-.dashboard-stats {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 16px;
-    margin-bottom: 24px;
-}
-
-.dashboard-stat-card {
-    min-height: 120px;
-    padding: 20px;
-    background: #ffffff;
-    border: 1px solid #e3e7ef;
-    border-radius: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
-    box-sizing: border-box;
-}
-
-.stat-label {
-    color: #7b879d;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 8px;
-}
-
-.stat-number {
-    color: #111827;
-    font-size: 28px;
-    font-weight: 700;
-    line-height: 1;
-    margin-bottom: 8px;
-}
-
-.stat-description {
-    color: #64748b;
-    font-size: 13px;
-}
-
-.success-text {
-    color: #059669;
-}
-
-.danger-text {
-    color: #ef4444;
-}
-
-/* =========================================================
-KPI ICONS
-========================================================= */
-
-.stat-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 21px;
-    font-weight: 600;
-}
-
-.blue-icon {
-    background: #dbeafe;
-    color: #2563eb;
-}
-
-.cyan-icon {
-    background: #cffafe;
-    color: #0891b2;
-}
-
-.green-icon {
-    background: #dcefe8;
-    color: #059669;
-}
-
-.red-icon {
-    background: #fee2e2;
-    color: #ef4444;
-}
-
-/* =========================================================
-MAIN DASHBOARD GRID
-========================================================= */
-
-.dashboard-main-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
-    gap: 24px;
-    align-items: start;
-}
-
-/* =========================================================
-DASHBOARD PANEL
-========================================================= */
-
-.dashboard-panel {
-    background: #ffffff;
-    border: 1px solid #e4e8ef;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 3px 10px rgba(15, 23, 42, 0.03);
-}
-
-.panel-header {
-    min-height: 48px;
-    padding: 0 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid #e2e6ed;
-}
-
-    .panel-header h5 {
-        margin: 0;
-        color: #111827;
-        font-size: 15px;
-        font-weight: 600;
-    }
-
-/* =========================================================
-NEW WORKFLOW BUTTON
-========================================================= */
-
-.new-workflow-btn {
-    border: none;
-    background: #5754d6;
-    color: #ffffff;
-    border-radius: 5px;
-    padding: 8px 13px;
-    font-size: 13px;
-    cursor: pointer;
-}
-
-    .new-workflow-btn:hover {
-        background: #4845c1;
-    }
-
-/* =========================================================
-PROCESS TABLE
-========================================================= */
-
-.process-table-wrapper {
-    width: 100%;
-    overflow-x: auto;
-}
-
-.process-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-    .process-table thead {
-        background: #f8fafc;
-    }
-
-    .process-table th {
-        padding: 11px 9px;
-        text-align: left;
-        border-bottom: 1px solid #dfe4eb;
-        color: #111827;
-        font-size: 13px;
-        font-weight: 600;
-    }
-
-    .process-table td {
-        padding: 12px 9px;
-        border-bottom: 1px solid #e0e5ec;
-        color: #111827;
-        font-size: 13px;
-    }
-
-    .process-table tbody tr:last-child td {
-        border-bottom: none;
-    }
-
-    .process-table tbody tr:hover {
-        background: #fafbff;
-    }
-
-/* =========================================================
-WORKFLOW TEXT
-========================================================= */
-
-.workflow-name {
-    color: #111827;
-    font-size: 14px;
-    font-weight: 700;
-}
-
-.workflow-code {
-    margin-top: 2px;
-    color: #64748b;
-    font-size: 12px;
-}
-
-/* =========================================================
-STATUS
-========================================================= */
-
-.process-status {
-    display: inline-flex;
-    padding: 6px 11px;
-    border-radius: 20px;
-    background: #e7f0ff;
-    color: #2563eb;
-    font-size: 12px;
-    font-weight: 500;
-}
-
-/* =========================================================
-PROCESS HEALTH
-========================================================= */
-
-.health-body {
-    padding: 20px 16px;
-}
-
-.health-item {
-    margin-bottom: 25px;
-}
-
-    .health-item:last-child {
-        margin-bottom: 0;
-    }
-
-.health-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-    color: #1e293b;
-    font-size: 14px;
-}
-
-    .health-title strong {
-        color: #111827;
-        font-size: 14px;
-    }
-
-/* =========================================================
-PROGRESS BAR
-========================================================= */
-
-.health-progress {
-    width: 100%;
-    height: 7px;
-    background: #e7ebf0;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.health-progress-bar {
-    height: 100%;
-    border-radius: 10px;
-}
-
-.green-progress {
-    background: #168b5b;
-}
-
-.blue-progress {
-    background: #2474ee;
-}
-
-.red-progress {
-    background: #df334b;
-}
-
-/* =========================================================
-MAIN CONTENT
-========================================================= */
-
-.main-content {
-    margin-left: 260px;
-    min-height: 100vh;
-    width: calc(100% - 260px);
-    box-sizing: border-box;
-    padding: 30px 28px;
-}
-
-/* =========================================================
-RESPONSIVE
-========================================================= */
-
-@media (max-width: 1100px) {
-
-    .dashboard-stats {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .dashboard-main-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 700px) {
-
-    .dashboard-heading {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-    }
-
-    .dashboard-actions {
-        width: 100%;
-    }
-
-    .dashboard-stats {
-        grid-template-columns: 1fr;
-    }
-
-    .main-content {
-        margin-left: 220px;
-        width: calc(100% - 220px);
-    }
-}
-
-
-
-/* =========================================================
-WORKFLOW DESIGNER
-========================================================= */
-
-.design-page {
-    padding: 28px;
-    background: #f5f7fb;
-    min-height: calc(100vh - 80px);
     box-sizing: border-box;
 }
 
-/* =========================================================
-PAGE HEADER
-========================================================= */
-
-.design-page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
-}
-
-.design-page-heading h2 {
-    margin: 0;
-    color: #12233f;
-    font-size: 28px;
-    font-weight: 500;
-}
-
-.design-page-heading p {
-    margin: 5px 0 0;
-    color: #68778c;
-    font-size: 14px;
-}
 
 /* =========================================================
-HEADER BUTTONS
-========================================================= */
-
-.design-header-buttons {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.design-form-inline {
-    display: inline-block;
-    margin: 0;
-}
-
-.design-btn {
-    height: 40px;
-    padding: 0 15px;
-    border-radius: 6px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-size: 14px;
-    font-family: inherit;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-    .design-btn i {
-        font-size: 16px;
-    }
-
-.design-btn-outline {
-    background: #ffffff;
-    color: #52657d;
-    border: 1px solid #9da8b7;
-}
-
-    .design-btn-outline:hover {
-        background: #f2f5f8;
-        border-color: #69778a;
-    }
-
-.design-btn-primary {
-    background: #5b57d9;
-    color: #ffffff;
-    border: 1px solid #5b57d9;
-}
-
-    .design-btn-primary:hover {
-        background: #4c48c5;
-        border-color: #4c48c5;
-    }
-
-/* =========================================================
-ALERTS
-========================================================= */
-
-.design-alert {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    padding: 12px 15px;
-    margin-bottom: 18px;
-    border-radius: 7px;
-    font-size: 14px;
-}
-
-    .design-alert i {
-        font-size: 17px;
-    }
-
-.design-alert-success {
-    background: #eaf8ef;
-    color: #16834c;
-    border: 1px solid #c9ead6;
-}
-
-.design-alert-info {
-    background: #edf5ff;
-    color: #1769aa;
-    border: 1px solid #d1e4f8;
-}
-
-/* =========================================================
-WORKFLOW INFORMATION CARD
-========================================================= */
-
-.design-info-card {
-    background: #ffffff;
-    border: 1px solid #e0e5ed;
-    border-radius: 12px;
-    padding: 20px 16px;
-    margin-bottom: 18px;
-    box-shadow: 0 1px 3px rgba(20, 35, 60, 0.04);
-}
-
-.design-form-grid {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr 0.7fr;
-    gap: 16px;
-}
-
-.design-form-group {
-    min-width: 0;
-}
-
-    .design-form-group label {
-        display: block;
-        margin-bottom: 8px;
-        color: #1d3553;
-        font-size: 14px;
-    }
-
-/* =========================================================
-INPUTS
-========================================================= */
-
-.design-input {
-    width: 100%;
-    height: 38px;
-    padding: 7px 12px;
-    box-sizing: border-box;
-    border: 1px solid #d4dbe5;
-    border-radius: 6px;
-    background: #ffffff;
-    color: #243b59;
-    font-size: 14px;
-    outline: none;
-}
-
-    .design-input:focus {
-        border-color: #625ee5;
-        box-shadow: 0 0 0 2px rgba(98, 94, 229, 0.10);
-    }
-
-.design-textarea {
-    height: auto;
-    min-height: 100px;
-    resize: vertical;
-    line-height: 1.5;
-}
-
-/* =========================================================
-MAIN DESIGNER GRID
-========================================================= */
-
-.workflow-designer-grid {
-    display: grid;
-    grid-template-columns: 230px minmax(450px, 1fr) 290px;
-    gap: 18px;
-    align-items: stretch;
-}
-
-/* =========================================================
-LEFT COMPONENT PANEL
-========================================================= */
-
-.designer-components {
-    background: #ffffff;
-    border: 1px solid #e0e5ed;
-    border-radius: 12px;
-    padding: 16px;
-    min-height: 600px;
-    box-sizing: border-box;
-}
-
-.designer-panel-title {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    color: #172c49;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-    .designer-panel-title i {
-        font-size: 17px;
-    }
-
-/* =========================================================
-COMPONENT SECTIONS
-========================================================= */
-
-.component-section {
-    margin-top: 20px;
-}
-
-.component-section-title {
-    margin-bottom: 8px;
-    color: #8793a5;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-}
-
-/* =========================================================
-COMPONENT BUTTON
-========================================================= */
-
-.component-item {
-    width: 100%;
-    min-height: 46px;
-    margin-bottom: 8px;
-    padding: 8px 11px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #ffffff;
-    border: 1px solid #dce2eb;
-    border-radius: 8px;
-    color: #29415f;
-    font-size: 14px;
-    text-align: left;
-    cursor: pointer;
-    box-sizing: border-box;
-    transition: all 0.2s ease;
-}
-
-    .component-item:hover {
-        background: #f5f7ff;
-        border-color: #625ee5;
-        transform: translateY(-1px);
-        box-shadow: 0 3px 8px rgba(50, 60, 100, 0.06);
-    }
-
-/* =========================================================
-COMPONENT ICON
-========================================================= */
-
-.component-icon {
-    width: 26px;
-    height: 26px;
-    border-radius: 7px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-    .component-icon i {
-        font-size: 15px;
-    }
-
-/* Trigger */
-
-.trigger-color {
-    background: #e8f1ff;
-    color: #1670ff;
-}
-
-/* Condition */
-
-.condition-color {
-    background: #eeeaff;
-    color: #6259d8;
-}
-
-/* Wait */
-
-.wait-color {
-    background: #fff2d8;
-    color: #f1a100;
-}
-
-/* WhatsApp */
-
-.whatsapp-color {
-    background: #e7f7ec;
-    color: #159b4d;
-}
-
-/* Email */
-
-.email-color {
-    background: #ffebee;
-    color: #e34c5d;
-}
-
-/* Task */
-
-.task-color {
-    background: #e8f7ff;
-    color: #079bdb;
-}
-
-/* Update */
-
-.update-color {
-    background: #eef2ff;
-    color: #5367d9;
-}
-
-/* =========================================================
-CENTER CANVAS
-========================================================= */
-
-.designer-canvas {
-    position: relative;
-    min-height: 600px;
-    padding: 30px;
-    box-sizing: border-box;
-    background-color: #ffffff;
-    border: 1px solid #dfe5ee;
-    border-radius: 12px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    background-image: radial-gradient( #d5dce8 1px, transparent 1px );
-    background-size: 18px 18px;
-}
-
-/* =========================================================
-WORKFLOW FLOW
-========================================================= */
-
-.workflow-flow {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* =========================================================
-WORKFLOW NODE
-========================================================= */
-
-.workflow-node {
-    width: 100%;
-    min-height: 76px;
-    padding: 12px 15px;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    background: #ffffff;
-    border: 1px solid #d9dfe8;
-    border-radius: 12px;
-    cursor: pointer;
-    box-shadow: 0 1px 2px rgba(20, 35, 60, 0.03);
-    transition: all 0.2s ease;
-}
-
-    .workflow-node:hover {
-        border-color: #8d91ee;
-        box-shadow: 0 4px 12px rgba(30, 50, 90, 0.08);
-    }
-
-    .workflow-node.selected {
-        border: 2px solid #5d5bea;
-        box-shadow: 0 3px 10px rgba(93, 91, 234, 0.12);
-    }
-
-/* =========================================================
-NODE ICON
-========================================================= */
-
-.workflow-node-icon {
-    width: 40px;
-    height: 40px;
-    margin-right: 13px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-    .workflow-node-icon i {
-        font-size: 19px;
-    }
-
-/* =========================================================
-NODE ICON COLORS
-========================================================= */
-
-.trigger-icon {
-    background: #e8f1ff;
-    color: #1670ff;
-}
-
-.whatsapp-node-icon {
-    background: #e7f7ec;
-    color: #159b4d;
-}
-
-.wait-icon {
-    background: #fff2d8;
-    color: #f1a100;
-}
-
-.delivery-icon {
-    background: #fff2d8;
-    color: #f1a100;
-}
-
-.invoice-icon {
-    background: #fff2d8;
-    color: #f1a100;
-}
-
-.accounts-icon {
-    background: #e7f7ec;
-    color: #159b4d;
-}
-
-.condition-icon {
-    background: #eeeaff;
-    color: #6259d8;
-}
-
-.email-node-icon {
-    background: #ffebee;
-    color: #e34c5d;
-}
-
-.task-node-icon {
-    background: #e8f7ff;
-    color: #079bdb;
-}
-
-.update-node-icon {
-    background: #eef2ff;
-    color: #5367d9;
-}
-
-.action-icon {
-    background: #e7f7ec;
-    color: #159b4d;
-}
-
-.end-icon {
-    background: #edf0f3;
-    color: #596576;
-}
-
-/* =========================================================
-NODE CONTENT
-========================================================= */
-
-.workflow-node-content {
-    flex: 1;
-    min-width: 0;
-}
-
-.workflow-node-title {
-    color: #162b47;
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1.3;
-}
-
-.workflow-node-subtitle {
-    margin-top: 4px;
-    color: #7b8799;
-    font-size: 12px;
-    line-height: 1.4;
-}
-
-/* =========================================================
-WORKFLOW CONNECTOR
-========================================================= */
-
-.workflow-line {
-    position: relative;
-    width: 2px;
-    height: 40px;
-    background: #b9c2d0;
-}
-
-    .workflow-line::after {
-        content: "";
-        position: absolute;
-        bottom: -1px;
-        left: 50%;
-        width: 7px;
-        height: 7px;
-        border-right: 2px solid #aab5c4;
-        border-bottom: 2px solid #aab5c4;
-        transform: translateX(-50%) rotate(45deg);
-    }
-
-/* =========================================================
-RIGHT PROPERTIES PANEL
-========================================================= */
-
-.designer-properties {
-    background: #ffffff;
-    border: 1px solid #e0e5ed;
-    border-radius: 12px;
-    padding: 16px;
-    min-height: 600px;
-    box-sizing: border-box;
-}
-
-.properties-divider {
-    height: 1px;
-    margin: 13px 0 20px;
-    background: #d9dee7;
-}
-
-/* =========================================================
-PROPERTY GROUP
-========================================================= */
-
-.property-group {
-    margin-bottom: 19px;
-}
-
-    .property-group label {
-        display: block;
-        margin-bottom: 8px;
-        color: #233a58;
-        font-size: 14px;
-    }
-
-/* =========================================================
-APPLY BUTTON
-========================================================= */
-
-.property-save-button {
-    width: 100%;
-    height: 40px;
-    border: 0;
-    border-radius: 6px;
-    background: #5b57d9;
-    color: #ffffff;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-    .property-save-button:hover {
-        background: #4c48c5;
-    }
-
-    .property-save-button i {
-        font-size: 16px;
-    }
-
-/* =========================================================
-RESPONSIVE
-========================================================= */
-
-@media (max-width: 1200px) {
-
-    .workflow-designer-grid {
-        grid-template-columns: 210px minmax(400px, 1fr);
-    }
-
-    .designer-properties {
-        grid-column: 1 / -1;
-        min-height: auto;
-    }
-}
-
-@media (max-width: 900px) {
-
-    .design-page {
-        padding: 18px;
-    }
-
-    .design-page-header {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .design-header-buttons {
-        width: 100%;
-    }
-
-    .design-form-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .workflow-designer-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .designer-components,
-    .designer-properties {
-        min-height: auto;
-    }
-}
-
-@media (max-width: 600px) {
-
-    .design-page {
-        padding: 12px;
-    }
-
-    .design-form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .design-header-buttons {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .design-form-inline {
-        width: 100%;
-    }
-
-    .design-btn {
-        width: 100%;
-    }
-
-    .designer-canvas {
-        padding: 15px;
-    }
-
-    .workflow-node {
-        min-height: 70px;
-    }
-}
-
+   10X FLOW360 - MAIN LAYOUT
+   ========================================================= */
 
 
 /* =========================================================
-10X FLOW360 - WORKFLOW TESTING PAGE
-Add this section at the bottom of Content/Site.css
-========================================================= */
-
-/* =========================================================
-PAGE
-========================================================= */
-
-.workflow-test-page {
-    width: 100%;
-    min-height: calc(100vh - 72px);
-    padding: 0 26px 35px 26px;
-    box-sizing: border-box;
-    background: #f5f7fb;
-    color: #172b48;
-}
-
-/* =========================================================
-TOP HEADER
-========================================================= */
-
-.workflow-test-header {
-    height: 72px;
-    margin: 0 -26px 27px -26px;
-    padding: 0 26px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #ffffff;
-    border-bottom: 1px solid #e1e6ed;
-    box-sizing: border-box;
-}
-
-.workflow-test-header-left h2 {
-    margin: 0;
-    color: #102d50;
-    font-size: 20px;
-    font-weight: 500;
-}
-
-.workflow-test-header-left p {
-    margin: 4px 0 0;
-    color: #64748b;
-    font-size: 14px;
-}
-
-/* =========================================================
-HEADER RIGHT
-========================================================= */
-
-.workflow-test-header-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.sap-connected {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    padding: 5px 10px;
-    border-radius: 6px;
-    background: #168b59;
-    color: #ffffff;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.sap-dot {
-    width: 7px;
-    height: 7px;
-    background: #ffffff;
-    border-radius: 50%;
-}
-
-.administrator {
-    height: 38px;
-    padding: 0 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: #f8f9fb;
-    border-radius: 6px;
-    color: #172b48;
-    font-size: 15px;
-}
-
-    .administrator i:first-child {
-        font-size: 17px;
-        color: #111827;
-    }
-
-
-    .administrator i:last-child {
-        font-size: 9px;
-        margin-left: 2px;
-    }
-
-/* =========================================================
-PAGE TITLE
-========================================================= */
-
-.workflow-test-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 25px;
-}
-
-    .workflow-test-title h1 {
-        margin: 0;
-        color: #102d50;
-        font-size: 26px;
-        font-weight: 500;
-    }
-
-
-    .workflow-test-title p {
-        margin: 5px 0 0;
-        color: #61738b;
-        font-size: 15px;
-    }
-
-/* =========================================================
-RUN TEST BUTTON
-========================================================= */
-
-.run-test-btn {
-    height: 39px;
-    padding: 0 17px;
-    border: none;
-    border-radius: 6px;
-    background: #168b58;
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-    .run-test-btn:hover {
-        background: #117347;
-    }
-
-
-    .run-test-btn i {
-        font-size: 15px;
-    }
-
-/* =========================================================
-MAIN GRID
-========================================================= */
-
-.workflow-test-grid {
-    display: grid;
-    grid-template-columns: minmax(400px, 1fr) minmax(500px, 1.25fr);
-    gap: 25px;
-    align-items: start;
-}
-
-.workflow-test-left,
-.workflow-test-right {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-
-/* =========================================================
-COMMON CARD
-========================================================= */
-
-.workflow-card {
-    width: 100%;
-    background: #ffffff;
-    border: 1px solid #e0e5ec;
-    border-radius: 9px;
-    overflow: hidden;
-    box-shadow: 0 2px 6px rgba(30, 45, 70, 0.04);
-    box-sizing: border-box;
-}
-
-/* =========================================================
-CARD HEADER
-========================================================= */
-
-.workflow-card-header {
-    min-height: 41px;
-    padding: 0 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #e0e5ec;
-    box-sizing: border-box;
-}
-
-    .workflow-card-header h3 {
-        margin: 0;
-        color: #162b48;
-        font-size: 15px;
-        font-weight: 600;
-    }
-
-/* =========================================================
-TEST DATA
-========================================================= */
-
-.workflow-card-body {
-    padding: 18px 16px;
-}
-
-/*
-IMPORTANT:
-Your old Site.css may contain:
-
-input,
-select,
-textarea {
-max-width: 280px;
-}
-
-This overrides that rule for Workflow Testing.
-*/
-
-.workflow-test-page input.workflow-input {
-    max-width: none !important;
-    width: 100%;
-    height: 39px;
-    padding: 7px 12px;
-    border: 1px solid #d7dfe9;
-    border-radius: 6px;
-    background: #ffffff;
-    color: #263f5f;
-    font-size: 14px;
-    box-sizing: border-box;
-    outline: none;
-}
-
-    .workflow-test-page input.workflow-input:focus {
-        border-color: #6670dd;
-        box-shadow: 0 0 0 2px rgba(102, 112, 221, 0.10);
-    }
-
-/* =========================================================
-FORM FIELD
-========================================================= */
-
-.workflow-field {
-    width: 100%;
-    margin-bottom: 19px;
-}
-
-    .workflow-field:last-child {
-        margin-bottom: 0;
-    }
-
-
-    .workflow-field label {
-        display: block;
-        margin-bottom: 9px;
-        color: #203a59;
-        font-size: 14px;
-    }
-
-.workflow-two-fields {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 23px;
-}
-
-/* =========================================================
-EXECUTION STEPS
-========================================================= */
-
-.execution-steps {
-    padding: 16px;
-}
-
-.execution-step {
-    min-height: 47px;
-    padding-left: 8px;
-    margin-bottom: 19px;
-    display: flex;
-    align-items: stretch;
-    position: relative;
-}
-
-    .execution-step:last-child {
-        margin-bottom: 0;
-    }
-
-.execution-line {
-    width: 3px;
-    min-width: 3px;
-    background: #dce1e9;
-    margin-right: 10px;
-}
-
-.execution-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 4px;
-}
-
-    .execution-content strong {
-        color: #162b48;
-        font-size: 15px;
-        line-height: 1.2;
-    }
-
-
-    .execution-content span {
-        color: #687991;
-        font-size: 13px;
-    }
-
-/* =========================================================
-TEST CONSOLE
-========================================================= */
-
-.console-card {
-    min-height: 485px;
-}
-
-.console-header h3 {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-    .console-header h3 i {
-        font-size: 15px;
-    }
-
-.clear-btn {
-    height: 32px;
-    padding: 0 10px;
-    border: 1px solid #b9c4d2;
-    border-radius: 5px;
-    background: #ffffff;
-    color: #50647d;
-    font-size: 13px;
-    cursor: pointer;
-}
-
-    .clear-btn:hover {
-        background: #f5f7fa;
-    }
-
-/* =========================================================
-CONSOLE AREA
-========================================================= */
-
-.test-console {
-    height: 390px;
-    margin: 16px;
-    padding: 17px;
-    box-sizing: border-box;
-    overflow-y: auto;
-    border-radius: 9px;
-    background: #171b27;
-    color: #8aa2c6;
-    font-family: Consolas, "Courier New", monospace;
-    font-size: 12px;
-    line-height: 1.65;
-}
-
-    .test-console div {
-        margin-bottom: 2px;
-    }
-
-
-    /* =========================================================
-
-CONSOLE SCROLLBAR
-========================================================= */
-
-    .test-console::-webkit-scrollbar {
-        width: 6px;
-    }
-
-
-    .test-console::-webkit-scrollbar-track {
-        background: #171b27;
-    }
-
-
-    .test-console::-webkit-scrollbar-thumb {
-        background: #3d4659;
-        border-radius: 10px;
-    }
-
-/* =========================================================
-NOTIFICATION PREVIEW
-========================================================= */
-
-.notification-card {
-    margin-bottom: 20px;
-}
-
-.notification-container {
-    padding: 16px;
-}
-
-.whatsapp-preview {
-    border: 1px solid #d5dde7;
-    border-radius: 6px;
-    overflow: hidden;
-    background: #ffffff;
-}
-
-/* =========================================================
-WHATSAPP HEADER
-========================================================= */
-
-.whatsapp-header {
-    display: flex;
-    align-items: center;
-    padding: 17px 16px 10px 16px;
-}
-
-.whatsapp-logo {
-    width: 42px;
-    height: 42px;
-    margin-right: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: #17965d;
-    color: #ffffff;
-}
-
-    .whatsapp-logo i {
-        font-size: 22px;
-    }
-
-.whatsapp-user {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-    .whatsapp-user strong {
-        color: #182d49;
-        font-size: 15px;
-    }
-
-
-    .whatsapp-user span {
-        color: #738198;
-        font-size: 13px;
-    }
-
-/* =========================================================
-WHATSAPP MESSAGE
-========================================================= */
-
-.whatsapp-message {
-    padding: 7px 16px 16px;
-    color: #152b48;
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-    .whatsapp-message p {
-        margin: 5px 0;
-    }
-
-
-    .whatsapp-message .notification-title {
-        margin-top: 8px;
-        margin-bottom: 19px;
-        font-size: 15px;
-        font-weight: 700;
-    }
-
-
-    .whatsapp-message .notification-action {
-        margin-top: 20px;
-        font-size: 14px;
-    }
-
-/* =========================================================
-WHATSAPP FOOTER
-========================================================= */
-
-.whatsapp-footer {
-    margin: 0 16px;
-    padding: 17px 0;
-    border-top: 1px solid #d7dde5;
-    color: #8b5d53;
-    font-size: 13px;
-    line-height: 1.4;
-}
-
-/* =========================================================
-RESPONSIVE
-========================================================= */
-
-@media (max-width: 1100px) {
-
-    .workflow-test-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 700px) {
-
-    .workflow-test-page {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-
-
-    .workflow-test-header {
-        margin-left: -15px;
-        margin-right: -15px;
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-
-
-    .workflow-test-header-left h2 {
-        font-size: 17px;
-    }
-
-
-    .workflow-test-header-left p {
-        font-size: 11px;
-    }
-
-
-    .sap-connected {
-        display: none;
-    }
-
-
-    .administrator span {
-        display: none;
-    }
-
-
-    .workflow-test-title {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-    }
-
-
-    .run-test-btn {
-        width: 100%;
-        justify-content: center;
-    }
-
-
-    .workflow-two-fields {
-        grid-template-columns: 1fr;
-        gap: 0;
-    }
-}
-
-@media (max-width: 450px) {
-
-    .workflow-test-title h1 {
-        font-size: 23px;
-    }
-
-
-    .workflow-test-title p {
-        font-size: 13px;
-    }
-}
-
-
-
-/* =========================================================
-10X FLOW360
-PROCESS TRACKING
-========================================================= */
-
-/* =========================================================
-PAGE
-========================================================= */
-
-.tracking-page {
-    width: 100%;
-    min-height: calc(100vh - 70px);
-    padding: 28px 26px 40px 26px;
-    background: #f5f7fb;
-    color: #102d50;
-    box-sizing: border-box;
-}
-
-/* =========================================================
-PAGE HEADER
-========================================================= */
-
-.tracking-page-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 25px;
-}
-
-    .tracking-page-header h1 {
-        margin: 0;
-        color: #102d50;
-        font-size: 25px;
-        font-weight: 500;
-    }
-
-
-    .tracking-page-header p {
-        margin: 5px 0 0;
-        color: #60738c;
-        font-size: 15px;
-    }
-
-/* =========================================================
-REFRESH
-========================================================= */
-
-.tracking-refresh-form {
-    margin: 0;
-}
-
-.tracking-refresh-btn {
-    height: 39px;
-    padding: 0 15px;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    border: 1px solid #0969ff;
-    border-radius: 6px;
-    background: #ffffff;
-    color: #0969ff;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-    .tracking-refresh-btn:hover {
-        background: #f0f6ff;
-    }
-
-
-    .tracking-refresh-btn i {
-        font-size: 14px;
-    }
-
-/* =========================================================
-SUCCESS MESSAGE
-========================================================= */
-
-.tracking-success-message {
-    margin-bottom: 18px;
-    padding: 11px 15px;
-    border: 1px solid #b9e5ce;
-    border-radius: 6px;
-    background: #ecfaf2;
-    color: #168653;
-    font-size: 13px;
-}
-
-    .tracking-success-message i {
-        margin-right: 6px;
-    }
-
-/* =========================================================
-SUMMARY GRID
-========================================================= */
-
-.tracking-summary-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 17px;
-    margin-bottom: 25px;
-}
-
-/* =========================================================
-SUMMARY CARD
-========================================================= */
-
-.tracking-summary-card {
-    min-height: 96px;
-    padding: 20px;
-    background: #ffffff;
-    border: 1px solid #e0e5ec;
-    border-radius: 10px;
-    box-sizing: border-box;
-    box-shadow: 0 2px 6px rgba(25, 40, 65, 0.035);
-}
-
-.tracking-summary-content {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-}
-
-.tracking-summary-label {
-    color: #75869d;
-    font-size: 11px;
-    font-weight: 400;
-    letter-spacing: 0.3px;
-}
-
-.tracking-summary-card strong {
-    font-size: 26px;
-    line-height: 1;
-    font-weight: 600;
-}
-
-.tracking-total-value {
-    color: #172d48;
-}
-
-.tracking-progress-value {
-    color: #1266ee;
-}
-
-.tracking-completed-value {
-    color: #15935b;
-}
-
-.tracking-overdue-value {
-    color: #e52f42;
-}
-
-/* =========================================================
-COMMON CARD
-========================================================= */
-
-.tracking-card {
-    width: 100%;
-    background: #ffffff;
-    border: 1px solid #e0e5ec;
-    border-radius: 7px;
-    box-sizing: border-box;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba(30, 45, 70, 0.035);
-}
-
-/* =========================================================
-CARD TITLE
-========================================================= */
-
-.tracking-card-title {
-    min-height: 40px;
-    padding: 0 15px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #e0e5ec;
-    box-sizing: border-box;
-}
-
-    .tracking-card-title h2 {
-        margin: 0;
-        color: #172d49;
-        font-size: 15px;
-        font-weight: 500;
-    }
-
-/* =========================================================
-TABLE
-========================================================= */
-
-.tracking-table-wrapper {
-    width: 100%;
-    overflow-x: auto;
-}
-
-.tracking-table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: auto;
-}
-
-    .tracking-table th {
-        height: 39px;
-        padding: 0 8px;
-        text-align: left;
-        background: #ffffff;
-        color: #111827;
-        border-bottom: 1px solid #d8dee7;
-        font-size: 14px;
-        font-weight: 600;
-        white-space: nowrap;
-    }
-
-
-    .tracking-table td {
-        height: 47px;
-        padding: 0 8px;
-        color: #172d49;
-        border-bottom: 1px solid #d8dee7;
-        font-size: 14px;
-        white-space: nowrap;
-    }
-
-
-    .tracking-table tbody tr:last-child td {
-        border-bottom: none;
-    }
-
-
-    .tracking-table tbody tr:hover {
-        background: #fafcff;
-    }
-
-
-    .tracking-table td strong {
-        color: #101f35;
-        font-weight: 700;
-    }
-
-/* =========================================================
-VIEW BUTTON
-========================================================= */
-
-.tracking-view-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 45px;
-    height: 31px;
-    padding: 0 9px;
-    border: 1px solid #086cff;
-    border-radius: 5px;
-    background: #ffffff;
-    color: #086cff;
-    text-decoration: none;
-    font-size: 13px;
-    box-sizing: border-box;
-}
-
-    .tracking-view-btn:hover {
-        background: #eef5ff;
-        color: #005de0;
-        text-decoration: none;
-    }
-
-/* =========================================================
-STATUS
-========================================================= */
-
-.tracking-status {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 65px;
-    height: 29px;
-    padding: 0 11px;
-    border-radius: 18px;
-    font-size: 12px;
-    font-weight: 500;
-    box-sizing: border-box;
-}
-
-.tracking-status-pending {
-    background: #fff2d7;
-    color: #d89100;
-}
-
-.tracking-status-running {
-    background: #e6f0ff;
-    color: #1266e8;
-}
-
-.tracking-status-overdue {
-    background: #fde7eb;
-    color: #e32c42;
-}
-
-.tracking-status-completed {
-    background: #e2f6eb;
-    color: #168d58;
-}
-
-/* =========================================================
-OVERDUE ELAPSED
-========================================================= */
-
-.tracking-elapsed-overdue {
-    color: #ef3340 !important;
-}
-
-/* =========================================================
-LOWER GRID
-========================================================= */
-
-.tracking-lower-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 2.1fr) minmax(290px, 1fr);
-    gap: 24px;
-    margin-top: 25px;
-    align-items: start;
-}
-
-/* =========================================================
-TIMELINE
-========================================================= */
-
-.timeline-card {
-    min-height: 418px;
-}
-
-.tracking-timeline {
-    position: relative;
-    padding: 20px 25px 24px 40px;
-}
-
-    .tracking-timeline:before {
-        content: "";
-        position: absolute;
-        left: 20px;
-        top: 25px;
-        bottom: 25px;
-        width: 2px;
-        background: #d6dce5;
-    }
-
-.tracking-timeline-item {
-    position: relative;
-    display: flex;
-    min-height: 64px;
-    margin-bottom: 19px;
-}
-
-    .tracking-timeline-item:last-child {
-        margin-bottom: 0;
-    }
-
-.tracking-timeline-dot {
-    position: absolute;
-    left: -24px;
-    top: 3px;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #5b58dc;
-    border: 2px solid #ffffff;
-    box-sizing: content-box;
-}
-
-.tracking-timeline-content {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-    .tracking-timeline-content strong {
-        color: #152a46;
-        font-size: 15px;
-        font-weight: 700;
-    }
-
-.tracking-timeline-time {
-    color: #1266df;
-    font-size: 13px;
-}
-
-.tracking-timeline-content p {
-    margin: 0;
-    color: #172d49;
-    font-size: 13px;
-    line-height: 1.4;
-}
-
-/* =========================================================
-CURRENT TIMELINE STEP
-========================================================= */
-
-.tracking-timeline-current
-.tracking-timeline-content strong {
-    color: #efa800;
-}
-
-.tracking-timeline-current
-.tracking-timeline-time {
-    color: #60738c;
-}
-
-/* =========================================================
-INSTANCE DETAILS
-========================================================= */
-
-.instance-details-card {
-    min-height: 470px;
-}
-
-.instance-details-body {
-    padding: 18px 16px 17px;
-}
-
-.instance-detail-row {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 19px;
-}
-
-.instance-detail-label {
-    color: #8190a4;
-    font-size: 10px;
-    letter-spacing: 0.4px;
-    font-weight: 400;
-}
-
-.instance-detail-row strong {
-    color: #142b47;
-    font-size: 15px;
-    font-weight: 700;
-}
-
-/* =========================================================
-STAGE BADGE
-========================================================= */
-
-.tracking-stage-badge {
-    width: fit-content;
-    padding: 7px 10px;
-    border-radius: 16px;
-    background: #fff2d4;
-    color: #e49b00;
-    font-size: 12px;
-}
-
-/* =========================================================
-SLA
-========================================================= */
-
-.instance-sla-section {
-    margin-top: 7px;
-    margin-bottom: 19px;
-}
-
-.instance-sla-heading {
-    margin-bottom: 7px;
-}
-
-.instance-sla-values {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    color: #1c3452;
-    font-size: 13px;
-}
-
-    .instance-sla-values strong {
-        color: #172d49;
-        font-size: 14px;
-    }
-
-.instance-sla-bar {
-    width: 100%;
-    height: 7px;
-    overflow: hidden;
-    border-radius: 5px;
-    background: #e4e8ed;
-}
-
-.instance-sla-progress {
-    height: 100%;
-    background: #ffb800;
-    border-radius: 5px;
-}
-
-/* =========================================================
-ESCALATE
-========================================================= */
-
-.tracking-escalate-btn {
-    width: 100%;
-    height: 38px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    border: 1px solid #ef3340;
-    border-radius: 5px;
-    background: #ffffff;
-    color: #ef3340;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-    .tracking-escalate-btn:hover {
-        background: #fff4f5;
-    }
-
-
-    .tracking-escalate-btn i {
-        font-size: 14px;
-    }
-
-/* =========================================================
-RESPONSIVE
-========================================================= */
-
-@media (max-width: 1100px) {
-
-    .tracking-summary-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-
-    .tracking-lower-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 768px) {
-
-    .tracking-page {
-        padding: 20px 15px 30px;
-    }
-
-
-    .tracking-page-header {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 15px;
-    }
-
-
-    .tracking-refresh-btn {
-        width: 100%;
-        justify-content: center;
-    }
-
-
-    .tracking-summary-grid {
-        grid-template-columns: 1fr;
-    }
-
-
-    .tracking-table {
-        min-width: 900px;
-    }
-
-
-    .tracking-lower-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 480px) {
-
-    .tracking-page-header h1 {
-        font-size: 22px;
-    }
-
-
-    .tracking-page-header p {
-        font-size: 13px;
-    }
-
-
-    .tracking-summary-card {
-        min-height: 85px;
-    }
-}
-
-
-
-/* =========================================================
-FONT AWESOME
-========================================================= */
-
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css");
-
-/* =========================================================
-GLOBAL
-========================================================= */
+   GLOBAL
+   ========================================================= */
 
 html,
 body {
@@ -2301,91 +91,112 @@ body {
     box-sizing: border-box;
 }
 
+
 /* =========================================================
-SIDEBAR
-========================================================= */
+   SIDEBAR
+   ========================================================= */
 
 .flow-sidebar {
     position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
-    width: 260px;
-    background: #1f2335;
+    width: 235px;
+    background: #29293f;
     color: #ffffff;
     z-index: 1000;
     overflow-y: auto;
     overflow-x: hidden;
     transition: width 0.25s ease;
+    scrollbar-width: thin;
+    scrollbar-color: #50506a #29293f;
 }
 
+
+    /* =========================================================
+   SIDEBAR SCROLLBAR
+   ========================================================= */
+
+    .flow-sidebar::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .flow-sidebar::-webkit-scrollbar-track {
+        background: #29293f;
+    }
+
+    .flow-sidebar::-webkit-scrollbar-thumb {
+        background: #50506a;
+        border-radius: 10px;
+    }
+
+        .flow-sidebar::-webkit-scrollbar-thumb:hover {
+            background: #686882;
+        }
+
+
 /* =========================================================
-BRAND
-========================================================= */
+   BRAND
+   ========================================================= */
 
 .flow-brand {
+    width: 100%;
+    height: 95px;
     display: flex;
     align-items: center;
-    padding: 25px 24px 5px 24px;
+    padding: 10px 14px;
     white-space: nowrap;
 }
 
-.flow-logo {
-    display: flex;
-    align-items: center;
-    margin-right: 9px;
-    font-weight: 700;
-}
-
-.logo-10 {
-    font-size: 24px;
-    color: #ffffff;
-}
-
-.logo-x {
-    font-size: 27px;
-    color: #ef233c;
-    margin-left: 2px;
-}
-
-.flow-brand-name {
-    font-size: 21px;
-    font-weight: 700;
-    color: #ffffff;
-}
 
 /* =========================================================
-SUBTITLE
-========================================================= */
+   LOGO IMAGE
+   ========================================================= */
+
+.flow-logo-image {
+    display: block;
+    width: 205px;
+    height: 75px;
+    object-fit: contain;
+    object-position: left center;
+}
+
+
+/* =========================================================
+   SUBTITLE
+   ========================================================= */
 
 .flow-subtitle {
-    padding: 0 24px 25px 25px;
+    padding: 0 15px 18px 15px;
+    color: #9fa0bb;
     font-size: 11px;
-    color: #aeb4c8;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    line-height: 16px;
     white-space: nowrap;
 }
 
+
 /* =========================================================
-SECTION TITLE
-========================================================= */
+   SECTION TITLE
+   ========================================================= */
 
 .flow-section-title {
-    padding: 27px 25px 12px 25px;
+    padding: 18px 15px 10px 15px;
+    color: #777994;
     font-size: 10px;
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: 1px;
-    color: #8188a5;
+    text-transform: uppercase;
     white-space: nowrap;
 }
 
 .configuration-title {
-    margin-top: 5px;
+    margin-top: 8px;
 }
 
+
 /* =========================================================
-MENU
-========================================================= */
+   MENU
+   ========================================================= */
 
 .flow-menu {
     list-style: none;
@@ -2393,129 +204,186 @@ MENU
     padding: 0 10px;
 }
 
-.flow-menu-item {
-    margin-bottom: 4px;
-}
-
-    .flow-menu-item a {
-        display: flex;
-        align-items: center;
-        height: 48px;
-        padding: 0 15px;
-        border-radius: 8px;
-        color: #b8bdd2;
-        text-decoration: none;
-        font-size: 14px;
-        white-space: nowrap;
-        transition: all 0.2s ease;
-    }
 
 /* =========================================================
-MENU ICON
-========================================================= */
+   MENU ITEM
+   ========================================================= */
+
+.flow-menu-item {
+    list-style: none;
+    margin: 0 0 4px 0;
+}
+
+
+    /* =========================================================
+   MENU LINK
+   ========================================================= */
+
+    .flow-menu-item > a {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-height: 46px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        color: #aaaac0;
+        background: transparent;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: background 0.2s ease, color 0.2s ease;
+    }
+
+
+        /* =========================================================
+   MENU HOVER
+   ========================================================= */
+
+        .flow-menu-item > a:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.045);
+            text-decoration: none;
+        }
+
+
+/* =========================================================
+   MENU ICON
+   ========================================================= */
 
 .flow-icon {
-    width: 27px;
-    min-width: 27px;
+    width: 30px;
+    min-width: 30px;
     margin-right: 8px;
-    font-size: 17px;
-    color: #aeb4cd;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    color: #a5a7bd;
+    font-size: 16px;
+    transition: color 0.2s ease;
 }
 
+
 /* =========================================================
-MENU TEXT
-========================================================= */
+   MENU TEXT
+   ========================================================= */
 
 .flow-menu-text {
+    display: block;
+    color: inherit;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
 
 /* =========================================================
-MENU HOVER
-========================================================= */
+   ICON HOVER
+   ========================================================= */
 
-.flow-menu-item a {
-    background: #292e46;
+.flow-menu-item > a:hover .flow-icon {
     color: #ffffff;
-    text-decoration: none;
 }
 
-    .flow-menu-item a:hover .flow-icon {
+
+/* =========================================================
+   ACTIVE MENU
+   ========================================================= */
+
+.flow-menu-item.active > a {
+    background: #ed0061;
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: none;
+}
+
+
+    /* =========================================================
+   ACTIVE ICON
+   ========================================================= */
+
+    .flow-menu-item.active > a .flow-icon {
         color: #ffffff;
     }
 
-/* =========================================================
-ACTIVE MENU
-========================================================= */
 
-.flow-menu-item.active a {
-    background: #30364f;
-    color: #ffffff;
-    font-weight: 600;
-}
+    /* =========================================================
+   ACTIVE HOVER
+   ========================================================= */
 
-.flow-menu-item.active .flow-icon {
-    color: #ffffff;
-}
+    .flow-menu-item.active > a:hover {
+        background: #e6005d;
+        color: #ffffff;
+    }
+
 
 /* =========================================================
-SIDEBAR TOGGLE BUTTON
-========================================================= */
+   SIDEBAR TOGGLE
+   ========================================================= */
 
 .flow-sidebar-toggle {
     position: fixed;
-    top: 48px;
-    left: 243px;
+    left: 218px;
+    top: 32px;
     width: 34px;
     height: 34px;
-    border: 3px solid #1f2335;
+    padding: 0;
+    border: 0;
     border-radius: 50%;
     background: #ed0061;
     color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
     z-index: 2000;
-    padding: 0;
+    cursor: pointer;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
     transition: left 0.25s ease, background 0.2s ease, transform 0.2s ease;
 }
 
+
+    /* =========================================================
+   TOGGLE HOVER
+   ========================================================= */
+
     .flow-sidebar-toggle:hover {
-        background: #ff0870;
-        transform: scale(1.08);
+        background: #d90058;
+        transform: scale(1.06);
     }
+
+
+    /* =========================================================
+   TOGGLE ICON
+   ========================================================= */
 
     .flow-sidebar-toggle i {
-        font-size: 13px;
-        transition: transform 0.25s ease;
+        font-size: 12px;
     }
 
+
 /* =========================================================
-MAIN CONTENT
-========================================================= */
+   MAIN CONTENT
+   ========================================================= */
 
 .main-content {
-    margin-left: 260px;
-    width: calc(100% - 260px);
+    margin-left: 235px;
+    width: calc(100% - 235px);
     min-height: 100vh;
-    background: #f5f6fa;
+    background: #f5f7fb;
     transition: margin-left 0.25s ease, width 0.25s ease;
+    overflow-x: hidden;
 }
 
+
 /* =========================================================
-TOP HEADER
-========================================================= */
+   TOP BAR
+   ========================================================= */
 
 .flow-topbar {
     height: 62px;
-    margin: 18px 28px 0 28px;
-    padding: 0 22px 0 40px;
-    background: #292d42;
+    margin: 18px 25px 0 25px;
+    padding: 0 22px;
+    background: #292d45;
     border-radius: 7px;
     display: flex;
     align-items: center;
@@ -2523,11 +391,21 @@ TOP HEADER
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
+
+/* =========================================================
+   TOP BAR TITLE
+   ========================================================= */
+
 .flow-topbar-title {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
+
+
+/* =========================================================
+   MAIN TITLE
+   ========================================================= */
 
 .flow-title {
     color: #ffffff;
@@ -2536,6 +414,11 @@ TOP HEADER
     line-height: 1.2;
 }
 
+
+/* =========================================================
+   SUB TITLE
+   ========================================================= */
+
 .flow-title-sub {
     margin-top: 4px;
     color: #9fa5ba;
@@ -2543,9 +426,10 @@ TOP HEADER
     font-weight: 500;
 }
 
+
 /* =========================================================
-USER ICON
-========================================================= */
+   USER
+   ========================================================= */
 
 .flow-user {
     position: relative;
@@ -2556,761 +440,154 @@ USER ICON
     justify-content: center;
 }
 
+
+/* =========================================================
+   USER ICON
+   ========================================================= */
+
 .flow-user-icon {
-    font-size: 25px;
     color: #aeb5d0;
+    font-size: 24px;
 }
+
+
+/* =========================================================
+   ONLINE STATUS
+   ========================================================= */
 
 .flow-status {
     position: absolute;
     right: 2px;
-    bottom: 3px;
+    bottom: 4px;
     width: 9px;
     height: 9px;
-    background: #65d82e;
-    border: 2px solid #292d42;
-    border-radius: 50%;
-}
-
-/* =========================================================
-PAGE / DASHBOARD
-========================================================= */
-
-.flow-dashboard {
-    padding: 28px;
-    min-height: calc(100vh - 100px);
-}
-
-/* =========================================================
-WELCOME
-========================================================= */
-
-.flow-welcome {
-    min-height: 118px;
-    padding: 25px 28px;
-    border-radius: 17px;
-    background: linear-gradient( 110deg, #263c6b, #496bb9 );
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 12px 25px rgba(38, 60, 107, 0.18);
-}
-
-.flow-welcome-title {
-    margin: 0;
-    font-size: 30px;
-    font-weight: 700;
-}
-
-.flow-welcome-subtitle {
-    margin-top: 5px;
-    font-size: 15px;
-    font-weight: 500;
-}
-
-.flow-date {
-    text-align: right;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.flow-date-day {
-    color: #aebddd;
-    font-size: 17px;
-    margin-bottom: 4px;
-}
-
-/* =========================================================
-STATISTICS
-========================================================= */
-
-.flow-stat-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 24px;
-    margin-top: 24px;
-}
-
-.flow-stat-card {
-    min-height: 174px;
-    border-radius: 17px;
-    padding: 24px;
-    color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
-}
-
-.flow-stat-blue {
-    background: #285be0;
-}
-
-.flow-stat-green {
-    background: #159343;
-}
-
-.flow-stat-orange {
-    background: #ed9000;
-}
-
-.flow-stat-red {
-    background: #ed3035;
-}
-
-.flow-stat-icon {
-    width: 54px;
-    height: 54px;
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.20);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 25px;
-}
-
-.flow-stat-number {
-    font-size: 36px;
-    font-weight: 700;
-    line-height: 1;
-}
-
-.flow-stat-label {
-    margin-top: 4px;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-/* =========================================================
-LOWER GRID
-========================================================= */
-
-.flow-dashboard-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
-    gap: 24px;
-    margin-top: 24px;
-}
-
-/* =========================================================
-PANEL
-========================================================= */
-
-.flow-panel {
-    background: #ffffff;
-    border-radius: 17px;
-    padding: 24px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
-}
-
-.flow-panel-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 18px;
-}
-
-.flow-panel-title {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 700;
-    color: #202638;
-}
-
-.flow-panel-subtitle {
-    font-size: 12px;
-    color: #a5afc0;
-    font-weight: 600;
-}
-
-/* =========================================================
-MODULES
-========================================================= */
-
-.flow-module-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
-}
-
-.flow-module {
-    border: 1px solid #e6eaf1;
-    border-radius: 16px;
-    padding: 22px;
-    min-height: 140px;
-    transition: all 0.2s ease;
-}
-
-    .flow-module:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
-    }
-
-.flow-module-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    background: #edf3ff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 23px;
-    margin-bottom: 12px;
-}
-
-.flow-module-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: #202638;
-}
-
-.flow-module-description {
-    margin-top: 6px;
-    font-size: 13px;
-    color: #7d8494;
-}
-
-/* =========================================================
-QUICK ACTIONS
-========================================================= */
-
-.flow-action {
-    width: 100%;
-    min-height: 48px;
-    border: none;
-    border-radius: 10px;
-    margin-bottom: 9px;
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-    .flow-action:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
-    }
-
-.flow-action-pink {
-    background: #e9005b;
-}
-
-.flow-action-green {
-    background: #62dc28;
-}
-
-.flow-action-orange {
-    background: #f59d00;
-}
-
-.flow-action-blue {
-    background: #2860df;
-}
-
-/* =========================================================
-COLLAPSED SIDEBAR
-========================================================= */
-
-.flow-sidebar.collapsed {
-    width: 75px;
-}
-
-    .flow-sidebar.collapsed .flow-brand {
-        padding: 25px 0 5px 0;
-        justify-content: center;
-    }
-
-    .flow-sidebar.collapsed .flow-logo {
-        margin-right: 0;
-    }
-
-    .flow-sidebar.collapsed .flow-brand-name {
-        display: none;
-    }
-
-    .flow-sidebar.collapsed .flow-subtitle {
-        display: none;
-    }
-
-    .flow-sidebar.collapsed .flow-section-title {
-        font-size: 0;
-        height: 12px;
-        padding: 15px 0 10px 0;
-    }
-
-    .flow-sidebar.collapsed .flow-menu {
-        padding: 0 10px;
-    }
-
-    .flow-sidebar.collapsed .flow-menu-item a {
-        justify-content: center;
-        padding: 0;
-    }
-
-    .flow-sidebar.collapsed .flow-icon {
-        margin-right: 0;
-        width: 40px;
-    }
-
-    .flow-sidebar.collapsed .flow-menu-text {
-        display: none;
-    }
-
-
-    /* =========================================================
-
-TOGGLE WHEN COLLAPSED
-========================================================= */
-
-    .flow-sidebar.collapsed ~ .flow-sidebar-toggle {
-        left: 58px;
-    }
-
-/* =========================================================
-MAIN CONTENT WHEN COLLAPSED
-========================================================= */
-
-.main-content.sidebar-collapsed {
-    margin-left: 75px;
-    width: calc(100% - 75px);
-}
-
-/* =========================================================
-SCROLLBAR
-========================================================= */
-
-.flow-sidebar::-webkit-scrollbar {
-    width: 5px;
-}
-
-.flow-sidebar::-webkit-scrollbar-track {
-    background: #1f2335;
-}
-
-.flow-sidebar::-webkit-scrollbar-thumb {
-    background: #3a4059;
-    border-radius: 10px;
-}
-
-/* =========================================================
-TRACKING PAGE
-========================================================= */
-
-.tracking-page {
-    width: 100%;
-    min-height: calc(100vh - 70px);
-    padding: 0 0 40px 0;
-    background: #f5f6fa;
-    color: #102d50;
-    box-sizing: border-box;
-}
-
-/* =========================================================
-DESIGN PAGE
-========================================================= */
-
-.design-page {
-    width: 100%;
-    min-height: calc(100vh - 70px);
-    padding: 0 0 40px 0;
-    background: #f5f6fa;
-    color: #102d50;
-    box-sizing: border-box;
-}
-
-/* =========================================================
-RESPONSIVE
-========================================================= */
-
-@media (max-width: 1100px) {
-
-    .flow-stat-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .flow-dashboard-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 768px) {
-
-    .flow-sidebar {
-        width: 220px;
-    }
-
-    .main-content {
-        margin-left: 220px;
-        width: calc(100% - 220px);
-    }
-
-    .flow-sidebar-toggle {
-        left: 203px;
-    }
-
-    .flow-stat-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .flow-module-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .flow-dashboard {
-        padding: 18px;
-    }
-
-    .flow-topbar {
-        margin: 12px 18px 0 18px;
-    }
-}
-
-@media (max-width: 576px) {
-
-    .flow-sidebar {
-        width: 0;
-    }
-
-    .main-content {
-        margin-left: 0;
-        width: 100%;
-    }
-
-    .flow-sidebar-toggle {
-        left: 10px;
-    }
-}
-
-
-
-/* =========================================================
-FLOW360 SIDEBAR
-========================================================= */
-
-.flow-sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 260px;
-    background: #1f2335;
-    color: #ffffff;
-    z-index: 1000;
-    overflow-y: auto;
-    overflow-x: hidden;
-    box-sizing: border-box;
-    transition: width 0.25s ease;
-}
-
-/* =========================================================
-LOGO AREA
-========================================================= */
-
-.flow-brand {
-    height: 120px;
-    display: flex;
-    align-items: center;
-    padding: 15px 16px;
-    box-sizing: border-box;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-
-/* Actual image */
-
-.flow-logo-image {
-    display: block;
-    width: 175px;
-    height: auto;
-    max-height: 80px;
-    object-fit: contain;
-    object-position: left center;
-}
-
-/* =========================================================
-SUBTITLE
-========================================================= */
-
-.flow-subtitle {
-    padding: 0 24px 25px 25px;
-    font-size: 11px;
-    color: #aeb4c8;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-
-/* =========================================================
-SECTION TITLE
-========================================================= */
-
-.flow-section-title {
-    padding: 27px 25px 12px 25px;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    color: #8188a5;
-}
-
-.configuration-title {
-    margin-top: 5px;
-}
-
-/* =========================================================
-MENU
-========================================================= */
-
-.flow-menu {
-    list-style: none;
-    margin: 0;
-    padding: 0 10px;
-}
-
-.flow-menu-item {
-    margin-bottom: 4px;
-}
-
-    /* =========================================================
-
-MENU LINK
-========================================================= */
-
-    .flow-menu-item a {
-        display: flex;
-        align-items: center;
-        height: 48px;
-        padding: 0 15px;
-        border-radius: 8px;
-        color: #b8bdd2;
-        text-decoration: none;
-        font-size: 14px;
-        transition: all 0.2s ease;
-    }
-
-/* =========================================================
-ICON
-========================================================= */
-
-.flow-icon {
-    width: 27px;
-    margin-right: 8px;
-    font-size: 16px;
-    color: #aeb4cd;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* =========================================================
-MENU TEXT
-========================================================= */
-
-.flow-menu-text {
-    white-space: nowrap;
-}
-
-/* =========================================================
-HOVER
-========================================================= */
-
-.flow-menu-item a {
-    background: #292e46;
-    color: #ffffff;
-    text-decoration: none;
-}
-
-    .flow-menu-item a:hover .flow-icon {
-        color: #ffffff;
-    }
-
-/* =========================================================
-ACTIVE MENU
-========================================================= */
-
-.flow-menu-item.active a {
-    background: #30364f;
-    color: #ffffff;
-    font-weight: 500;
-}
-
-.flow-menu-item.active .flow-icon {
-    color: #ffffff;
-}
-
-/* =========================================================
-MAIN CONTENT
-========================================================= */
-
-.main-content {
-    margin-left: 260px;
-    min-height: 100vh;
-    width: calc(100% - 260px);
-    background: #f5f7fb;
-    box-sizing: border-box;
-    transition: margin-left 0.25s ease, width 0.25s ease;
-}
-
-/* =========================================================
-TOP BAR
-========================================================= */
-
-.flow-topbar {
-    height: 70px;
-    margin: 20px 25px 0 25px;
-    padding: 0 25px;
-    background: #292d45;
-    border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-sizing: border-box;
-}
-
-/* =========================================================
-TOP TITLE
-========================================================= */
-
-.flow-topbar-title {
-    display: flex;
-    flex-direction: column;
-}
-
-.flow-title {
-    color: #ffffff;
-    font-size: 19px;
-    font-weight: 700;
-}
-
-.flow-title-sub {
-    color: #9ea6bd;
-    font-size: 12px;
-    margin-top: 4px;
-}
-
-/* =========================================================
-USER
-========================================================= */
-
-.flow-user {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.flow-user-icon {
-    color: #aeb6d0;
-    font-size: 25px;
-}
-
-.flow-status {
-    position: absolute;
-    width: 8px;
-    height: 8px;
     background: #64df29;
     border: 2px solid #292d45;
     border-radius: 50%;
-    right: -2px;
-    bottom: 0;
 }
 
+
 /* =========================================================
-PAGE CONTENT
-========================================================= */
+   PAGE CONTENT
+   ========================================================= */
 
 .flow-dashboard {
-    padding: 30px 25px 40px 25px;
+    width: 100%;
+    padding: 25px;
     box-sizing: border-box;
 }
 
-/* =========================================================
-SIDEBAR TOGGLE
-========================================================= */
-
-.flow-sidebar-toggle {
-    position: fixed;
-    left: 243px;
-    top: 65px;
-    width: 34px;
-    height: 34px;
-    border: 0;
-    border-radius: 50%;
-    background: #ec0061;
-    color: #ffffff;
-    z-index: 1100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.25);
-    transition: left 0.25s ease;
-}
-
-    .flow-sidebar-toggle:hover {
-        background: #d90058;
-    }
 
 /* =========================================================
-COLLAPSED SIDEBAR
-========================================================= */
+   COLLAPSED SIDEBAR
+   ========================================================= */
 
 .flow-sidebar.collapsed {
     width: 70px;
 }
+
+
+/* =========================================================
+   COLLAPSED MAIN CONTENT
+   ========================================================= */
 
 .main-content.sidebar-collapsed {
     margin-left: 70px;
     width: calc(100% - 70px);
 }
 
-.flow-sidebar.collapsed .flow-subtitle,
-.flow-sidebar.collapsed .flow-section-title,
+
+/* =========================================================
+   COLLAPSED TOGGLE
+   ========================================================= */
+
+.flow-sidebar.collapsed ~ .flow-sidebar-toggle {
+    left: 53px;
+}
+
+
+/* =========================================================
+   COLLAPSED BRAND
+   ========================================================= */
+
+.flow-sidebar.collapsed .flow-brand {
+    justify-content: center;
+    padding: 10px 5px;
+}
+
+
+/* =========================================================
+   COLLAPSED LOGO
+   ========================================================= */
+
+.flow-sidebar.collapsed .flow-logo-image {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   COLLAPSED SUBTITLE
+   ========================================================= */
+
+.flow-sidebar.collapsed .flow-subtitle {
+    display: none;
+}
+
+
+/* =========================================================
+   COLLAPSED SECTION TITLE
+   ========================================================= */
+
+.flow-sidebar.collapsed .flow-section-title {
+    display: none;
+}
+
+
+/* =========================================================
+   COLLAPSED MENU
+   ========================================================= */
+
+.flow-sidebar.collapsed .flow-menu {
+    padding: 5px 8px;
+}
+
+
+/* =========================================================
+   COLLAPSED MENU LINK
+   ========================================================= */
+
+.flow-sidebar.collapsed .flow-menu-item > a {
+    justify-content: center;
+    padding: 0;
+    min-height: 46px;
+}
+
+
+/* =========================================================
+   COLLAPSED ICON
+   ========================================================= */
+
+.flow-sidebar.collapsed .flow-icon {
+    width: 40px;
+    min-width: 40px;
+    margin-right: 0;
+}
+
+
+/* =========================================================
+   COLLAPSED TEXT
+   ========================================================= */
+
 .flow-sidebar.collapsed .flow-menu-text {
     display: none;
 }
 
-.flow-sidebar.collapsed .flow-brand {
-    justify-content: center;
-    padding: 10px;
-}
-
-.flow-sidebar.collapsed .flow-logo-image {
-    width: 68px;
-}
-
-.flow-sidebar.collapsed .flow-menu {
-    padding: 0 8px;
-}
-
-.flow-sidebar.collapsed .flow-menu-item a {
-    justify-content: center;
-    padding: 0;
-}
-
-.flow-sidebar.collapsed .flow-icon {
-    margin-right: 0;
-}
 
 /* =========================================================
-SCROLLBAR
-========================================================= */
-
-.flow-sidebar::-webkit-scrollbar {
-    width: 5px;
-}
-
-.flow-sidebar::-webkit-scrollbar-track {
-    background: #1f2335;
-}
-
-.flow-sidebar::-webkit-scrollbar-thumb {
-    background: #3a4059;
-    border-radius: 10px;
-}
-
-/* =========================================================
-RESPONSIVE
-========================================================= */
+   MOBILE
+   ========================================================= */
 
 @media (max-width: 768px) {
 
@@ -3325,5 +602,68 @@ RESPONSIVE
 
     .flow-sidebar-toggle {
         left: 203px;
+    }
+
+    .flow-topbar {
+        margin-left: 12px;
+        margin-right: 12px;
+    }
+
+    .flow-dashboard {
+        padding: 15px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 576px) {
+
+    .flow-sidebar {
+        width: 70px;
+    }
+
+    .main-content {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+    }
+
+    .flow-sidebar .flow-subtitle,
+    .flow-sidebar .flow-section-title,
+    .flow-sidebar .flow-menu-text {
+        display: none;
+    }
+
+    .flow-sidebar .flow-menu {
+        padding: 5px 8px;
+    }
+
+    .flow-sidebar .flow-menu-item > a {
+        justify-content: center;
+        padding: 0;
+    }
+
+    .flow-sidebar .flow-icon {
+        margin-right: 0;
+    }
+
+    .flow-sidebar-toggle {
+        left: 53px;
+    }
+
+    .flow-topbar {
+        margin-top: 10px;
+        height: 58px;
+        padding: 0 15px;
+    }
+
+    .flow-title {
+        font-size: 15px;
+    }
+
+    .flow-title-sub {
+        font-size: 10px;
     }
 }
