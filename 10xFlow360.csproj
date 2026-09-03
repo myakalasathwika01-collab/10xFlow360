@@ -154,6 +154,7 @@
     <Content Include="Content\img\10x.png" />
     <Content Include="Content\img\10XFlow.png" />
     <Content Include="Content\img\10Xflow360.png" />
+    <Content Include="Content\img\10xsf.png" />
     <Content Include="Content\img\360.png" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
