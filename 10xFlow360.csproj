@@ -154,13 +154,10 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
-    <Content Include="Content\css\login\layout.css" />
-    <Content Include="Content\css\login\login.css" />
+    <Content Include="Content\img\10.png" />
     <Content Include="Content\img\10x.png" />
     <Content Include="Content\img\10XFlow.png" />
     <Content Include="Content\img\10Xflow360.png" />
-    <Content Include="Content\img\10xsf.png" />
-    <Content Include="Content\img\360.png" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -204,6 +201,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\css\" />
     <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
