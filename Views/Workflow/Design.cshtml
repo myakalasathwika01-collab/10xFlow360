@@ -8,7 +8,7 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 
 
-<div class="container-fluid py-3">
+<div class="container-fluid">
 
     <!-- =========================================================
          MAIN CARD
@@ -17,7 +17,7 @@
 
     <div class="card border-0 shadow-sm">
 
-        <div class="card-body p-4">
+        <div class="card-body">
 
 
             <!-- =================================================
@@ -82,39 +82,13 @@
 
                         <!-- TEST WORKFLOW -->
 
-                        @using (Html.BeginForm(
-                            "Test",
-                            "Workflow",
-                            FormMethod.Post,
-                            new { @class = "d-inline" }))
-                        {
-                            @Html.AntiForgeryToken()
+                        <a href="@Url.Action("Test", "Workflow")"
+                           class="btn btn-success">
 
-                            <input type="hidden"
-                                   name="workflowName"
-                                   value="Sales Order to Invoice Follow-up" />
+                            <i class="bi bi-play-fill me-1"></i>
+                            Test Workflow
 
-                            <input type="hidden"
-                                   name="sapModule"
-                                   value="Sales" />
-
-                            <input type="hidden"
-                                   name="company"
-                                   value="10X Demo Company" />
-
-                            <input type="hidden"
-                                   name="version"
-                                   value="V1.0" />
-
-                            <button type="submit"
-                                    class="btn btn-success">
-
-                                <i class="bi bi-play-fill me-1"></i>
-
-                                Test Workflow
-
-                            </button>
-                        }
+                        </a>
 
                     </div>
 
@@ -301,7 +275,7 @@
 
                         <!-- HEADER -->
 
-                        <div class="card-header bg-white border-bottom py-3">
+                        <div class="card-header bg-white border-0">
 
                             <h5 class="mb-0 fw-semibold">
 
@@ -794,7 +768,7 @@
 
                         <!-- HEADER -->
 
-                        <div class="card-header bg-white border-bottom py-3">
+                        <div class="card-header bg-white border-0">
 
                             <h5 class="mb-0 fw-semibold">
 
