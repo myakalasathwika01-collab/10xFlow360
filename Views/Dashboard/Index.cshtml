@@ -11,15 +11,19 @@
          MAIN DASHBOARD CARD
          ========================================================= -->
 
-    <div class="card shadow-sm border">
+    <div class="card border-0 shadow-sm">
 
         <!-- =====================================================
-             DASHBOARD HEADER
+             MAIN CARD BODY
              ===================================================== -->
 
-        <div class="card-header bg-white border-bottom py-3">
+        <div class="card-body p-3 p-md-4">
 
-            <div class="row align-items-center">
+            <!-- =================================================
+                 DASHBOARD HEADER
+                 ================================================= -->
+
+            <div class="row align-items-center mb-4">
 
                 <!-- TITLE -->
 
@@ -73,20 +77,33 @@
                                 Administrator
 
                             </button>
+
+
                             <ul class="dropdown-menu dropdown-menu-end">
 
                                 <li>
+
                                     <a class="dropdown-item" href="#">
+
                                         <i class="fa-regular fa-user me-2"></i>
+
                                         Profile
+
                                     </a>
+
                                 </li>
 
+
                                 <li>
+
                                     <a class="dropdown-item" href="#">
+
                                         <i class="fa-solid fa-gear me-2"></i>
+
                                         Settings
+
                                     </a>
+
                                 </li>
 
                             </ul>
@@ -98,15 +115,6 @@
                 </div>
 
             </div>
-
-        </div>
-
-
-        <!-- =====================================================
-             DASHBOARD BODY
-             ===================================================== -->
-
-        <div class="card-body">
 
 
             <!-- =================================================
@@ -122,7 +130,7 @@
 
                 <div class="col-12 col-sm-6 col-xl-3">
 
-                    <div class="card border h-100 shadow-sm dashboard-kpi-card">
+                    <div class="card border shadow-sm h-100 dashboard-kpi-card">
 
                         <div class="card-body">
 
@@ -142,11 +150,13 @@
 
                                     </div>
 
+
                                     <div class="fs-3 fw-bold text-dark">
 
                                         @Model.ActiveWorkflows
 
                                     </div>
+
 
                                     <div class="small text-success mt-2">
 
@@ -159,10 +169,13 @@
                                 </div>
 
 
-                                <!-- ICON -->
+                                <div class="bg-flow-pink-subtle
+                                            text-flow-pink
+                                            rounded
+                                            p-3">
 
-                                <div class="bg-flow-pink-subtle text-flow-pink rounded p-3">
                                     <i class="fa-solid fa-diagram-project fs-5"></i>
+
                                 </div>
 
                             </div>
@@ -180,7 +193,7 @@
 
                 <div class="col-12 col-sm-6 col-xl-3">
 
-                    <div class="card border h-100 shadow-sm dashboard-kpi-card">
+                    <div class="card border shadow-sm h-100 dashboard-kpi-card">
 
                         <div class="card-body">
 
@@ -200,11 +213,13 @@
 
                                     </div>
 
+
                                     <div class="fs-3 fw-bold text-dark">
 
                                         @Model.RunningInstances
 
                                     </div>
+
 
                                     <div class="small text-muted mt-2">
 
@@ -214,8 +229,6 @@
 
                                 </div>
 
-
-                                <!-- ICON -->
 
                                 <div class="bg-info-subtle
                                             text-info
@@ -241,7 +254,7 @@
 
                 <div class="col-12 col-sm-6 col-xl-3">
 
-                    <div class="card border h-100 shadow-sm dashboard-kpi-card">
+                    <div class="card border shadow-sm h-100 dashboard-kpi-card">
 
                         <div class="card-body">
 
@@ -261,11 +274,13 @@
 
                                     </div>
 
+
                                     <div class="fs-3 fw-bold text-dark">
 
                                         @Model.CompletedToday
 
                                     </div>
+
 
                                     <div class="small text-success mt-2">
 
@@ -277,8 +292,6 @@
 
                                 </div>
 
-
-                                <!-- ICON -->
 
                                 <div class="bg-success-subtle
                                             text-success
@@ -304,8 +317,7 @@
 
                 <div class="col-12 col-sm-6 col-xl-3">
 
-                    <div class="card border h-100 shadow-sm dashboard-kpi-card">
-
+                    <div class="card border shadow-sm h-100 dashboard-kpi-card">
                         <div class="card-body">
 
                             <div class="d-flex
@@ -324,11 +336,13 @@
 
                                     </div>
 
+
                                     <div class="fs-3 fw-bold text-dark">
 
                                         @Model.Overdue
 
                                     </div>
+
 
                                     <div class="small text-danger mt-2">
 
@@ -340,8 +354,6 @@
 
                                 </div>
 
-
-                                <!-- ICON -->
 
                                 <div class="bg-danger-subtle
                                             text-danger
@@ -367,7 +379,7 @@
                  ACTIVE PROCESSES + PROCESS HEALTH
                  ================================================= -->
 
-            <div class="row g-4">
+            <div class="row g-3">
 
 
                 <!-- =================================================
@@ -378,27 +390,33 @@
 
                     <div class="card border shadow-sm h-100">
 
-                        <!-- HEADER -->
+                        <!-- CARD HEADER -->
 
                         <div class="card-header bg-white
                                     d-flex
                                     justify-content-between
-                                    align-items-center
-                                    py-3">
+                                    align-items-center">
 
                             <h5 class="mb-0 fw-semibold">
+
                                 Active Processes
+
                             </h5>
 
-                            <button type="button" class="btn btn-flow-pink btn-sm">
+
+                            <button type="button"
+                                    class="btn btn-flow-pink btn-sm">
+
                                 <i class="fa-solid fa-plus me-1"></i>
+
                                 New Workflow
+
                             </button>
 
                         </div>
 
 
-                        <!-- TABLE -->
+                        <!-- CARD BODY -->
 
                         <div class="card-body p-0">
 
@@ -495,12 +513,14 @@
                                                 <td>
 
                                                     <span class="badge
-             bg-flow-pink-subtle
-             text-flow-pink
-             rounded-pill
-             px-3
-             py-2">
+                                                                 bg-flow-pink-subtle
+                                                                 text-flow-pink
+                                                                 rounded-pill
+                                                                 px-3
+                                                                 py-2">
+
                                                         @process.Status
+
                                                     </span>
 
                                                 </td>
@@ -529,22 +549,22 @@
 
                     <div class="card border shadow-sm h-100">
 
+                        <!-- CARD HEADER -->
 
-                        <!-- HEADER -->
-
-                        <div class="card-header bg-white py-3">
+                        <div class="card-header bg-white border-0">
 
                             <h5 class="mb-0 fw-semibold">
+
                                 Process Health
+
                             </h5>
 
                         </div>
 
 
-                        <!-- BODY -->
+                        <!-- CARD BODY -->
 
                         <div class="card-body">
-
 
                             <!-- SLA COMPLIANCE -->
 
@@ -556,26 +576,27 @@
                                             mb-2">
 
                                     <span class="small text-dark">
-
                                         SLA Compliance
-
                                     </span>
 
                                     <strong class="small">
-
                                         @Model.SlaCompliance%
-
                                     </strong>
 
                                 </div>
 
 
-                                <div class="progress-bar bg-flow-pink"
-                                     role="progressbar"
-                                     style="width:@Model.CompletedOnTime%;"
-                                     aria-valuenow="@Model.CompletedOnTime"
-                                     aria-valuemin="0"
-                                     aria-valuemax="100">
+                                <div class="progress"
+                                     style="height:7px;">
+
+                                    <div class="progress-bar bg-flow-pink"
+                                         role="progressbar"
+                                         style="width:@Model.SlaCompliance%;"
+                                         aria-valuenow="@Model.SlaCompliance"
+                                         aria-valuemin="0"
+                                         aria-valuemax="100">
+                                    </div>
+
                                 </div>
 
                             </div>
@@ -660,13 +681,11 @@
 
                             </div>
 
-
                         </div>
 
                     </div>
 
                 </div>
-
 
             </div>
 
@@ -677,7 +696,15 @@
 </div>
 
 
+<!-- =============================================================
+     PAGE STYLES
+     ============================================================= -->
+
 <style>
+
+    /* =========================================================
+       FLOW360 PINK BUTTON
+       ========================================================= */
 
     .btn-flow-pink {
         background-color: #e91e63;
@@ -693,6 +720,11 @@
             color: #ffffff;
         }
 
+
+    /* =========================================================
+       FLOW360 COLORS
+       ========================================================= */
+
     .bg-flow-pink {
         background-color: #e91e63 !important;
     }
@@ -706,11 +738,14 @@
     }
 
 
-    /* KPI CARD HOVER */
+    /* =========================================================
+       KPI CARD MOVEMENT
+       ========================================================= */
 
     .dashboard-kpi-card {
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
+
 
         .dashboard-kpi-card:hover {
             transform: translateY(-5px);

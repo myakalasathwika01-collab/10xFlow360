@@ -10,14 +10,21 @@ namespace _10xFlow360.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly SAPRestService sapService =
+            new SAPRestService();
+
+        // =========================================================
         // GET: Account/Login
+        // =========================================================
         [AllowAnonymous]
         public ActionResult Login()
         {
             return View();
         }
 
+        // =========================================================
         // POST: Account/Login
+        // =========================================================
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -28,34 +35,50 @@ namespace _10xFlow360.Controllers
                 return View(model);
             }
 
-            // Temporary login for initial implementation.
-            // We will replace this with the actual company authentication
-            // mechanism/database validation later.
-            if (model.UserName == "admin" && model.Password == "123")
-            {
-                FormsAuthentication.SetAuthCookie(
-                    model.UserName,
-                    model.RememberMe
-                );
+            bool loginSuccess =
+                sapService.ValidateUserCredentials(model);
 
-                return RedirectToAction("Index", "Dashboard");
+            if (!loginSuccess)
+            {
+                string errorMessage =
+                    Session["SAP_LOGIN_ERROR"]?.ToString();
+
+                if (string.IsNullOrWhiteSpace(errorMessage))
+                {
+                    errorMessage =
+                        "Invalid SAP username or password.";
+                }
+
+                ModelState.AddModelError(
+                    "",
+                    errorMessage);
+
+                return View(model);
             }
 
-            ModelState.AddModelError(
-                "",
-                "Invalid username or password."
-            );
+            // Flow360 authentication
+            FormsAuthentication.SetAuthCookie(
+                model.UserName,
+                model.RememberMe);
 
-            return View(model);
+            return RedirectToAction(
+                "Index",
+                "Dashboard");
         }
 
-        // GET: Account/Logout
+        // =========================================================
+        // LOGOUT
+        // =========================================================
         [Authorize]
         public ActionResult Logout()
         {
+            sapService.Logout();
+
             FormsAuthentication.SignOut();
 
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction(
+                "Login",
+                "Account");
         }
     }
 }
