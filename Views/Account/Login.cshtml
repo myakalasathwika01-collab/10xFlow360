@@ -18,175 +18,309 @@
 
     <title>10X Flow360 - Login</title>
 
-    <!-- Bootstrap / Common CSS -->
     @Styles.Render("~/Content/css")
 
-    <!-- Login-specific CSS -->
-    <link rel="stylesheet"
-          href="@Url.Content("~/Content/css/login/login.css")" />
+    <style>
+
+        .login-form-control {
+            width: 100% !important;
+            max-width: none !important;
+        }
+
+            .login-form-control:focus {
+                border-color: #e5005a;
+                box-shadow: 0 0 0 0.2rem rgba(229, 0, 90, 0.20);
+            }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            top: 50%;
+            right: 12px;
+            transform: translateY(-50%);
+            border: 0;
+            background: transparent;
+            padding: 0;
+            margin: 0;
+            color: #6c757d;
+            cursor: pointer;
+            z-index: 5;
+        }
+
+            .password-toggle:focus {
+                outline: none;
+                box-shadow: none;
+            }
+
+            .password-toggle svg {
+                width: 16px;
+                height: 16px;
+            }
+    </style>
 
 </head>
 
-<body class="login-page">
 
-    <div class="login-wrapper">
-
-        <div class="login-card">
+<body class="bg-light">
 
 
-            <!-- =================================================
-                 BRAND / LOGO
-                 ================================================= -->
-
-            <div class="login-brand">
-
-                <div class="login-logo-container">
-
-                    <img src="@Url.Content("~/Content/img/10x.png")"
-                         class="login-logo-10x"
-                         alt="10X" />
-
-                    <img src="@Url.Content("~/Content/img/10Xflow360.png")"
-                         class="login-logo-flow360"
-                         alt="Flow360" />
-
-                </div>
-
-                <p class="login-brand-subtitle">
-                    SAP Business Process Automation
-                </p>
-
-            </div>
+    <div class="container-fluid min-vh-100
+                d-flex align-items-center justify-content-center">
 
 
-            <!-- =================================================
-                 LOGIN FORM
-                 ================================================= -->
+        <div class="w-100 px-3">
 
-            @using (Html.BeginForm(
-                "Login",
-                "Account",
-                FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
 
-                @Html.ValidationSummary(
-                    true,
-                    "",
-                    new
+            <div class="card border-0 shadow rounded-3 mx-auto"
+                 style="width: 100%; max-width: 420px;">
+
+
+                <div class="card-body p-4">
+
+
+                    <!-- =================================================
+                         BRAND / LOGO
+                         ================================================= -->
+
+                    <div class="text-center mb-4">
+
+
+                        <div class="d-flex
+                                    align-items-center
+                                    justify-content-center">
+
+
+                            <img src="@Url.Content("~/Content/img/10x.png")"
+                                 alt="10X"
+                                 class="img-fluid"
+                                 style="width:75px; height:75px; object-fit:contain;" />
+
+
+                            <img src="@Url.Content("~/Content/img/10Xflow360.png")"
+                                 alt="Flow360"
+                                 class="img-fluid"
+                                 style="width:135px; height:55px; object-fit:contain;" />
+
+
+                        </div>
+
+
+                        <p class="text-secondary mb-0 mt-2">
+
+                            SAP Business Process Automation
+
+                        </p>
+
+
+                    </div>
+
+
+                    <!-- =================================================
+                         LOGIN FORM
+                         ================================================= -->
+
+                    @using (Html.BeginForm(
+                        "Login",
+                        "Account",
+                        FormMethod.Post))
                     {
-                        @class = "validation-summary"
-                    }
-                )
+
+                        @Html.AntiForgeryToken()
 
 
-                <!-- USERNAME -->
-
-                <div class="login-form-group">
-
-                    @Html.LabelFor(
-                        model => model.UserName,
-                        new
-                        {
-                            @class = "login-form-label"
-                        }
-                    )
-
-                    @Html.TextBoxFor(
-                        model => model.UserName,
-                        new
-                        {
-                            @class = "login-form-control",
-                            placeholder = "Enter username",
-                            autocomplete = "username"
-                        }
-                    )
-
-                    @Html.ValidationMessageFor(
-                        model => model.UserName,
-                        "",
-                        new
-                        {
-                            @class = "field-validation-error"
-                        }
-                    )
-
-                </div>
-
-
-                <!-- PASSWORD -->
-
-                <div class="login-form-group">
-
-                    @Html.LabelFor(
-                        model => model.Password,
-                        new
-                        {
-                            @class = "login-form-label"
-                        }
-                    )
-
-                    @Html.PasswordFor(
-                        model => model.Password,
-                        new
-                        {
-                            @class = "login-form-control",
-                            placeholder = "Enter password",
-                            autocomplete = "current-password"
-                        }
-                    )
-
-                    @Html.ValidationMessageFor(
-                        model => model.Password,
-                        "",
-                        new
-                        {
-                            @class = "field-validation-error"
-                        }
-                    )
-
-                </div>
-
-
-                <!-- REMEMBER ME -->
-
-                <div class="login-remember-row">
-
-                    <label>
-
-                        @Html.CheckBoxFor(
-                            model => model.RememberMe
+                        @Html.ValidationSummary(
+                            true,
+                            "",
+                            new
+                            {
+                                @class = "text-danger small mb-3"
+                            }
                         )
 
-                        <span>Remember me</span>
 
-                    </label>
+                        <!-- =================================================
+                             USERNAME
+                             ================================================= -->
+
+                        <div class="mb-3">
+
+
+                            @Html.LabelFor(
+                                model => model.UserName,
+                                new
+                                {
+                                    @class = "form-label fw-semibold"
+                                }
+                            )
+
+
+                            @Html.TextBoxFor(
+                                model => model.UserName,
+                                new
+                                {
+                                    @class = "form-control login-form-control",
+                                    placeholder = "Enter username",
+                                    autocomplete = "username"
+                                }
+                            )
+
+
+                            @Html.ValidationMessageFor(
+                                model => model.UserName,
+                                "",
+                                new
+                                {
+                                    @class = "text-danger small"
+                                }
+                            )
+
+
+                        </div>
+
+
+                        <!-- =================================================
+                             PASSWORD
+                             ================================================= -->
+
+                        <div class="mb-3">
+
+
+                            @Html.LabelFor(
+                                model => model.Password,
+                                new
+                                {
+                                    @class = "form-label fw-semibold"
+                                }
+                            )
+
+
+                            <div class="password-wrapper">
+
+
+                                @Html.PasswordFor(
+                                    model => model.Password,
+                                    new
+                                    {
+                                        @class = "form-control login-form-control pe-5",
+                                        placeholder = "Enter password",
+                                        autocomplete = "current-password",
+                                        id = "Password"
+                                    }
+                                )
+
+
+                                <!-- Eye / Hide Password Button -->
+
+                                <button type="button"
+                                        id="togglePassword"
+                                        class="password-toggle"
+                                        title="Show password"
+                                        aria-label="Show password">
+
+                                    <!-- Hidden password icon -->
+
+                                    <svg id="eyeIcon"
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         viewBox="0 0 24 24"
+                                         fill="none"
+                                         stroke="currentColor"
+                                         stroke-width="1.8"
+                                         stroke-linecap="round"
+                                         stroke-linejoin="round">
+
+                                        <path d="M2 12s3.5-5 10-5 10 5 10 5-3.5 5-10 5S2 12 2 12z" />
+
+                                        <circle cx="12"
+                                                cy="12"
+                                                r="2.5" />
+
+                                        <path d="M3 3l18 18" />
+
+                                    </svg>
+
+                                </button>
+
+
+                            </div>
+
+
+                            @Html.ValidationMessageFor(
+                                model => model.Password,
+                                "",
+                                new
+                                {
+                                    @class = "text-danger small"
+                                }
+                            )
+
+
+                        </div>
+
+
+                        <!-- =================================================
+                             REMEMBER ME
+                             ================================================= -->
+
+                        <div class="form-check mb-3">
+
+
+                            @Html.CheckBoxFor(
+                                model => model.RememberMe,
+                                new
+                                {
+                                    @class = "form-check-input"
+                                }
+                            )
+
+
+                            <label class="form-check-label">
+
+                                Remember me
+
+                            </label>
+
+
+                        </div>
+
+
+                        <!-- =================================================
+                             LOGIN BUTTON
+                             ================================================= -->
+
+                        <button type="submit"
+                                class="btn w-100 py-2 text-white"
+                                style="background-color:#e5005a; border-color:#e5005a;">
+
+                            Login
+
+                        </button>
+
+
+                    }
+
+
+                    <!-- =================================================
+                         FOOTER
+                         ================================================= -->
+
+                    <div class="text-center
+                                text-muted
+                                small
+                                mt-4">
+
+
+                        © @DateTime.Now.Year 10X Flow360
+
+
+                    </div>
+
 
                 </div>
 
-
-                <!-- LOGIN BUTTON -->
-
-                <button type="submit"
-                        class="login-button">
-
-                    Login
-
-                </button>
-
-            }
-
-
-            <!-- =================================================
-                 FOOTER
-                 ================================================= -->
-
-            <div class="login-footer">
-
-                © @DateTime.Now.Year 10X Flow360
-
             </div>
-
 
         </div>
 
@@ -196,6 +330,49 @@
     @Scripts.Render("~/bundles/jquery")
 
     @Scripts.Render("~/bundles/bootstrap")
+
+
+    <!-- =========================================================
+         PASSWORD SHOW / HIDE
+         ========================================================= -->
+
+    <script>
+
+        document.getElementById("togglePassword").addEventListener("click", function () {
+
+            var password = document.getElementById("Password");
+            var icon = document.getElementById("eyeIcon");
+
+            if (password.type === "password") {
+
+                password.type = "text";
+
+                this.title = "Hide password";
+                this.setAttribute("aria-label", "Hide password");
+
+                icon.innerHTML =
+                    '<path d="M2 12s3.5-5 10-5 10 5 10 5-3.5 5-10 5S2 12 2 12z"/>' +
+                    '<circle cx="12" cy="12" r="2.5"/>';
+
+            }
+            else {
+
+                password.type = "password";
+
+                this.title = "Show password";
+                this.setAttribute("aria-label", "Show password");
+
+                icon.innerHTML =
+                    '<path d="M2 12s3.5-5 10-5 10 5 10 5-3.5 5-10 5S2 12 2 12z"/>' +
+                    '<circle cx="12" cy="12" r="2.5"/>' +
+                    '<path d="M3 3l18 18"/>';
+
+            }
+
+        });
+
+    </script>
+
 
 </body>
 
