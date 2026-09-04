@@ -71,8 +71,8 @@
 
 
             <!-- =================================================
-                 DASHBOARD
-                 ================================================= -->
+         DASHBOARD
+         ================================================= -->
 
             <li class="flow-menu-item
                 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard"
@@ -96,11 +96,41 @@
                 </a>
 
             </li>
+            <!-- =================================================
+        WORKFLOW LIST
+        NEW MENU
+        ================================================= -->
+
+            <li class="flow-menu-item
+                @(ViewContext.RouteData.Values["controller"]?.ToString() == "Workflow"
+                    && ViewContext.RouteData.Values["action"]?.ToString() == "WorkflowList"
+                    ? "active"
+                    : "")">
+
+                <a href="@Url.Action("WorkflowList", "Workflow")">
+
+                    <span class="flow-icon">
+
+                        <i class="fa-solid fa-diagram-project"></i>
+
+                    </span>
+
+                    <span class="flow-menu-text">
+
+                        Workflows
+
+                    </span>
+
+                </a>
+
+            </li>
+
+
 
 
             <!-- =================================================
-                 DESIGN
-                 ================================================= -->
+         DESIGN
+         ================================================= -->
 
             <li class="flow-menu-item
                 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Workflow"
@@ -128,8 +158,8 @@
 
 
             <!-- =================================================
-                 AUTOMATE / TEST
-                 ================================================= -->
+         AUTOMATE / TEST
+         ================================================= -->
 
             <li class="flow-menu-item
                 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Workflow"
@@ -157,8 +187,8 @@
 
 
             <!-- =================================================
-                 TRACKING
-                 ================================================= -->
+         TRACKING
+         ================================================= -->
 
             <li class="flow-menu-item
                 @(ViewContext.RouteData.Values["controller"]?.ToString() == "WorkflowTracking"

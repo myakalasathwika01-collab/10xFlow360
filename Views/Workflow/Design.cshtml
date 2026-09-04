@@ -474,6 +474,15 @@
 
                                         </div>
 
+
+
+                                        <!-- EDIT BUTTON -->
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-primary workflow-edit-btn"
+                                                onclick="editWorkflowNode(event, this.closest('.workflow-node'), 'trigger')">
+                                            <i class="bi bi-pencil-square me-1"></i>
+                                            
+                                        </button>
                                     </div>
 
                                 </div>
@@ -519,6 +528,14 @@
 
                                         </div>
 
+
+
+                                        <!-- EDIT BUTTON -->
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-primary ms-2 workflow-edit-btn"
+                                                onclick="editWorkflowNode(event, this.closest('.workflow-node'), 'notify')">
+                                            <i class="bi bi-pencil-square me-1"></i>
+                                        </button>
                                     </div>
 
                                 </div>
@@ -564,6 +581,14 @@
 
                                         </div>
 
+
+
+                                        <!-- EDIT BUTTON -->
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-primary ms-2 workflow-edit-btn"
+                                                onclick="editWorkflowNode(event, this.closest('.workflow-node'), 'delivery-date')">
+                                            <i class="bi bi-pencil-square me-1"></i>
+                                        </button>
                                     </div>
 
                                 </div>
@@ -609,6 +634,14 @@
 
                                         </div>
 
+
+
+                                        <!-- EDIT BUTTON -->
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-primary ms-2 workflow-edit-btn"
+                                                onclick="editWorkflowNode(event, this.closest('.workflow-node'), 'delivery')">
+                                            <i class="bi bi-pencil-square me-1"></i>
+                                        </button>
                                     </div>
 
                                 </div>
@@ -654,6 +687,14 @@
 
                                         </div>
 
+
+
+                                        <!-- EDIT BUTTON -->
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-primary ms-2 workflow-edit-btn"
+                                                onclick="editWorkflowNode(event, this.closest('.workflow-node'), 'invoice')">
+                                            <i class="bi bi-pencil-square me-1"></i>
+                                        </button>
                                     </div>
 
                                 </div>
@@ -699,6 +740,14 @@
 
                                         </div>
 
+
+
+                                        <!-- EDIT BUTTON -->
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-primary ms-2 workflow-edit-btn"
+                                                onclick="editWorkflowNode(event, this.closest('.workflow-node'), 'accounts')">
+                                            <i class="bi bi-pencil-square me-1"></i>
+                                        </button>
                                     </div>
 
                                 </div>
@@ -930,6 +979,25 @@
             border-color: #d81b60;
             color: #fff;
         }
+
+
+    .workflow-edit-btn {
+        min-width: 70px;
+        white-space: nowrap;
+    }
+
+    .workflow-node {
+        transition: all 0.2s ease;
+    }
+
+        .workflow-node:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+        }
+
+    .workflow-edit-btn:hover {
+        background-color: #0d6efd;
+        color: #fff;
+    }
 </style>
 
 
@@ -1350,8 +1418,15 @@
 
                 '</div>' +
 
-                '</div>';
+                '<button type="button" ' +
+                'class="btn btn-sm btn-outline-primary ms-2 workflow-edit-btn" ' +
+                'onclick="editWorkflowNode(event, this.closest(\'.workflow-node\'), \'" + type + "\')">' +
 
+                '<i class="bi bi-pencil-square me-1"></i>' +
+                
+                '</button>' +
+
+                '</div>';
 
             node.onclick =
                 function () {
@@ -1403,6 +1478,33 @@
 
             }, 100);
 
+        }
+
+
+        /* =========================================================
+           EDIT WORKFLOW NODE
+           ========================================================= */
+
+        function editWorkflowNode(event, element, type) {
+
+            // Prevent the node click event from firing twice
+            if (event) {
+                event.stopPropagation();
+            }
+
+            // Select the workflow node and load its properties
+            selectWorkflowNode(element, type);
+
+            // Bring the Properties panel into view
+            var properties =
+                document.getElementById("workflowProperties");
+
+            if (properties) {
+                properties.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+            }
         }
 
 

@@ -198,6 +198,7 @@
     <Content Include="Views\Workflow\Design.cshtml" />
     <Content Include="Views\Workflow\Test.cshtml" />
     <Content Include="Views\WorkflowTracking\Index.cshtml" />
+    <Content Include="Views\Workflow\WorkflowList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
