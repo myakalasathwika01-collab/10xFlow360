@@ -199,6 +199,7 @@
     <Content Include="Views\Workflow\Test.cshtml" />
     <Content Include="Views\WorkflowTracking\Index.cshtml" />
     <Content Include="Views\Workflow\WorkflowList.cshtml" />
+    <Content Include="Views\Workflow\_EditAlertModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

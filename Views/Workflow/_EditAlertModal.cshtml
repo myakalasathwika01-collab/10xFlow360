@@ -1,0 +1,2115 @@
+﻿<!-- =========================================================
+     EDIT ALERT MODAL (POPUP)
+     ========================================================= -->
+
+<div class="modal fade alert-popup-modal" id="editAlertModal" tabindex="-1" aria-labelledby="editAlertModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" style="max-width: 960px; width: calc(100% - 32px);">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 14px; overflow: hidden;">
+
+            <!-- MODAL HEADER (Vibrant Magenta/Pink) -->
+            <div class="modal-header border-0 d-flex align-items-center justify-content-between text-white" style="background-color: #d80064; padding: 18px 24px;">
+                <div>
+                    <h4 class="modal-title fw-bold mb-1 text-white" id="editAlertModalLabel" style="font-size: 1.25rem; letter-spacing: -0.2px;">
+                        Edit Alert
+                    </h4>
+                    <p class="mb-0 text-white" style="font-size: 0.85rem; opacity: 0.95;">
+                        Configure the query, trigger rules, message, and recipients.
+                    </p>
+                </div>
+                <button type="button" class="alert-modal-close-btn" data-bs-dismiss="modal" aria-label="Close" onclick="closeEditAlertModal()">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <!-- MODAL BODY -->
+            <div class="modal-body p-4 custom-modal-scrollbar" style="background-color: #ffffff; max-height: 72vh; overflow-y: auto;">
+                <form id="editAlertForm" onsubmit="event.preventDefault(); saveAlertModal();">
+
+                    <!-- ROW 1: Alert Name & Alert Type -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="alertModalName" class="form-label fw-semibold text-secondary mb-1" style="font-size: 13px;">
+                                Alert name
+                            </label>
+                            <input type="text" id="alertModalName" class="form-control form-control-sm" value="Purchase Order" placeholder="Enter alert name" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="alertModalType" class="form-label fw-semibold text-secondary mb-1" style="font-size: 13px;">
+                                Alert type
+                            </label>
+                            <select id="alertModalType" class="form-select form-select-sm">
+                                <option value="Message">Message</option>
+                                <option value="Approval" selected>Approval</option>
+                                <option value="Document">Document</option>
+                                <option value="Data">Data</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- ROW 2: Severity & Frequency -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="alertModalSeverity" class="form-label fw-semibold text-secondary mb-1" style="font-size: 13px;">
+                                Severity
+                            </label>
+                            <select id="alertModalSeverity" class="form-select form-select-sm">
+                                <option value="Low">Low</option>
+                                <option value="Medium" selected>Medium</option>
+                                <option value="High">High</option>
+                                <option value="Critical">Critical</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="alertModalFrequency" class="form-label fw-semibold text-secondary mb-1" style="font-size: 13px;">
+                                Frequency
+                            </label>
+                            <input type="number" id="alertModalFrequency" class="form-control form-control-sm" value="30" />
+                        </div>
+                    </div>
+
+                    <!-- ROW 3: Frequency Unit & Condition Field -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="alertModalFrequencyUnit" class="form-label fw-semibold text-secondary mb-1" style="font-size: 13px;">
+                                Frequency unit
+                            </label>
+                            <select id="alertModalFrequencyUnit" class="form-select form-select-sm">
+                                <option value="Minutes" selected>Minutes</option>
+                                <option value="Hours">Hours</option>
+                                <option value="Days">Days</option>
+                                <option value="Weeks">Weeks</option>
+                                <option value="Months">Months</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="alertModalConditionField" class="form-label fw-semibold text-secondary mb-1" style="font-size: 13px;">
+                                Condition field
+                            </label>
+                            <input type="text" id="alertModalConditionField" class="form-control form-control-sm" placeholder="Optional result column" />
+                        </div>
+                    </div>
+
+                    <!-- ROW 4: Condition & Threshold -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="alertModalCondition" class="form-label fw-semibold text-secondary mb-1" style="font-size: 13px;">
+                                Condition
+                            </label>
+                            <select id="alertModalCondition" class="form-select form-select-sm">
+                                <option value="Rows exist" selected>Rows exist</option>
+                                <option value="&gt;">&gt;</option>
+                                <option value="&gt;=">&gt;=</option>
+                                <option value="&lt;">&lt;</option>
+                                <option value="&lt;=">&lt;=</option>
+                                <option value="=">=</option>
+                                <option value="!=">!=</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="alertModalThreshold" class="form-label fw-semibold text-secondary mb-1" style="font-size: 13px;">
+                                Threshold
+                            </label>
+                            <input type="text" id="alertModalThreshold" class="form-control form-control-sm" placeholder="" />
+                        </div>
+                    </div>
+
+                    <!-- ROW 5: Source & Unique Key Fields -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="alertModalSource" class="form-label fw-semibold text-secondary mb-1" style="font-size: 13px;">
+                                Source
+                            </label>
+                            <select id="alertModalSource" class="form-select form-select-sm">
+                                <option value="Data" selected>Data</option>
+                                <option value="HANA">HANA</option>
+                                <option value="SQL Server">SQL Server</option>
+                                <option value="SAP Event">SAP Event</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="alertModalUniqueKeyFields" class="form-label fw-semibold text-secondary mb-1" style="font-size: 13px;">
+                                Unique key fields
+                            </label>
+                            <input type="text" id="alertModalUniqueKeyFields" class="form-control form-control-sm" placeholder="DocEntry or ObjType,DocEntry" />
+                        </div>
+                    </div>
+
+                    <!-- SECTION: HANA SELECT Query -->
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label for="alertModalQuery" class="form-label mb-0">
+                                HANA SELECT query
+                            </label>
+
+                            <button type="button"
+                                    class="btn btn-outline-secondary btn-sm"
+                                    onclick="openSavedQuery()">
+                                <i class="bi bi-folder2-open me-1"></i>
+                                Open Saved Query
+                            </button>
+                        </div>
+
+                        <textarea id="alertModalQuery"
+                                  class="form-control font-monospace"
+                                  rows="7"
+                                  spellcheck="false"
+                                  autocomplete="off"
+                                  wrap="off">SELECT
+    T0."DocEntry",
+    T0."DocNum",
+    T0."DocDate",
+    T0."DocDueDate",
+    T0."CardCode",
+    T0."CardName",
+    T0."DocTotal",
+    T0."DocStatus"
+FROM OPOR T0
+ORDER BY T0."DocDate" DESC;</textarea>
+                    </div>
+
+                    <!-- SECTION: WhatsApp Message Template -->
+                    <div class="mb-3">
+                        <label for="alertModalTemplate"
+                               class="form-label fw-semibold text-secondary mb-1"
+                               style="font-size: 13px;">
+                            WhatsApp message template
+                        </label>
+
+                        <textarea id="alertModalTemplate"
+                                  class="form-control"
+                                  rows="3"
+                                  spellcheck="false"
+                                  autocomplete="off"
+                                  wrap="soft"
+                                  style="
+                  width: 100%;
+                  min-width: 100%;
+                  font-size: 13px;
+                  line-height: 1.5;
+                  background-color: #ffffff;
+                  resize: vertical;
+                  white-space: pre-wrap;
+                  overflow: auto;
+              ">Template TENX_ACTION_REQUIRED | {AlertName} | *Ref:* SO/{DocumentNo} | *Customer:* {PartyName} | *Action:* Review in SAP Business One.</textarea>
+                    </div>
+
+                    <!-- SECTION: Checkboxes -->
+                    <div class="d-flex flex-wrap gap-4 align-items-center my-3 pt-1">
+                        <div class="form-check mb-0">
+                            <input class="form-check-input" type="checkbox" id="chkAiRecommendations" checked />
+                            <label class="form-check-label small fw-medium text-dark" for="chkAiRecommendations">
+                                AI recommendations
+                            </label>
+                        </div>
+                        <div class="form-check mb-0">
+                            <input class="form-check-input" type="checkbox" id="chkReportInsights" />
+                            <label class="form-check-label small fw-medium text-dark" for="chkReportInsights">
+                                Report insights
+                            </label>
+                        </div>
+                        <div class="form-check mb-0">
+                            <input class="form-check-input" type="checkbox" id="chkOncePerUniqueKey" />
+                            <label class="form-check-label small fw-medium text-dark" for="chkOncePerUniqueKey">
+                                Once per unique key
+                            </label>
+                        </div>
+                        <div class="form-check mb-0">
+                            <input class="form-check-input" type="checkbox" id="chkActive" checked />
+                            <label class="form-check-label small fw-medium text-dark" for="chkActive">
+                                Active
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- SECTION: Recipients -->
+                    <div class="mt-4">
+                        <div class="fw-semibold text-secondary mb-2" style="font-size: 13.5px;">
+                            Recipients
+                        </div>                            <div id="alertModalRecipientsList" class="d-flex flex-column gap-2">
+                            <!-- One recipient row is shown initially.
+                            Additional rows are added only when the button is clicked. -->
+                            <div class="recipient-row d-flex align-items-center gap-2">
+                                <div class="recipient-field recipient-name-field">
+                                    <input type="text"
+                                           class="form-control form-control-sm recipient-name"
+                                           value="manager - General"
+                                           placeholder="Name" />
+                                </div>
+
+                                <div class="recipient-field recipient-code-field">
+                                    <input type="text"
+                                           class="form-control form-control-sm recipient-code"
+                                           value="+91"
+                                           placeholder="Code *" />
+                                </div>
+
+                                <div class="recipient-field recipient-phone-field">
+                                    <input type="text"
+                                           class="form-control form-control-sm recipient-phone"
+                                           value="7075690467"
+                                           placeholder="WhatsApp mobile" />
+                                </div>
+
+                                <div class="recipient-field recipient-email-field">
+                                    <input type="email"
+                                           class="form-control form-control-sm recipient-email"
+                                           placeholder="Email" />
+                                </div>
+
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-secondary rounded-pill recipient-remove-btn"
+                                        onclick="removeRecipientRow(this)">
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Recipient Action Buttons -->
+                        <div class="d-flex flex-wrap gap-2 mt-3">
+                            <button type="button" class="btn btn-light border rounded-pill px-3 py-1.5 text-dark small" style="font-size: 13px;" onclick="openSapB1UsersModal()">
+                                <i class="bi bi-person-plus me-1"></i> Select SAP B1 Users
+                            </button>
+                            <button type="button" class="btn btn-light border rounded-pill px-3 py-1.5 text-dark small" style="font-size: 13px;" onclick="addManualRecipient()">
+                                <i class="bi bi-plus me-1"></i> Add Manual Recipient
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- MODAL FOOTER -->
+            <div class="modal-footer bg-light border-0 py-2 px-4 justify-content-end">
+                <button type="button" class="btn btn-light border rounded-pill px-4" data-bs-dismiss="modal" onclick="closeEditAlertModal()">
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-flow-pink rounded-pill px-4" onclick="saveAlertModal()">
+                    <i class="bi bi-check2 me-1"></i> Save Changes
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- =========================================================
+     SELECT SAP B1 USERS MODAL
+     ========================================================= -->
+<div class="modal fade sap-users-popup-modal" id="selectSapB1UsersModal" tabindex="-1" aria-labelledby="selectSapB1UsersModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable sap-users-dialog">
+        <div class="modal-content sap-users-modal-content">
+
+            <div class="sap-users-modal-header">
+                <div>
+                    <h5 class="sap-users-modal-title" id="selectSapB1UsersModalLabel">Select SAP B1 Users</h5>
+                    <div class="sap-users-modal-subtitle">Only users with mobile and department are listed. Designation is included when available.</div>
+                </div>
+                <button type="button" class="sap-users-close-btn" onclick="closeSapB1UsersModal()" aria-label="Close">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <div class="sap-users-modal-body">
+                <div class="sap-users-search-row">
+                    <div class="sap-users-search-wrapper">
+                        <input type="text" id="sapB1UserSearch" class="form-control sap-users-search-input" placeholder="Search by user, designation, department, or mobile" autocomplete="off" oninput="filterSapB1Users()" />
+                    </div>
+                    <button type="button" class="btn sap-users-refresh-btn" onclick="refreshSapB1Users()">
+                        <i class="bi bi-arrow-repeat me-1"></i> Refresh
+                    </button>
+                </div>
+
+                <div class="sap-users-count" id="sapB1UserCount">4 SAP B1 users</div>
+
+                <div class="sap-users-list-container">
+                    <div class="sap-user-row" data-user-name="TENX10" data-designation="Designation not set" data-department="General" data-mobile="7569664424">
+                        <div class="sap-user-name">TENX10</div>
+                        <div class="sap-user-designation">Designation not set</div>
+                        <div class="sap-user-department">General</div>
+                        <div class="sap-user-mobile">7569664424</div>
+                        <div class="sap-user-action"><button type="button" class="sap-user-add-btn" onclick="addSapB1User(this, 'TENX10', 'TENX10', 'Designation not set', 'General', '7569664424', '')"><i class="bi bi-plus-lg me-1"></i> Add</button></div>
+                    </div>
+
+                    <div class="sap-user-row" data-user-name="Tenx001" data-designation="Designation not set" data-department="General" data-mobile="9923588321">
+                        <div class="sap-user-name">Tenx001</div>
+                        <div class="sap-user-designation">Designation not set</div>
+                        <div class="sap-user-department">General</div>
+                        <div class="sap-user-mobile">9923588321</div>
+                        <div class="sap-user-action"><button type="button" class="sap-user-add-btn" onclick="addSapB1User(this, 'Tenx001', 'Tenx001', 'Designation not set', 'General', '9923588321', '')"><i class="bi bi-plus-lg me-1"></i> Add</button></div>
+                    </div>
+
+                    <div class="sap-user-row" data-user-name="Tenx02" data-designation="Designation not set" data-department="General" data-mobile="9160444895">
+                        <div class="sap-user-name">Tenx02</div>
+                        <div class="sap-user-designation">Designation not set</div>
+                        <div class="sap-user-department">General</div>
+                        <div class="sap-user-mobile">9160444895</div>
+                        <div class="sap-user-action"><button type="button" class="sap-user-add-btn" onclick="addSapB1User(this, 'Tenx02', 'Tenx02', 'Designation not set', 'General', '9160444895', '')"><i class="bi bi-plus-lg me-1"></i> Add</button></div>
+                    </div>
+
+                    <div class="sap-user-row" data-user-name="manager" data-designation="Designation not set" data-department="General" data-mobile="+917013883110">
+                        <div class="sap-user-name">manager</div>
+                        <div class="sap-user-designation">Designation not set</div>
+                        <div class="sap-user-department">General</div>
+                        <div class="sap-user-mobile">+917013883110</div>
+                        <div class="sap-user-action"><button type="button" class="sap-user-add-btn" onclick="addSapB1User(this, 'manager', 'manager', 'Designation not set', 'General', '+917013883110', '')"><i class="bi bi-plus-lg me-1"></i> Add</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- =========================================================
+     OPEN SAVED QUERY MODAL
+     ========================================================= -->
+
+<div class="modal fade saved-query-popup-modal"
+     id="openSavedQueryModal"
+     tabindex="-1"
+     aria-labelledby="openSavedQueryModalLabel"
+     aria-hidden="true"
+     data-bs-backdrop="static">
+
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable saved-query-dialog">
+        <div class="modal-content saved-query-modal-content">
+
+            <!-- HEADER -->
+            <div class="saved-query-modal-header">
+
+                <div>
+                    <h5 class="saved-query-modal-title"
+                        id="openSavedQueryModalLabel">
+                        Open Saved Query
+                    </h5>
+
+                    <div class="saved-query-modal-subtitle">
+                        Select a SAP Business One saved query from OUQR and OQCN.
+                    </div>
+                </div>
+
+                <button type="button"
+                        class="saved-query-close-btn"
+                        onclick="closeSavedQueryModal()"
+                        aria-label="Close">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+
+            </div>
+
+            <!-- BODY -->
+            <div class="saved-query-modal-body">
+
+                <!-- SEARCH -->
+                <div class="saved-query-search-row">
+
+                    <div class="saved-query-search-wrapper">
+                        <input type="text"
+                               id="savedQuerySearch"
+                               class="form-control saved-query-search-input"
+                               placeholder="Search by query name, category, or SQL"
+                               autocomplete="off"
+                               oninput="filterSavedQueries()" />
+                    </div>
+
+                    <button type="button"
+                            class="btn saved-query-refresh-btn"
+                            onclick="refreshSavedQueries()">
+                        <i class="bi bi-arrow-repeat me-1"></i>
+                        Refresh
+                    </button>
+
+                </div>
+
+                <!-- COUNT -->
+                <div class="saved-query-count"
+                     id="savedQueryCount">
+                    0 saved queries
+                </div>
+
+                <!-- EMPTY / QUERY LIST -->
+                <div class="saved-query-list-container"
+                     id="savedQueryList">
+
+                    <div class="saved-query-empty-state"
+                         id="savedQueryEmptyState">
+                        No saved queries found.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<style>
+
+    /* =========================================================
+    SELECT SAP B1 USERS MODAL
+    ========================================================= */
+    .sap-users-popup-modal {
+        z-index: 1060;
+    }
+
+        .sap-users-popup-modal + .modal-backdrop,
+        .modal-backdrop.sap-users-backdrop {
+            z-index: 1055;
+        }
+
+    .sap-users-dialog {
+        max-width: 925px;
+        width: calc(100% - 32px);
+    }
+
+    .sap-users-modal-content {
+        border: 0;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 18px 55px rgba(0, 0, 0, 0.28);
+        background: #ffffff;
+    }
+
+    .sap-users-modal-header {
+        background: linear-gradient(90deg, #e90058, #ef005c);
+        color: #ffffff;
+        min-height: 68px;
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .sap-users-modal-title {
+        margin: 0;
+        font-size: 18px;
+        line-height: 1.25;
+        font-weight: 700;
+        color: #ffffff;
+    }
+
+    .sap-users-modal-subtitle {
+        margin-top: 3px;
+        font-size: 12px;
+        line-height: 1.35;
+        font-weight: 500;
+        color: #ffffff;
+    }
+
+    .sap-users-close-btn {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        border: 0;
+        border-radius: 50%;
+        background: #ffffff;
+        color: #333333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+
+        .sap-users-close-btn:hover {
+            background: #f4f4f4;
+            transform: scale(1.03);
+        }
+
+    .sap-users-modal-body {
+        padding: 18px;
+        background: #ffffff;
+    }
+
+    .sap-users-search-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 9px;
+    }
+
+    .sap-users-search-wrapper {
+        position: relative;
+        flex: 1 1 auto;
+    }
+
+    .sap-users-search-input {
+        height: 35px;
+        padding: 0 12px;
+        border: 2px solid #222222;
+        border-radius: 7px;
+        font-size: 14px;
+        color: #333333;
+        box-shadow: none;
+    }
+
+        .sap-users-search-input:focus {
+            border-color: #222222;
+            box-shadow: none;
+            outline: none;
+        }
+
+    .sap-users-refresh-btn {
+        height: 35px;
+        padding: 0 15px;
+        border: 1px solid #cccccc;
+        border-radius: 18px;
+        background: #ffffff;
+        color: #444444;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+        .sap-users-refresh-btn:hover {
+            background: #f7f7f7;
+            border-color: #aaaaaa;
+        }
+
+    .sap-users-count {
+        font-size: 13px;
+        color: #666666;
+        margin-bottom: 4px;
+    }
+
+    .sap-users-list-container {
+        border: 1px solid #dfe3e8;
+        border-radius: 9px;
+        overflow: hidden;
+        background: #ffffff;
+        max-height: 390px;
+        overflow-y: auto;
+    }
+
+    .sap-user-row {
+        min-height: 56px;
+        display: grid;
+        grid-template-columns: 1.05fr 1.15fr 0.95fr 1.05fr 90px;
+        align-items: center;
+        gap: 12px;
+        padding: 0 11px;
+        border-bottom: 1px solid #e7e9ed;
+        background: #ffffff;
+        transition: background-color 0.12s ease;
+    }
+
+        .sap-user-row:last-child {
+            border-bottom: 0;
+        }
+
+        .sap-user-row:hover {
+            background: #fafafa;
+        }
+
+    .sap-user-name {
+        font-size: 13px;
+        font-weight: 700;
+        color: #383838;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .sap-user-designation,
+    .sap-user-department,
+    .sap-user-mobile {
+        font-size: 12px;
+        color: #526b8a;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .sap-user-action {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .sap-user-add-btn {
+        min-width: 70px;
+        height: 34px;
+        padding: 0 12px;
+        border: 1px solid #d2d2d2;
+        border-radius: 18px;
+        background: #ffffff;
+        color: #333333;
+        font-size: 13px;
+        font-weight: 500;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+
+        .sap-user-add-btn:hover {
+            background: #f6f6f6;
+            border-color: #aaaaaa;
+        }
+
+        .sap-user-add-btn.added {
+            background: #f2f2f2;
+            color: #777777;
+            cursor: default;
+        }
+
+    .sap-users-list-container::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .sap-users-list-container::-webkit-scrollbar-track {
+        background: #f5f5f5;
+    }
+
+    .sap-users-list-container::-webkit-scrollbar-thumb {
+        background: #999999;
+        border-radius: 10px;
+    }
+
+    @@media (max-width: 767.98px) {
+        .sap-users-dialog {
+            margin: 10px;
+        }
+
+        .sap-users-modal-body {
+            padding: 12px;
+        }
+
+        .sap-users-search-row {
+            flex-wrap: wrap;
+        }
+
+        .sap-users-search-wrapper,
+        .sap-users-refresh-btn {
+            flex: 1 1 100%;
+            width: 100%;
+        }
+
+        .sap-user-row {
+            grid-template-columns: 1fr 1fr;
+            gap: 5px 10px;
+            padding: 10px;
+        }
+
+        .sap-user-name {
+            grid-column: 1;
+        }
+
+        .sap-user-designation {
+            grid-column: 2;
+        }
+
+        .sap-user-department {
+            grid-column: 1;
+        }
+
+        .sap-user-mobile {
+            grid-column: 2;
+        }
+
+        .sap-user-action {
+            grid-column: 1 / -1;
+            justify-content: flex-start;
+        }
+    }
+
+    .btn-flow-pink {
+        background-color: #e91e63;
+        border-color: #e91e63;
+        color: #fff;
+    }
+
+        .btn-flow-pink:hover,
+        .btn-flow-pink:focus {
+            background-color: #d81b60;
+            border-color: #d81b60;
+            color: #fff;
+        }
+
+
+    .workflow-edit-btn {
+        min-width: 70px;
+        white-space: nowrap;
+    }
+
+    .workflow-node {
+        transition: all 0.2s ease;
+    }
+
+        .workflow-node:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+        }
+
+    .workflow-edit-btn:hover {
+        background-color: #0d6efd;
+        color: #fff;
+    }
+
+
+    .alert-popup-modal .recipient-row {
+        width: 100%;
+    }
+
+    .alert-popup-modal .recipient-field {
+        min-width: 0;
+    }
+
+    .alert-popup-modal .recipient-name-field {
+        flex: 1.35 1 0;
+    }
+
+    .alert-popup-modal .recipient-code-field {
+        flex: 0 0 86px;
+    }
+
+    .alert-popup-modal .recipient-phone-field {
+        flex: 1 1 0;
+    }
+
+    .alert-popup-modal .recipient-email-field {
+        flex: 1.1 1 0;
+    }
+
+    .alert-popup-modal .recipient-remove-btn {
+        flex: 0 0 auto;
+        min-width: 78px;
+        height: 32px;
+        white-space: nowrap;
+    }
+
+    .alert-popup-modal textarea#alertModalQuery {
+        min-height: 145px;
+    }
+
+    .alert-popup-modal textarea#alertModalTemplate {
+        min-height: 88px;
+    }
+
+    @@media (max-width: 767.98px) {
+        .alert-popup-modal .recipient-row {
+            flex-wrap: wrap;
+        }
+
+        .alert-popup-modal .recipient-name-field,
+        .alert-popup-modal .recipient-code-field,
+        .alert-popup-modal .recipient-phone-field,
+        .alert-popup-modal .recipient-email-field {
+            flex: 1 1 100%;
+        }
+
+        .alert-popup-modal .recipient-remove-btn {
+            flex: 0 0 auto;
+        }
+    }
+    /* EDIT ALERT MODAL CUSTOM STYLES */
+    .alert-modal-close-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: #ffffff;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #212529;
+        font-size: 13px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+    }
+
+        .alert-modal-close-btn:hover {
+            background-color: #f8f9fa;
+            transform: scale(1.05);
+        }
+
+    .alert-popup-modal .form-control,
+    .alert-popup-modal .form-select {
+        border-radius: 6px;
+        border: 1px solid #ced4da;
+        font-size: 13px;
+    }
+
+        .alert-popup-modal .form-control:focus,
+        .alert-popup-modal .form-select:focus {
+            border-color: #d80064;
+            box-shadow: 0 0 0 0.2rem rgba(216, 0, 100, 0.15);
+        }
+
+    .custom-modal-scrollbar::-webkit-scrollbar {
+        width: 7px;
+    }
+
+    .custom-modal-scrollbar::-webkit-scrollbar-track {
+        background: #f5f5f5;
+    }
+
+    .custom-modal-scrollbar::-webkit-scrollbar-thumb {
+        background: #c7c7c7;
+        border-radius: 4px;
+    }
+
+        .custom-modal-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #9e9e9e;
+        }
+
+    .alert-popup-modal #alertModalQuery {
+        width: 100%;
+        min-width: 100%;
+        min-height: 145px;
+        display: block;
+        font-size: 13px;
+        line-height: 1.45;
+        font-family: Consolas, "Courier New", monospace;
+        white-space: pre;
+        overflow: auto;
+        resize: vertical;
+        background-color: #ffffff;
+    }
+
+    .alert-popup-modal #alertModalQuery,
+    .alert-popup-modal #alertModalTemplate {
+        width: 100%;
+        min-width: 100%;
+        display: block;
+        box-sizing: border-box;
+    }
+
+    /* =========================================================
+       OPEN SAVED QUERY MODAL
+       ========================================================= */
+
+    .saved-query-popup-modal {
+        z-index: 1070;
+    }
+
+        .saved-query-popup-modal + .modal-backdrop,
+        .modal-backdrop.saved-query-backdrop {
+            z-index: 1065;
+        }
+
+    .saved-query-dialog {
+        max-width: 860px;
+        width: calc(100% - 32px);
+    }
+
+    .saved-query-modal-content {
+        border: 0;
+        border-radius: 14px;
+        overflow: hidden;
+        background: #ffffff;
+        box-shadow: 0 18px 55px rgba(0, 0, 0, 0.28);
+    }
+
+    .saved-query-modal-header {
+        min-height: 68px;
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: linear-gradient(90deg, #e90058, #ef005c);
+        color: #ffffff;
+    }
+
+    .saved-query-modal-title {
+        margin: 0;
+        font-size: 18px;
+        line-height: 1.25;
+        font-weight: 700;
+        color: #ffffff;
+    }
+
+    .saved-query-modal-subtitle {
+        margin-top: 3px;
+        font-size: 12px;
+        line-height: 1.35;
+        font-weight: 500;
+        color: #ffffff;
+    }
+
+    .saved-query-close-btn {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        border: 0;
+        border-radius: 50%;
+        background: #ffffff;
+        color: #333333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        box-shadow: none;
+    }
+
+        .saved-query-close-btn:hover {
+            background: #f4f4f4;
+            transform: scale(1.03);
+        }
+
+        .saved-query-close-btn i {
+            font-size: 13px;
+        }
+
+    .saved-query-modal-body {
+        padding: 18px;
+        background: #ffffff;
+    }
+
+    .saved-query-search-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 9px;
+    }
+
+    .saved-query-search-wrapper {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .saved-query-search-input {
+        width: 100%;
+        height: 35px;
+        padding: 0 12px;
+        border: 2px solid #222222;
+        border-radius: 7px;
+        font-size: 14px;
+        color: #333333;
+        box-shadow: none;
+    }
+
+        .saved-query-search-input:focus {
+            border-color: #222222;
+            box-shadow: none;
+            outline: none;
+        }
+
+    .saved-query-refresh-btn {
+        height: 35px;
+        padding: 0 15px;
+        border: 0;
+        border-radius: 18px;
+        background: #e90058;
+        color: #ffffff;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+        .saved-query-refresh-btn:hover,
+        .saved-query-refresh-btn:focus {
+            background: #d80050;
+            color: #ffffff;
+        }
+
+    .saved-query-count {
+        margin-bottom: 4px;
+        font-size: 13px;
+        color: #666666;
+    }
+
+    .saved-query-list-container {
+        min-height: 76px;
+        max-height: 390px;
+        overflow-y: auto;
+        border: 1px solid #dfe3e8;
+        border-radius: 8px;
+        background: #ffffff;
+    }
+
+    .saved-query-empty-state {
+        min-height: 76px;
+        padding: 24px 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #666666;
+        font-size: 14px;
+        background: #ffffff;
+        border: 1px dashed #d9d9d9;
+        border-radius: 8px;
+    }
+
+    .saved-query-row {
+        min-height: 64px;
+        padding: 10px 12px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 100px;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid #e7e9ed;
+    }
+
+        .saved-query-row:last-child {
+            border-bottom: 0;
+        }
+
+    .saved-query-name {
+        font-size: 13px;
+        font-weight: 700;
+        color: #333333;
+    }
+
+    .saved-query-meta {
+        margin-top: 2px;
+        font-size: 11px;
+        color: #687b94;
+    }
+
+    .saved-query-open-btn {
+        min-width: 78px;
+        height: 32px;
+        border: 1px solid #d2d2d2;
+        border-radius: 17px;
+        background: #ffffff;
+        color: #333333;
+        font-size: 12px;
+    }
+
+        .saved-query-open-btn:hover {
+            background: #f7f7f7;
+            border-color: #aaaaaa;
+        }
+
+    .saved-query-list-container::-webkit-scrollbar {
+        width: 7px;
+    }
+
+    .saved-query-list-container::-webkit-scrollbar-track {
+        background: #f5f5f5;
+    }
+
+    .saved-query-list-container::-webkit-scrollbar-thumb {
+        background: #999999;
+        border-radius: 8px;
+    }
+
+    @@media (max-width: 767.98px) {
+
+        .saved-query-dialog {
+            margin: 10px;
+            width: calc(100% - 20px);
+        }
+
+        .saved-query-modal-body {
+            padding: 12px;
+        }
+
+        .saved-query-search-row {
+            flex-wrap: wrap;
+        }
+
+        .saved-query-search-wrapper,
+        .saved-query-refresh-btn {
+            flex: 1 1 100%;
+            width: 100%;
+        }
+
+        .saved-query-row {
+            grid-template-columns: 1fr;
+        }
+
+        .saved-query-open-btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<script>
+    /* =========================================================
+               WORKFLOW NODE NAMES
+               ========================================================= */
+
+    var workflowNodeNames = {
+
+        "trigger": "Sales Order Created",
+
+        "notify": "Notify Delivery Team",
+
+        "delivery-date": "Wait for Delivery Date",
+
+        "delivery": "Wait for Delivery",
+
+        "invoice": "Wait for A/R Invoice",
+
+        "accounts": "Notify Accounts",
+
+        "end": "Process Completed"
+
+    };
+
+
+    /* =========================================================
+       SELECT WORKFLOW NODE
+       ========================================================= */
+
+    function selectWorkflowNode(element, type) {
+
+        document
+            .querySelectorAll(".workflow-node")
+            .forEach(function (node) {
+
+                node.classList.remove(
+                    "border-primary",
+                    "border-2"
+                );
+
+            });
+
+
+        element.classList.add(
+            "border-primary",
+            "border-2"
+        );
+
+
+        var stepName =
+            document.getElementById(
+                "propertyStepName"
+            );
+
+
+        if (workflowNodeNames[type]) {
+
+            stepName.value =
+                workflowNodeNames[type];
+
+        }
+
+
+        updatePropertiesByType(type);
+
+    }
+
+
+    /* =========================================================
+       UPDATE PROPERTY VALUES
+       ========================================================= */
+
+    function updatePropertiesByType(type) {
+
+        var triggerType =
+            document.getElementById(
+                "propertyTriggerType"
+            );
+
+
+        var sapObject =
+            document.getElementById(
+                "propertySapObject"
+            );
+
+
+        var condition =
+            document.getElementById(
+                "propertyCondition"
+            );
+
+
+        if (type === "trigger") {
+
+            triggerType.value =
+                "SAP Document Created";
+
+            sapObject.value =
+                "Sales Order - ORDR";
+
+            condition.value =
+                "DocStatus = 'O'";
+
+        }
+
+
+        else if (type === "notify") {
+
+            triggerType.value =
+                "SAP Document Updated";
+
+            sapObject.value =
+                "Sales Order - ORDR";
+
+            condition.value =
+                "Delivery notification required";
+
+        }
+
+
+        else if (type === "delivery-date") {
+
+            triggerType.value =
+                "SAP Document Updated";
+
+            sapObject.value =
+                "Sales Order - ORDR";
+
+            condition.value =
+                "Expected Delivery Date IS NOT NULL";
+
+        }
+
+
+        else if (type === "delivery") {
+
+            triggerType.value =
+                "SAP Document Created";
+
+            sapObject.value =
+                "Delivery - ODLN";
+
+            condition.value =
+                "BaseType = 17";
+
+        }
+
+
+        else if (type === "invoice") {
+
+            triggerType.value =
+                "SAP Document Created";
+
+            sapObject.value =
+                "A/R Invoice - OINV";
+
+            condition.value =
+                "BaseType = 15";
+
+        }
+
+
+        else if (type === "accounts") {
+
+            triggerType.value =
+                "SAP Document Created";
+
+            sapObject.value =
+                "A/R Invoice - OINV";
+
+            condition.value =
+                "Invoice created successfully";
+
+        }
+
+    }
+
+
+    /* =========================================================
+       ADD WORKFLOW NODE
+       ========================================================= */
+
+    function addWorkflowNode(type) {
+
+        var flow =
+            document.getElementById(
+                "workflowFlow"
+            );
+
+
+        var node =
+            document.createElement("div");
+
+
+        /*
+         * Bootstrap classes
+         */
+
+        node.className =
+            "workflow-node border rounded-3 bg-white shadow-sm p-3 w-100";
+
+
+        var title =
+            "New Workflow Step";
+
+
+        var subtitle =
+            "Configure this workflow step";
+
+
+        var icon =
+            "bi bi-plus-circle";
+
+
+        var iconColor =
+            "text-primary";
+
+
+        var iconBackground =
+            "bg-primary bg-opacity-10";
+
+
+        if (type === "trigger") {
+
+            title =
+                "SAP Event";
+
+            subtitle =
+                "SAP document event";
+
+            icon =
+                "bi bi-lightning-charge-fill";
+
+            iconColor =
+                "text-primary";
+
+            iconBackground =
+                "bg-primary bg-opacity-10";
+
+        }
+
+
+        else if (type === "query") {
+
+            title =
+                "Query Trigger";
+
+            subtitle =
+                "Trigger using SAP query";
+
+            icon =
+                "bi bi-database-check";
+
+            iconColor =
+                "text-primary";
+
+            iconBackground =
+                "bg-primary bg-opacity-10";
+
+        }
+
+
+        else if (type === "condition") {
+
+            title =
+                "Condition";
+
+            subtitle =
+                "Evaluate workflow condition";
+
+            icon =
+                "bi bi-signpost-split";
+
+            iconColor =
+                "text-info";
+
+            iconBackground =
+                "bg-info bg-opacity-10";
+
+        }
+
+
+        else if (type === "wait") {
+
+            title =
+                "Wait";
+
+            subtitle =
+                "Wait for configured event";
+
+            icon =
+                "bi bi-hourglass-split";
+
+            iconColor =
+                "text-warning";
+
+            iconBackground =
+                "bg-warning bg-opacity-10";
+
+        }
+
+
+        else if (type === "whatsapp") {
+
+            title =
+                "WhatsApp";
+
+            subtitle =
+                "Send WhatsApp notification";
+
+            icon =
+                "bi bi-whatsapp";
+
+            iconColor =
+                "text-success";
+
+            iconBackground =
+                "bg-success bg-opacity-10";
+
+        }
+
+
+        else if (type === "email") {
+
+            title =
+                "Email";
+
+            subtitle =
+                "Send email notification";
+
+            icon =
+                "bi bi-envelope";
+
+            iconColor =
+                "text-danger";
+
+            iconBackground =
+                "bg-danger bg-opacity-10";
+
+        }
+
+
+        else if (type === "task") {
+
+            title =
+                "Assign Task";
+
+            subtitle =
+                "Assign task to user/team";
+
+            icon =
+                "bi bi-person-check";
+
+            iconColor =
+                "text-info";
+
+            iconBackground =
+                "bg-info bg-opacity-10";
+
+        }
+
+
+        else if (type === "update") {
+
+            title =
+                "Update SAP Field";
+
+            subtitle =
+                "Update SAP document field";
+
+            icon =
+                "bi bi-pencil-square";
+
+            iconColor =
+                "text-primary";
+
+            iconBackground =
+                "bg-primary bg-opacity-10";
+
+        }
+
+
+        /*
+         * Bootstrap node markup
+         */
+
+        node.innerHTML =
+
+            '<div class="d-flex align-items-center">' +
+
+            '<div class="' +
+            iconBackground +
+            ' ' +
+            iconColor +
+            ' rounded-3 d-flex align-items-center justify-content-center me-3" ' +
+            'style="width:42px;height:42px;">' +
+
+            '<i class="' +
+            icon +
+            ' fs-5"></i>' +
+
+            '</div>' +
+
+            '<div class="flex-grow-1">' +
+
+            '<div class="workflow-node-title fw-semibold text-dark">' +
+            title +
+            '</div>' +
+
+            '<div class="workflow-node-subtitle small text-muted">' +
+            subtitle +
+            '</div>' +
+
+            '</div>' +
+
+            '<button type="button" ' +
+            'class="btn btn-sm btn-outline-primary ms-2 workflow-edit-btn" ' +
+            'onclick="editWorkflowNode(event, this.closest(\'.workflow-node\'), \'" + type + "\')">' +
+            '<i class="bi bi-pencil-square me-1"></i> Edit' +
+            '</button>' +
+
+            '</div>';
+
+        node.onclick =
+            function () {
+
+                selectWorkflowNode(
+                    node,
+                    type
+                );
+
+            };
+
+
+        /*
+         * Bootstrap connector
+         */
+
+        var line =
+            document.createElement("div");
+
+
+        line.className =
+            "py-2 text-secondary";
+
+
+        line.innerHTML =
+            '<i class="bi bi-arrow-down fs-5"></i>';
+
+
+        flow.appendChild(line);
+
+        flow.appendChild(node);
+
+
+        selectWorkflowNode(
+            node,
+            type
+        );
+
+
+        setTimeout(function () {
+
+            node.scrollIntoView({
+
+                behavior: "smooth",
+
+                block: "center"
+
+            });
+
+        }, 100);
+
+    }
+
+
+    /* =========================================================
+       EDIT WORKFLOW NODE (OPENS EDIT ALERT POPUP)
+       ========================================================= */
+
+    var currentEditingWorkflowNode = null;
+    var alertModalInstance = null;
+
+    function editWorkflowNode(event, element, type) {
+
+        // Prevent the node click event from firing twice
+        if (event) {
+            event.stopPropagation();
+        }
+
+        // Select the workflow node and load its properties
+        selectWorkflowNode(element, type);
+        currentEditingWorkflowNode = element;
+
+        // Pre-populate modal alert name from node title
+        var nodeTitleElem = element ? element.querySelector(".workflow-node-title") : null;
+        var nodeTitle = nodeTitleElem ? nodeTitleElem.textContent.trim() : "";
+
+        var nameInput = document.getElementById("alertModalName");
+        if (nameInput) {
+            nameInput.value = nodeTitle || (workflowNodeNames[type] || "Purchase Order");
+        }
+
+        // Open the Edit Alert Modal
+        openEditAlertModal();
+    }
+
+    /* =========================================================
+       EDIT ALERT MODAL CONTROLS
+       ========================================================= */
+
+    function openEditAlertModal() {
+        var modalElem = document.getElementById("editAlertModal");
+        if (!modalElem) return;
+
+        try {
+            if (window.bootstrap && bootstrap.Modal) {
+                if (!alertModalInstance) {
+                    alertModalInstance = new bootstrap.Modal(modalElem, {
+                        backdrop: 'static',
+                        keyboard: true
+                    });
+                }
+                alertModalInstance.show();
+                return;
+            }
+        } catch (e) {
+            console.warn("Bootstrap modal error:", e);
+        }
+
+        if (window.jQuery && typeof jQuery(modalElem).modal === "function") {
+            jQuery(modalElem).modal("show");
+        } else {
+            modalElem.classList.add("show");
+            modalElem.style.display = "block";
+            document.body.classList.add("modal-open");
+            if (!document.querySelector(".manual-modal-backdrop")) {
+                var backdrop = document.createElement("div");
+                backdrop.className = "modal-backdrop fade show manual-modal-backdrop";
+                document.body.appendChild(backdrop);
+            }
+        }
+    }
+
+    function closeEditAlertModal() {
+        var modalElem = document.getElementById("editAlertModal");
+        if (!modalElem) return;
+
+        try {
+            if (alertModalInstance) {
+                alertModalInstance.hide();
+            }
+        } catch (e) {
+            console.warn("Error hiding modal via bootstrap instance:", e);
+        }
+
+        if (window.jQuery && typeof jQuery(modalElem).modal === "function") {
+            jQuery(modalElem).modal("hide");
+        }
+
+        modalElem.classList.remove("show");
+        modalElem.style.display = "none";
+        document.body.classList.remove("modal-open");
+        var backdrop = document.querySelector(".manual-modal-backdrop");
+        if (backdrop) {
+            backdrop.remove();
+        }
+        var bsBackdrops = document.querySelectorAll(".modal-backdrop");
+        bsBackdrops.forEach(function (b) { b.remove(); });
+    }
+
+    function saveAlertModal() {
+        var nameInput = document.getElementById("alertModalName");
+        var updatedName = nameInput ? nameInput.value.trim() : "";
+
+        if (updatedName && currentEditingWorkflowNode) {
+            var titleElem = currentEditingWorkflowNode.querySelector(".workflow-node-title");
+            if (titleElem) {
+                titleElem.textContent = updatedName;
+            }
+
+            // Also update the right properties panel Step Name input
+            var stepNameInput = document.getElementById("propertyStepName");
+            if (stepNameInput) {
+                stepNameInput.value = updatedName;
+            }
+        }
+
+        closeEditAlertModal();
+        showSaveNotification("Alert configuration saved successfully.");
+    }
+    function addManualRecipient() {
+        var container = document.getElementById("alertModalRecipientsList");
+        if (!container) return;
+
+        var row = document.createElement("div");
+        row.className = "recipient-row d-flex align-items-center gap-2";
+
+        row.innerHTML =
+            '<div class="recipient-field recipient-name-field">' +
+            '    <input type="text" class="form-control form-control-sm recipient-name" placeholder="Name" />' +
+            '</div>' +
+            '<div class="recipient-field recipient-code-field">' +
+            '    <input type="text" class="form-control form-control-sm recipient-code" placeholder="Code *" />' +
+            '</div>' +
+            '<div class="recipient-field recipient-phone-field">' +
+            '    <input type="text" class="form-control form-control-sm recipient-phone" placeholder="WhatsApp mobile" />' +
+            '</div>' +
+            '<div class="recipient-field recipient-email-field">' +
+            '    <input type="email" class="form-control form-control-sm recipient-email" placeholder="Email" />' +
+            '</div>' +
+            '<button type="button" class="btn btn-sm btn-outline-secondary rounded-pill recipient-remove-btn" onclick="removeRecipientRow(this)">' +
+            '    Remove' +
+            '</button>';
+
+        container.appendChild(row);
+    }
+
+    function removeRecipientRow(btn) {
+        if (!btn) return;
+
+        var row = btn.closest(".recipient-row");
+        if (row) {
+            row.remove();
+        }
+    }
+
+    function showSaveNotification(msg) {
+        var alertDiv = document.createElement("div");
+        alertDiv.className = "alert alert-success shadow position-fixed top-0 end-0 m-4 d-flex align-items-center";
+        alertDiv.style.zIndex = "10555";
+        alertDiv.style.minWidth = "320px";
+        alertDiv.innerHTML = '<i class="bi bi-check-circle-fill me-2 fs-5"></i><span>' + msg + '</span>';
+        document.body.appendChild(alertDiv);
+        setTimeout(function () {
+            alertDiv.remove();
+        }, 3000);
+    }
+
+    /* =========================================================
+       SELECT SAP B1 USERS
+       ========================================================= */
+
+    var sapB1UsersModalInstance = null;
+
+    function openSapB1UsersModal() {
+        var modalElem = document.getElementById("selectSapB1UsersModal");
+        if (!modalElem) return;
+
+        if (window.bootstrap && bootstrap.Modal) {
+            sapB1UsersModalInstance = bootstrap.Modal.getOrCreateInstance(modalElem, {
+                backdrop: 'static',
+                keyboard: true
+            });
+            sapB1UsersModalInstance.show();
+        } else if (window.jQuery && typeof jQuery(modalElem).modal === "function") {
+            jQuery(modalElem).modal("show");
+        } else {
+            modalElem.classList.add("show");
+            modalElem.style.display = "block";
+        }
+
+        setTimeout(function () {
+            var search = document.getElementById("sapB1UserSearch");
+            if (search) search.focus();
+        }, 250);
+    }
+
+    function closeSapB1UsersModal() {
+        var modalElem = document.getElementById("selectSapB1UsersModal");
+        if (!modalElem) return;
+
+        if (sapB1UsersModalInstance) {
+            sapB1UsersModalInstance.hide();
+            return;
+        }
+
+        if (window.jQuery && typeof jQuery(modalElem).modal === "function") {
+            jQuery(modalElem).modal("hide");
+        } else {
+            modalElem.classList.remove("show");
+            modalElem.style.display = "none";
+        }
+    }
+
+    function filterSapB1Users() {
+        var input = document.getElementById("sapB1UserSearch");
+        var rows = document.querySelectorAll("#selectSapB1UsersModal .sap-user-row");
+        var term = input ? input.value.toLowerCase().trim() : "";
+        var visible = 0;
+
+        rows.forEach(function (row) {
+            var searchable = [
+                row.getAttribute("data-user-name") || "",
+                row.getAttribute("data-designation") || "",
+                row.getAttribute("data-department") || "",
+                row.getAttribute("data-mobile") || ""
+            ].join(" ").toLowerCase();
+
+            var match = searchable.indexOf(term) !== -1;
+            row.style.display = match ? "grid" : "none";
+            if (match) visible++;
+        });
+
+        var count = document.getElementById("sapB1UserCount");
+        if (count) count.textContent = visible + " SAP B1 user" + (visible === 1 ? "" : "s");
+    }
+
+    function refreshSapB1Users() {
+        var input = document.getElementById("sapB1UserSearch");
+        if (input) input.value = "";
+
+        var rows = document.querySelectorAll("#selectSapB1UsersModal .sap-user-row");
+        rows.forEach(function (row) {
+            row.style.display = "grid";
+            var button = row.querySelector(".sap-user-add-btn");
+            if (button && !button.classList.contains("added")) {
+                button.disabled = false;
+                button.innerHTML = '<i class="bi bi-plus-lg me-1"></i> Add';
+            }
+        });
+
+        var count = document.getElementById("sapB1UserCount");
+        if (count) count.textContent = rows.length + " SAP B1 users";
+    }
+
+    function addSapB1User(button, name, code, designation, department, mobile, email) {
+        var container = document.getElementById("alertModalRecipientsList");
+        if (!container) return;
+
+        var existingRows = container.querySelectorAll(".recipient-row");
+        var duplicate = false;
+
+        existingRows.forEach(function (row) {
+            var codeInput = row.querySelector(".recipient-code");
+            var nameInput = row.querySelector(".recipient-name");
+            var existingCode = codeInput ? codeInput.value.trim().toLowerCase() : "";
+            var existingName = nameInput ? nameInput.value.trim().toLowerCase() : "";
+            if ((code && existingCode === code.toLowerCase()) || (!code && existingName === name.toLowerCase())) {
+                duplicate = true;
+            }
+        });
+
+        if (duplicate) {
+            if (button) {
+                button.disabled = true;
+                button.classList.add("added");
+                button.innerHTML = '<i class="bi bi-check-lg me-1"></i> Added';
+            }
+            return;
+        }
+
+        var row = document.createElement("div");
+        row.className = "recipient-row d-flex align-items-center gap-2";
+        row.setAttribute("data-recipient-source", "SAP B1 User");
+        row.setAttribute("data-designation", designation || "");
+        row.setAttribute("data-department", department || "");
+
+        row.innerHTML =
+            '<div class="recipient-field recipient-name-field">' +
+            '    <input type="text" class="form-control form-control-sm recipient-name" value="" placeholder="Name" />' +
+            '</div>' +
+            '<div class="recipient-field recipient-code-field">' +
+            '    <input type="text" class="form-control form-control-sm recipient-code" value="" placeholder="Code *" />' +
+            '</div>' +
+            '<div class="recipient-field recipient-phone-field">' +
+            '    <input type="text" class="form-control form-control-sm recipient-phone" value="" placeholder="WhatsApp mobile" />' +
+            '</div>' +
+            '<div class="recipient-field recipient-email-field">' +
+            '    <input type="email" class="form-control form-control-sm recipient-email" value="" placeholder="Email" />' +
+            '</div>' +
+            '<button type="button" class="btn btn-sm btn-outline-secondary rounded-pill recipient-remove-btn" onclick="removeRecipientRow(this)">Remove</button>';
+
+        var nameInput = row.querySelector(".recipient-name");
+        var codeInput = row.querySelector(".recipient-code");
+        var phoneInput = row.querySelector(".recipient-phone");
+        var emailInput = row.querySelector(".recipient-email");
+
+        if (nameInput) nameInput.value = name;
+        if (codeInput) codeInput.value = code;
+        if (phoneInput) phoneInput.value = mobile;
+        if (emailInput) emailInput.value = email || "";
+
+        container.appendChild(row);
+
+        if (button) {
+            button.disabled = true;
+            button.classList.add("added");
+            button.innerHTML = '<i class="bi bi-check-lg me-1"></i> Added';
+        }
+    }
+
+
+    /* =========================================================
+       OPEN SAVED QUERY
+       ========================================================= */
+
+    var savedQueryModalInstance = null;
+
+    function openSavedQuery() {
+
+        var modalElem = document.getElementById("openSavedQueryModal");
+
+        if (!modalElem) return;
+
+        if (window.bootstrap && bootstrap.Modal) {
+
+            savedQueryModalInstance =
+                bootstrap.Modal.getOrCreateInstance(
+                    modalElem,
+                    {
+                        backdrop: 'static',
+                        keyboard: true
+                    }
+                );
+
+            savedQueryModalInstance.show();
+
+        } else if (window.jQuery &&
+            typeof jQuery(modalElem).modal === "function") {
+
+            jQuery(modalElem).modal("show");
+
+        } else {
+
+            modalElem.classList.add("show");
+            modalElem.style.display = "block";
+            modalElem.setAttribute("aria-hidden", "false");
+
+        }
+
+        setTimeout(function () {
+
+            var search =
+                document.getElementById("savedQuerySearch");
+
+            if (search) {
+                search.focus();
+            }
+
+        }, 250);
+    }
+
+
+    function closeSavedQueryModal() {
+
+        var modalElem =
+            document.getElementById("openSavedQueryModal");
+
+        if (!modalElem) return;
+
+        if (savedQueryModalInstance) {
+
+            savedQueryModalInstance.hide();
+            return;
+
+        }
+
+        if (window.jQuery &&
+            typeof jQuery(modalElem).modal === "function") {
+
+            jQuery(modalElem).modal("hide");
+
+        } else {
+
+            modalElem.classList.remove("show");
+            modalElem.style.display = "none";
+            modalElem.setAttribute("aria-hidden", "true");
+
+        }
+    }
+
+
+    function filterSavedQueries() {
+
+        var input =
+            document.getElementById("savedQuerySearch");
+
+        var rows =
+            document.querySelectorAll(
+                "#openSavedQueryModal .saved-query-row"
+            );
+
+        var term =
+            input
+                ? input.value.toLowerCase().trim()
+                : "";
+
+        var visible = 0;
+
+        rows.forEach(function (row) {
+
+            var searchable = (
+                row.getAttribute("data-query-name") || ""
+            ) + " " + (
+                    row.getAttribute("data-query-category") || ""
+                ) + " " + (
+                    row.getAttribute("data-query-sql") || ""
+                );
+
+            var match =
+                searchable.toLowerCase().indexOf(term) !== -1;
+
+            row.style.display = match ? "grid" : "none";
+
+            if (match) {
+                visible++;
+            }
+
+        });
+
+        var count =
+            document.getElementById("savedQueryCount");
+
+        if (count) {
+
+            count.textContent =
+                visible +
+                " saved quer" +
+                (visible === 1 ? "y" : "ies");
+        }
+
+        var empty =
+            document.getElementById("savedQueryEmptyState");
+
+        if (empty) {
+
+            empty.style.display =
+                visible === 0 ? "flex" : "none";
+        }
+    }
+
+
+    function refreshSavedQueries() {
+
+        var input =
+            document.getElementById("savedQuerySearch");
+
+        if (input) {
+            input.value = "";
+        }
+
+        var rows =
+            document.querySelectorAll(
+                "#openSavedQueryModal .saved-query-row"
+            );
+
+        rows.forEach(function (row) {
+            row.style.display = "grid";
+        });
+
+        var count =
+            document.getElementById("savedQueryCount");
+
+        if (count) {
+
+            count.textContent =
+                rows.length +
+                " saved quer" +
+                (rows.length === 1 ? "y" : "ies");
+        }
+
+        var empty =
+            document.getElementById("savedQueryEmptyState");
+
+        if (empty) {
+
+            empty.style.display =
+                rows.length === 0 ? "flex" : "none";
+        }
+    }
+
+
+    function selectSavedQuery(queryText) {
+
+        var queryInput =
+            document.getElementById("alertModalQuery");
+
+        if (queryInput) {
+            queryInput.value = queryText || "";
+        }
+
+        closeSavedQueryModal();
+    }
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var modalElem = document.getElementById("editAlertModal");
+        if (modalElem) {
+            modalElem.addEventListener("click", function (e) {
+                if (e.target === modalElem) {
+                    closeEditAlertModal();
+                }
+            });
+        }
+    });</script>
