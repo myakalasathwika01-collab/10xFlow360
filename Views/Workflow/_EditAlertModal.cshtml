@@ -1,4 +1,4 @@
-﻿<!-- =========================================================
+<!-- =========================================================
      EDIT ALERT MODAL (POPUP)
      ========================================================= -->
 
@@ -7,12 +7,12 @@
         <div class="modal-content border-0 shadow-lg" style="border-radius: 14px; overflow: hidden;">
 
             <!-- MODAL HEADER (Vibrant Magenta/Pink) -->
-            <div class="modal-header border-0 d-flex align-items-center justify-content-between text-white" style="background-color: #d80064; padding: 18px 24px;">
+            <div class="modal-header border-0 d-flex align-items-center justify-content-between bg-white text-dark" style="padding: 18px 24px;">
                 <div>
-                    <h4 class="modal-title fw-bold mb-1 text-white" id="editAlertModalLabel" style="font-size: 1.25rem; letter-spacing: -0.2px;">
+                    <h4>
                         Edit Alert
                     </h4>
-                    <p class="mb-0 text-white" style="font-size: 0.85rem; opacity: 0.95;">
+                    <p class="mb-0 text-secondary" style="font-size: 0.85rem;">
                         Configure the query, trigger rules, message, and recipients.
                     </p>
                 </div>
@@ -284,7 +284,7 @@ ORDER BY T0."DocDate" DESC;</textarea>
                     Cancel
                 </button>
                 <button type="button" class="btn btn-flow-pink rounded-pill px-4" onclick="saveAlertModal()">
-                    <i class="bi bi-check2 me-1"></i> Save Changes
+                   Save Changes
                 </button>
             </div>
 
@@ -725,26 +725,6 @@ ORDER BY T0."DocDate" DESC;</textarea>
             border-color: #d81b60;
             color: #fff;
         }
-
-
-    .workflow-edit-btn {
-        min-width: 70px;
-        white-space: nowrap;
-    }
-
-    .workflow-node {
-        transition: all 0.2s ease;
-    }
-
-        .workflow-node:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
-        }
-
-    .workflow-edit-btn:hover {
-        background-color: #0d6efd;
-        color: #fff;
-    }
-
 
     .alert-popup-modal .recipient-row {
         width: 100%;
@@ -1533,9 +1513,10 @@ ORDER BY T0."DocDate" DESC;</textarea>
             '</div>' +
 
             '<button type="button" ' +
-            'class="btn btn-sm btn-outline-primary ms-2 workflow-edit-btn" ' +
+            'class="btn btn-sm btn-outline-warning ms-2 workflow-edit-btn" ' +
+            'title="Edit Alert" ' +
             'onclick="editWorkflowNode(event, this.closest(\'.workflow-node\'), \'" + type + "\')">' +
-            '<i class="bi bi-pencil-square me-1"></i> Edit' +
+            '<i class="bi bi-pencil-square"></i>' +
             '</button>' +
 
             '</div>';
