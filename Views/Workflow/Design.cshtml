@@ -483,6 +483,14 @@
                                                 onclick="editWorkflowNode(event, this.closest('.workflow-node'), 'trigger')">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
+
+                                        <!-- DELETE BUTTON -->
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-danger ms-1 workflow-delete-btn"
+                                                title="Delete Step"
+                                                onclick="deleteWorkflowNode(event, this.closest('.workflow-node'))">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
                                     </div>
 
                                 </div>
@@ -536,6 +544,14 @@
                                                 title="Edit Alert"
                                                 onclick="editWorkflowNode(event, this.closest('.workflow-node'), 'notify')">
                                             <i class="bi bi-pencil-square"></i>
+                                        </button>
+
+                                        <!-- DELETE BUTTON -->
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-danger ms-1 workflow-delete-btn"
+                                                title="Delete Step"
+                                                onclick="deleteWorkflowNode(event, this.closest('.workflow-node'))">
+                                            <i class="bi bi-trash"></i>
                                         </button>
                                     </div>
 
@@ -591,6 +607,14 @@
                                                 onclick="editWorkflowNode(event, this.closest('.workflow-node'), 'delivery-date')">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
+
+                                        <!-- DELETE BUTTON -->
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-danger ms-1 workflow-delete-btn"
+                                                title="Delete Step"
+                                                onclick="deleteWorkflowNode(event, this.closest('.workflow-node'))">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
                                     </div>
 
                                 </div>
@@ -644,6 +668,14 @@
                                                 title="Edit Alert"
                                                 onclick="editWorkflowNode(event, this.closest('.workflow-node'), 'delivery')">
                                             <i class="bi bi-pencil-square"></i>
+                                        </button>
+
+                                        <!-- DELETE BUTTON -->
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-danger ms-1 workflow-delete-btn"
+                                                title="Delete Step"
+                                                onclick="deleteWorkflowNode(event, this.closest('.workflow-node'))">
+                                            <i class="bi bi-trash"></i>
                                         </button>
                                     </div>
 
@@ -699,6 +731,14 @@
                                                 onclick="editWorkflowNode(event, this.closest('.workflow-node'), 'invoice')">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
+
+                                        <!-- DELETE BUTTON -->
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-danger ms-1 workflow-delete-btn"
+                                                title="Delete Step"
+                                                onclick="deleteWorkflowNode(event, this.closest('.workflow-node'))">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
                                     </div>
 
                                 </div>
@@ -752,6 +792,14 @@
                                                 title="Edit Alert"
                                                 onclick="editWorkflowNode(event, this.closest('.workflow-node'), 'accounts')">
                                             <i class="bi bi-pencil-square"></i>
+                                        </button>
+
+                                        <!-- DELETE BUTTON -->
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-danger ms-1 workflow-delete-btn"
+                                                title="Delete Step"
+                                                onclick="deleteWorkflowNode(event, this.closest('.workflow-node'))">
+                                            <i class="bi bi-trash"></i>
                                         </button>
                                     </div>
 
@@ -979,10 +1027,11 @@
     <style>
 
         /* =========================================================
-           COMPACT EDIT BUTTON & WORKFLOW NODE STYLING
+           COMPACT EDIT & DELETE BUTTONS & WORKFLOW NODE STYLING
            ========================================================= */
 
-        .workflow-edit-btn {
+        .workflow-edit-btn,
+        .workflow-delete-btn {
             width: 32px !important;
             height: 32px !important;
             min-width: 32px !important;
@@ -1003,6 +1052,13 @@
                 background-color: #ffc107 !important;
                 border-color: #ffc107 !important;
                 color: #212529 !important;
+            }
+
+            .workflow-delete-btn:hover,
+            .workflow-delete-btn:focus {
+                background-color: #dc3545 !important;
+                border-color: #dc3545 !important;
+                color: #ffffff !important;
             }
 
         .workflow-node {
@@ -1436,6 +1492,13 @@
                 '<i class="bi bi-pencil-square"></i>' +
                 '</button>' +
 
+                '<button type="button" ' +
+                'class="btn btn-sm btn-outline-danger ms-1 workflow-delete-btn" ' +
+                'title="Delete Step" ' +
+                'onclick="deleteWorkflowNode(event, this.closest(\'.workflow-node\'))">' +
+                '<i class="bi bi-trash"></i>' +
+                '</button>' +
+
                 '</div>';
 
             node.onclick =
@@ -1465,9 +1528,16 @@
                 '<i class="bi bi-arrow-down fs-5"></i>';
 
 
-            flow.appendChild(line);
+            var endNode =
+                flow.querySelector('.workflow-node[data-node="end"]');
 
-            flow.appendChild(node);
+            if (endNode) {
+                flow.insertBefore(node, endNode);
+                flow.insertBefore(line, endNode);
+            } else {
+                flow.appendChild(line);
+                flow.appendChild(node);
+            }
 
 
             selectWorkflowNode(
@@ -1525,6 +1595,7 @@
 
 
             var title =
+
                 selected.querySelector(
                     ".workflow-node-title"
                 );
@@ -1538,6 +1609,73 @@
             }
 
         }
+
+
+        /* =========================================================
+           DELETE WORKFLOW NODE
+           ========================================================= */
+
+        function deleteWorkflowNode(event, node) {
+
+            // Prevent selecting the node or triggering parent click handlers
+            if (event) {
+                event.stopPropagation();
+            }
+
+            if (!node) {
+                return;
+            }
+
+            var titleElem = node.querySelector(".workflow-node-title");
+            var stepName = titleElem ? titleElem.textContent.trim() : "this step";
+
+            var confirmed = confirm("Are you sure you want to delete '" + stepName + "'?");
+            if (!confirmed) {
+                return;
+            }
+
+            var wasSelected = node.classList.contains("border-primary") || node.classList.contains("selected");
+
+            // Remove associated connector (arrow down)
+            var next = node.nextElementSibling;
+            var prev = node.previousElementSibling;
+
+            if (next && (next.classList.contains("text-secondary") || (next.querySelector && next.querySelector(".bi-arrow-down")))) {
+                next.remove();
+            } else if (prev && (prev.classList.contains("text-secondary") || (prev.querySelector && prev.querySelector(".bi-arrow-down")))) {
+                prev.remove();
+            }
+
+            node.remove();
+
+            // If the deleted node was selected, update selection to an available step
+            if (wasSelected) {
+                var remainingNodes = document.querySelectorAll("#workflowFlow .workflow-node");
+                var nextSelection = null;
+
+                for (var i = 0; i < remainingNodes.length; i++) {
+                    if (remainingNodes[i].getAttribute("data-node") !== "end") {
+                        nextSelection = remainingNodes[i];
+                        break;
+                    }
+                }
+
+                if (nextSelection) {
+                    var nodeType = nextSelection.getAttribute("data-node") || "trigger";
+                    selectWorkflowNode(nextSelection, nodeType);
+                } else if (remainingNodes.length > 0) {
+                    var nodeType = remainingNodes[0].getAttribute("data-node") || "end";
+                    selectWorkflowNode(remainingNodes[0], nodeType);
+                } else {
+                    var stepNameInput = document.getElementById("propertyStepName");
+                    if (stepNameInput) stepNameInput.value = "";
+                    var conditionInput = document.getElementById("propertyCondition");
+                    if (conditionInput) conditionInput.value = "";
+                }
+            }
+        }
+
+        window.deleteWorkflowNode = deleteWorkflowNode;
 
 
 
