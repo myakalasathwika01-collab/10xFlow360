@@ -10,7 +10,7 @@
             <div class="modal-header border-0 d-flex align-items-center justify-content-between bg-white text-dark" style="padding: 18px 24px;">
                 <div>
                     <h4>
-                        Edit Alert
+                        Edit
                     </h4>
                     <p class="mb-0 text-secondary" style="font-size: 0.85rem;">
                         Configure the query, trigger rules, message, and recipients.
@@ -323,36 +323,36 @@ ORDER BY T0."DocDate" DESC;</textarea>
                 <div class="sap-users-count" id="sapB1UserCount">4 SAP B1 users</div>
 
                 <div class="sap-users-list-container">
-                    <div class="sap-user-row" data-user-name="TENX10" data-designation="Designation not set" data-department="General" data-mobile="7569664424">
+                    <div class="sap-user-row" onclick="addSapB1UserFromRow(this)" data-user-name="TENX10" data-designation="Designation not set" data-department="General" data-mobile="7569664424">
                         <div class="sap-user-name">TENX10</div>
                         <div class="sap-user-designation">Designation not set</div>
                         <div class="sap-user-department">General</div>
                         <div class="sap-user-mobile">7569664424</div>
-                        <div class="sap-user-action"><button type="button" class="sap-user-add-btn" onclick="addSapB1User(this, 'TENX10', 'TENX10', 'Designation not set', 'General', '7569664424', '')"><i class="bi bi-plus-lg me-1"></i> Add</button></div>
+                        <div class="sap-user-action"><button type="button" class="sap-user-add-btn" onclick="event.stopPropagation(); addSapB1User(this, 'TENX10', 'TENX10', 'Designation not set', 'General', '7569664424', '')"><i class="bi bi-plus-lg me-1"></i> Add</button></div>
                     </div>
 
-                    <div class="sap-user-row" data-user-name="Tenx001" data-designation="Designation not set" data-department="General" data-mobile="9923588321">
+                    <div class="sap-user-row" onclick="addSapB1UserFromRow(this)" data-user-name="Tenx001" data-designation="Designation not set" data-department="General" data-mobile="9923588321">
                         <div class="sap-user-name">Tenx001</div>
                         <div class="sap-user-designation">Designation not set</div>
                         <div class="sap-user-department">General</div>
                         <div class="sap-user-mobile">9923588321</div>
-                        <div class="sap-user-action"><button type="button" class="sap-user-add-btn" onclick="addSapB1User(this, 'Tenx001', 'Tenx001', 'Designation not set', 'General', '9923588321', '')"><i class="bi bi-plus-lg me-1"></i> Add</button></div>
+                        <div class="sap-user-action"><button type="button" class="sap-user-add-btn" onclick="event.stopPropagation(); addSapB1User(this, 'Tenx001', 'Tenx001', 'Designation not set', 'General', '9923588321', '')"><i class="bi bi-plus-lg me-1"></i> Add</button></div>
                     </div>
 
-                    <div class="sap-user-row" data-user-name="Tenx02" data-designation="Designation not set" data-department="General" data-mobile="9160444895">
+                    <div class="sap-user-row" onclick="addSapB1UserFromRow(this)" data-user-name="Tenx02" data-designation="Designation not set" data-department="General" data-mobile="9160444895">
                         <div class="sap-user-name">Tenx02</div>
                         <div class="sap-user-designation">Designation not set</div>
                         <div class="sap-user-department">General</div>
                         <div class="sap-user-mobile">9160444895</div>
-                        <div class="sap-user-action"><button type="button" class="sap-user-add-btn" onclick="addSapB1User(this, 'Tenx02', 'Tenx02', 'Designation not set', 'General', '9160444895', '')"><i class="bi bi-plus-lg me-1"></i> Add</button></div>
+                        <div class="sap-user-action"><button type="button" class="sap-user-add-btn" onclick="event.stopPropagation(); addSapB1User(this, 'Tenx02', 'Tenx02', 'Designation not set', 'General', '9160444895', '')"><i class="bi bi-plus-lg me-1"></i> Add</button></div>
                     </div>
 
-                    <div class="sap-user-row" data-user-name="manager" data-designation="Designation not set" data-department="General" data-mobile="+917013883110">
+                    <div class="sap-user-row" onclick="addSapB1UserFromRow(this)" data-user-name="manager" data-designation="Designation not set" data-department="General" data-mobile="+917013883110">
                         <div class="sap-user-name">manager</div>
                         <div class="sap-user-designation">Designation not set</div>
                         <div class="sap-user-department">General</div>
                         <div class="sap-user-mobile">+917013883110</div>
-                        <div class="sap-user-action"><button type="button" class="sap-user-add-btn" onclick="addSapB1User(this, 'manager', 'manager', 'Designation not set', 'General', '+917013883110', '')"><i class="bi bi-plus-lg me-1"></i> Add</button></div>
+                        <div class="sap-user-action"><button type="button" class="sap-user-add-btn" onclick="event.stopPropagation(); addSapB1User(this, 'manager', 'manager', 'Designation not set', 'General', '+917013883110', '')"><i class="bi bi-plus-lg me-1"></i> Add</button></div>
                     </div>
                 </div>
             </div>
@@ -425,15 +425,64 @@ ORDER BY T0."DocDate" DESC;</textarea>
                 <!-- COUNT -->
                 <div class="saved-query-count"
                      id="savedQueryCount">
-                    0 saved queries
+                    4 saved queries
                 </div>
 
                 <!-- EMPTY / QUERY LIST -->
                 <div class="saved-query-list-container"
                      id="savedQueryList">
 
+                    <div class="saved-query-row" onclick="selectSavedQuery(this.getAttribute('data-query-sql'))" data-query-name="Open Purchase Orders" data-query-category="Purchasing" data-query-sql="SELECT T0.&quot;DocEntry&quot;, T0.&quot;DocNum&quot;, T0.&quot;DocDate&quot;, T0.&quot;CardCode&quot;, T0.&quot;CardName&quot;, T0.&quot;DocTotal&quot; FROM OPOR T0 WHERE T0.&quot;DocStatus&quot; = 'O' ORDER BY T0.&quot;DocDate&quot; DESC;">
+                        <div>
+                            <div class="saved-query-name">Open Purchase Orders</div>
+                            <div class="saved-query-meta">Category: Purchasing | Table: OPOR</div>
+                        </div>
+                        <div class="text-end">
+                            <button type="button" class="btn saved-query-open-btn" onclick="event.stopPropagation(); selectSavedQuery(this.closest('.saved-query-row').getAttribute('data-query-sql'))">
+                                Select
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="saved-query-row" onclick="selectSavedQuery(this.getAttribute('data-query-sql'))" data-query-name="Open Sales Orders" data-query-category="Sales" data-query-sql="SELECT T0.&quot;DocEntry&quot;, T0.&quot;DocNum&quot;, T0.&quot;DocDate&quot;, T0.&quot;DocDueDate&quot;, T0.&quot;CardCode&quot;, T0.&quot;CardName&quot;, T0.&quot;DocTotal&quot;, T0.&quot;DocStatus&quot; FROM ORDR T0 WHERE T0.&quot;DocStatus&quot; = 'O' ORDER BY T0.&quot;DocDate&quot; DESC;">
+                        <div>
+                            <div class="saved-query-name">Open Sales Orders</div>
+                            <div class="saved-query-meta">Category: Sales | Table: ORDR</div>
+                        </div>
+                        <div class="text-end">
+                            <button type="button" class="btn saved-query-open-btn" onclick="event.stopPropagation(); selectSavedQuery(this.closest('.saved-query-row').getAttribute('data-query-sql'))">
+                                Select
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="saved-query-row" onclick="selectSavedQuery(this.getAttribute('data-query-sql'))" data-query-name="Overdue Invoices" data-query-category="Finance" data-query-sql="SELECT T0.&quot;DocEntry&quot;, T0.&quot;DocNum&quot;, T0.&quot;DocDueDate&quot;, T0.&quot;CardCode&quot;, T0.&quot;CardName&quot;, T0.&quot;DocTotal&quot; FROM OINV T0 WHERE T0.&quot;DocStatus&quot; = 'O' AND T0.&quot;DocDueDate&quot; &lt; CURRENT_DATE ORDER BY T0.&quot;DocDueDate&quot; ASC;">
+                        <div>
+                            <div class="saved-query-name">Overdue Invoices</div>
+                            <div class="saved-query-meta">Category: Finance | Table: OINV</div>
+                        </div>
+                        <div class="text-end">
+                            <button type="button" class="btn saved-query-open-btn" onclick="event.stopPropagation(); selectSavedQuery(this.closest('.saved-query-row').getAttribute('data-query-sql'))">
+                                Select
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="saved-query-row" onclick="selectSavedQuery(this.getAttribute('data-query-sql'))" data-query-name="Low Stock Items" data-query-category="Inventory" data-query-sql="SELECT T0.&quot;ItemCode&quot;, T0.&quot;ItemName&quot;, T0.&quot;OnHand&quot;, T0.&quot;IsCommited&quot;, T0.&quot;OnOrder&quot;, (T0.&quot;OnHand&quot; - T0.&quot;IsCommited&quot; + T0.&quot;OnOrder&quot;) AS &quot;Available&quot; FROM OITM T0 WHERE T0.&quot;OnHand&quot; &lt; T0.&quot;MinStock&quot;;">
+                        <div>
+                            <div class="saved-query-name">Low Stock Items</div>
+                            <div class="saved-query-meta">Category: Inventory | Table: OITM</div>
+                        </div>
+                        <div class="text-end">
+                            <button type="button" class="btn saved-query-open-btn" onclick="event.stopPropagation(); selectSavedQuery(this.closest('.saved-query-row').getAttribute('data-query-sql'))">
+                                Select
+                            </button>
+                        </div>
+                    </div>
+
                     <div class="saved-query-empty-state"
-                         id="savedQueryEmptyState">
+                         id="savedQueryEmptyState"
+                         style="display: none;">
                         No saved queries found.
                     </div>
 
@@ -593,6 +642,7 @@ ORDER BY T0."DocDate" DESC;</textarea>
         border-bottom: 1px solid #e7e9ed;
         background: #ffffff;
         transition: background-color 0.12s ease;
+        cursor: pointer;
     }
 
         .sap-user-row:last-child {
@@ -1021,10 +1071,16 @@ ORDER BY T0."DocDate" DESC;</textarea>
         align-items: center;
         gap: 12px;
         border-bottom: 1px solid #e7e9ed;
+        cursor: pointer;
+        transition: background-color 0.12s ease;
     }
 
         .saved-query-row:last-child {
             border-bottom: 0;
+        }
+
+        .saved-query-row:hover {
+            background-color: #fafafa;
         }
 
     .saved-query-name {
@@ -1646,6 +1702,10 @@ ORDER BY T0."DocDate" DESC;</textarea>
         var modalElem = document.getElementById("editAlertModal");
         if (!modalElem) return;
 
+        // Ensure child modals are also closed if open
+        closeSapB1UsersModal();
+        closeSavedQueryModal();
+
         try {
             if (alertModalInstance) {
                 alertModalInstance.hide();
@@ -1655,12 +1715,14 @@ ORDER BY T0."DocDate" DESC;</textarea>
         }
 
         if (window.jQuery && typeof jQuery(modalElem).modal === "function") {
-            jQuery(modalElem).modal("hide");
+            try { jQuery(modalElem).modal("hide"); } catch (e) {}
         }
 
         modalElem.classList.remove("show");
         modalElem.style.display = "none";
+        modalElem.setAttribute("aria-hidden", "true");
         document.body.classList.remove("modal-open");
+        document.body.style.overflow = "";
         var backdrop = document.querySelector(".manual-modal-backdrop");
         if (backdrop) {
             backdrop.remove();
@@ -1747,40 +1809,58 @@ ORDER BY T0."DocDate" DESC;</textarea>
         var modalElem = document.getElementById("selectSapB1UsersModal");
         if (!modalElem) return;
 
-        if (window.bootstrap && bootstrap.Modal) {
-            sapB1UsersModalInstance = bootstrap.Modal.getOrCreateInstance(modalElem, {
-                backdrop: 'static',
-                keyboard: true
-            });
-            sapB1UsersModalInstance.show();
-        } else if (window.jQuery && typeof jQuery(modalElem).modal === "function") {
-            jQuery(modalElem).modal("show");
-        } else {
+        try {
+            if (window.bootstrap && bootstrap.Modal) {
+                sapB1UsersModalInstance = bootstrap.Modal.getOrCreateInstance(modalElem, {
+                    backdrop: 'static',
+                    keyboard: true
+                });
+                sapB1UsersModalInstance.show();
+            } else if (window.jQuery && typeof jQuery(modalElem).modal === "function") {
+                jQuery(modalElem).modal("show");
+            } else {
+                modalElem.classList.add("show");
+                modalElem.style.display = "block";
+                modalElem.setAttribute("aria-hidden", "false");
+            }
+        } catch (e) {
+            console.warn("Bootstrap modal error:", e);
             modalElem.classList.add("show");
             modalElem.style.display = "block";
+            modalElem.setAttribute("aria-hidden", "false");
         }
 
         setTimeout(function () {
+            var backdrops = document.querySelectorAll(".modal-backdrop");
+            if (backdrops.length > 1) {
+                backdrops[backdrops.length - 1].style.zIndex = "1058";
+            }
             var search = document.getElementById("sapB1UserSearch");
             if (search) search.focus();
-        }, 250);
+        }, 50);
     }
 
     function closeSapB1UsersModal() {
         var modalElem = document.getElementById("selectSapB1UsersModal");
         if (!modalElem) return;
 
-        if (sapB1UsersModalInstance) {
-            sapB1UsersModalInstance.hide();
-            return;
+        try {
+            if (sapB1UsersModalInstance) {
+                sapB1UsersModalInstance.hide();
+            }
+        } catch (e) {
+            console.warn("Error hiding sap users modal:", e);
         }
 
         if (window.jQuery && typeof jQuery(modalElem).modal === "function") {
-            jQuery(modalElem).modal("hide");
-        } else {
-            modalElem.classList.remove("show");
-            modalElem.style.display = "none";
+            try { jQuery(modalElem).modal("hide"); } catch (e) {}
         }
+
+        modalElem.classList.remove("show");
+        modalElem.style.display = "none";
+        modalElem.setAttribute("aria-hidden", "true");
+
+        cleanupChildModalBackdrop();
     }
 
     function filterSapB1Users() {
@@ -1824,6 +1904,16 @@ ORDER BY T0."DocDate" DESC;</textarea>
         if (count) count.textContent = rows.length + " SAP B1 users";
     }
 
+    function addSapB1UserFromRow(row) {
+        if (!row) return;
+        var btn = row.querySelector(".sap-user-add-btn");
+        var name = row.getAttribute("data-user-name") || "";
+        var designation = row.getAttribute("data-designation") || "";
+        var department = row.getAttribute("data-department") || "";
+        var mobile = row.getAttribute("data-mobile") || "";
+        addSapB1User(btn, name, name, designation, department, mobile, "");
+    }
+
     function addSapB1User(button, name, code, designation, department, mobile, email) {
         var container = document.getElementById("alertModalRecipientsList");
         if (!container) return;
@@ -1834,9 +1924,13 @@ ORDER BY T0."DocDate" DESC;</textarea>
         existingRows.forEach(function (row) {
             var codeInput = row.querySelector(".recipient-code");
             var nameInput = row.querySelector(".recipient-name");
+            var phoneInput = row.querySelector(".recipient-phone");
             var existingCode = codeInput ? codeInput.value.trim().toLowerCase() : "";
             var existingName = nameInput ? nameInput.value.trim().toLowerCase() : "";
-            if ((code && existingCode === code.toLowerCase()) || (!code && existingName === name.toLowerCase())) {
+            var existingPhone = phoneInput ? phoneInput.value.trim().toLowerCase() : "";
+            if ((code && existingCode === code.toLowerCase()) ||
+                (!code && existingName === name.toLowerCase()) ||
+                (mobile && existingPhone === mobile.toLowerCase())) {
                 duplicate = true;
             }
         });
@@ -1847,47 +1941,71 @@ ORDER BY T0."DocDate" DESC;</textarea>
                 button.classList.add("added");
                 button.innerHTML = '<i class="bi bi-check-lg me-1"></i> Added';
             }
+            closeSapB1UsersModal();
             return;
         }
 
-        var row = document.createElement("div");
-        row.className = "recipient-row d-flex align-items-center gap-2";
-        row.setAttribute("data-recipient-source", "SAP B1 User");
-        row.setAttribute("data-designation", designation || "");
-        row.setAttribute("data-department", department || "");
+        // If the only row currently present is blank/empty, fill it instead of appending
+        var firstRow = existingRows.length === 1 ? existingRows[0] : null;
+        var firstRowName = firstRow ? (firstRow.querySelector(".recipient-name")?.value || "").trim() : "";
+        var firstRowPhone = firstRow ? (firstRow.querySelector(".recipient-phone")?.value || "").trim() : "";
 
-        row.innerHTML =
-            '<div class="recipient-field recipient-name-field">' +
-            '    <input type="text" class="form-control form-control-sm recipient-name" value="" placeholder="Name" />' +
-            '</div>' +
-            '<div class="recipient-field recipient-code-field">' +
-            '    <input type="text" class="form-control form-control-sm recipient-code" value="" placeholder="Code *" />' +
-            '</div>' +
-            '<div class="recipient-field recipient-phone-field">' +
-            '    <input type="text" class="form-control form-control-sm recipient-phone" value="" placeholder="WhatsApp mobile" />' +
-            '</div>' +
-            '<div class="recipient-field recipient-email-field">' +
-            '    <input type="email" class="form-control form-control-sm recipient-email" value="" placeholder="Email" />' +
-            '</div>' +
-            '<button type="button" class="btn btn-sm btn-outline-secondary rounded-pill recipient-remove-btn" onclick="removeRecipientRow(this)">Remove</button>';
+        if (firstRow && !firstRowName && !firstRowPhone) {
+            var nInput = firstRow.querySelector(".recipient-name");
+            var cInput = firstRow.querySelector(".recipient-code");
+            var pInput = firstRow.querySelector(".recipient-phone");
+            var eInput = firstRow.querySelector(".recipient-email");
 
-        var nameInput = row.querySelector(".recipient-name");
-        var codeInput = row.querySelector(".recipient-code");
-        var phoneInput = row.querySelector(".recipient-phone");
-        var emailInput = row.querySelector(".recipient-email");
+            if (nInput) nInput.value = name;
+            if (cInput) cInput.value = code;
+            if (pInput) pInput.value = mobile;
+            if (eInput) eInput.value = email || "";
+            firstRow.setAttribute("data-recipient-source", "SAP B1 User");
+            firstRow.setAttribute("data-designation", designation || "");
+            firstRow.setAttribute("data-department", department || "");
+        } else {
+            var row = document.createElement("div");
+            row.className = "recipient-row d-flex align-items-center gap-2";
+            row.setAttribute("data-recipient-source", "SAP B1 User");
+            row.setAttribute("data-designation", designation || "");
+            row.setAttribute("data-department", department || "");
 
-        if (nameInput) nameInput.value = name;
-        if (codeInput) codeInput.value = code;
-        if (phoneInput) phoneInput.value = mobile;
-        if (emailInput) emailInput.value = email || "";
+            row.innerHTML =
+                '<div class="recipient-field recipient-name-field">' +
+                '    <input type="text" class="form-control form-control-sm recipient-name" value="" placeholder="Name" />' +
+                '</div>' +
+                '<div class="recipient-field recipient-code-field">' +
+                '    <input type="text" class="form-control form-control-sm recipient-code" value="" placeholder="Code *" />' +
+                '</div>' +
+                '<div class="recipient-field recipient-phone-field">' +
+                '    <input type="text" class="form-control form-control-sm recipient-phone" value="" placeholder="WhatsApp mobile" />' +
+                '</div>' +
+                '<div class="recipient-field recipient-email-field">' +
+                '    <input type="email" class="form-control form-control-sm recipient-email" value="" placeholder="Email" />' +
+                '</div>' +
+                '<button type="button" class="btn btn-sm btn-outline-secondary rounded-pill recipient-remove-btn" onclick="removeRecipientRow(this)">Remove</button>';
 
-        container.appendChild(row);
+            var nameInput = row.querySelector(".recipient-name");
+            var codeInput = row.querySelector(".recipient-code");
+            var phoneInput = row.querySelector(".recipient-phone");
+            var emailInput = row.querySelector(".recipient-email");
+
+            if (nameInput) nameInput.value = name;
+            if (codeInput) codeInput.value = code;
+            if (phoneInput) phoneInput.value = mobile;
+            if (emailInput) emailInput.value = email || "";
+
+            container.appendChild(row);
+        }
 
         if (button) {
             button.disabled = true;
             button.classList.add("added");
             button.innerHTML = '<i class="bi bi-check-lg me-1"></i> Added';
         }
+
+        // Close the popup after selecting the user
+        closeSapB1UsersModal();
     }
 
 
@@ -1898,199 +2016,175 @@ ORDER BY T0."DocDate" DESC;</textarea>
     var savedQueryModalInstance = null;
 
     function openSavedQuery() {
-
         var modalElem = document.getElementById("openSavedQueryModal");
-
         if (!modalElem) return;
 
-        if (window.bootstrap && bootstrap.Modal) {
-
-            savedQueryModalInstance =
-                bootstrap.Modal.getOrCreateInstance(
-                    modalElem,
-                    {
-                        backdrop: 'static',
-                        keyboard: true
-                    }
-                );
-
-            savedQueryModalInstance.show();
-
-        } else if (window.jQuery &&
-            typeof jQuery(modalElem).modal === "function") {
-
-            jQuery(modalElem).modal("show");
-
-        } else {
-
+        try {
+            if (window.bootstrap && bootstrap.Modal) {
+                savedQueryModalInstance = bootstrap.Modal.getOrCreateInstance(modalElem, {
+                    backdrop: 'static',
+                    keyboard: true
+                });
+                savedQueryModalInstance.show();
+            } else if (window.jQuery && typeof jQuery(modalElem).modal === "function") {
+                jQuery(modalElem).modal("show");
+            } else {
+                modalElem.classList.add("show");
+                modalElem.style.display = "block";
+                modalElem.setAttribute("aria-hidden", "false");
+            }
+        } catch (e) {
+            console.warn("Bootstrap modal error:", e);
             modalElem.classList.add("show");
             modalElem.style.display = "block";
             modalElem.setAttribute("aria-hidden", "false");
-
         }
 
         setTimeout(function () {
-
-            var search =
-                document.getElementById("savedQuerySearch");
-
-            if (search) {
-                search.focus();
+            var backdrops = document.querySelectorAll(".modal-backdrop");
+            if (backdrops.length > 1) {
+                backdrops[backdrops.length - 1].style.zIndex = "1068";
             }
-
-        }, 250);
+            var search = document.getElementById("savedQuerySearch");
+            if (search) search.focus();
+        }, 50);
     }
-
 
     function closeSavedQueryModal() {
-
-        var modalElem =
-            document.getElementById("openSavedQueryModal");
-
+        var modalElem = document.getElementById("openSavedQueryModal");
         if (!modalElem) return;
 
-        if (savedQueryModalInstance) {
-
-            savedQueryModalInstance.hide();
-            return;
-
+        try {
+            if (savedQueryModalInstance) {
+                savedQueryModalInstance.hide();
+            }
+        } catch (e) {
+            console.warn("Error hiding saved query modal:", e);
         }
 
-        if (window.jQuery &&
-            typeof jQuery(modalElem).modal === "function") {
-
-            jQuery(modalElem).modal("hide");
-
-        } else {
-
-            modalElem.classList.remove("show");
-            modalElem.style.display = "none";
-            modalElem.setAttribute("aria-hidden", "true");
-
+        if (window.jQuery && typeof jQuery(modalElem).modal === "function") {
+            try { jQuery(modalElem).modal("hide"); } catch (e) {}
         }
+
+        modalElem.classList.remove("show");
+        modalElem.style.display = "none";
+        modalElem.setAttribute("aria-hidden", "true");
+
+        cleanupChildModalBackdrop();
     }
 
-
     function filterSavedQueries() {
-
-        var input =
-            document.getElementById("savedQuerySearch");
-
-        var rows =
-            document.querySelectorAll(
-                "#openSavedQueryModal .saved-query-row"
-            );
-
-        var term =
-            input
-                ? input.value.toLowerCase().trim()
-                : "";
-
+        var input = document.getElementById("savedQuerySearch");
+        var rows = document.querySelectorAll("#openSavedQueryModal .saved-query-row");
+        var term = input ? input.value.toLowerCase().trim() : "";
         var visible = 0;
 
         rows.forEach(function (row) {
-
             var searchable = (
                 row.getAttribute("data-query-name") || ""
             ) + " " + (
-                    row.getAttribute("data-query-category") || ""
-                ) + " " + (
-                    row.getAttribute("data-query-sql") || ""
-                );
+                row.getAttribute("data-query-category") || ""
+            ) + " " + (
+                row.getAttribute("data-query-sql") || ""
+            );
 
-            var match =
-                searchable.toLowerCase().indexOf(term) !== -1;
-
+            var match = searchable.toLowerCase().indexOf(term) !== -1;
             row.style.display = match ? "grid" : "none";
-
             if (match) {
                 visible++;
             }
-
         });
 
-        var count =
-            document.getElementById("savedQueryCount");
-
+        var count = document.getElementById("savedQueryCount");
         if (count) {
-
-            count.textContent =
-                visible +
-                " saved quer" +
-                (visible === 1 ? "y" : "ies");
+            count.textContent = visible + " saved quer" + (visible === 1 ? "y" : "ies");
         }
 
-        var empty =
-            document.getElementById("savedQueryEmptyState");
-
+        var empty = document.getElementById("savedQueryEmptyState");
         if (empty) {
-
-            empty.style.display =
-                visible === 0 ? "flex" : "none";
+            empty.style.display = visible === 0 ? "flex" : "none";
         }
     }
 
-
     function refreshSavedQueries() {
-
-        var input =
-            document.getElementById("savedQuerySearch");
-
+        var input = document.getElementById("savedQuerySearch");
         if (input) {
             input.value = "";
         }
 
-        var rows =
-            document.querySelectorAll(
-                "#openSavedQueryModal .saved-query-row"
-            );
-
+        var rows = document.querySelectorAll("#openSavedQueryModal .saved-query-row");
         rows.forEach(function (row) {
             row.style.display = "grid";
         });
 
-        var count =
-            document.getElementById("savedQueryCount");
-
+        var count = document.getElementById("savedQueryCount");
         if (count) {
-
-            count.textContent =
-                rows.length +
-                " saved quer" +
-                (rows.length === 1 ? "y" : "ies");
+            count.textContent = rows.length + " saved quer" + (rows.length === 1 ? "y" : "ies");
         }
 
-        var empty =
-            document.getElementById("savedQueryEmptyState");
-
+        var empty = document.getElementById("savedQueryEmptyState");
         if (empty) {
-
-            empty.style.display =
-                rows.length === 0 ? "flex" : "none";
+            empty.style.display = rows.length === 0 ? "flex" : "none";
         }
     }
 
-
     function selectSavedQuery(queryText) {
-
-        var queryInput =
-            document.getElementById("alertModalQuery");
-
+        var queryInput = document.getElementById("alertModalQuery");
         if (queryInput) {
             queryInput.value = queryText || "";
         }
-
         closeSavedQueryModal();
     }
 
+    function cleanupChildModalBackdrop() {
+        var editModal = document.getElementById("editAlertModal");
+        var isEditModalOpen = editModal && (editModal.classList.contains("show") || editModal.style.display === "block");
+
+        var backdrops = document.querySelectorAll(".modal-backdrop");
+        if (isEditModalOpen) {
+            for (var i = 1; i < backdrops.length; i++) {
+                backdrops[i].remove();
+            }
+            document.body.classList.add("modal-open");
+            document.body.style.overflow = "hidden";
+        } else {
+            backdrops.forEach(function (b) { b.remove(); });
+            document.body.classList.remove("modal-open");
+            document.body.style.overflow = "";
+        }
+    }
 
     document.addEventListener("DOMContentLoaded", function () {
-        var modalElem = document.getElementById("editAlertModal");
-        if (modalElem) {
-            modalElem.addEventListener("click", function (e) {
-                if (e.target === modalElem) {
+        var editModalElem = document.getElementById("editAlertModal");
+        if (editModalElem) {
+            editModalElem.addEventListener("click", function (e) {
+                if (e.target === editModalElem) {
                     closeEditAlertModal();
                 }
+            });
+        }
+
+        var sapUsersModalElem = document.getElementById("selectSapB1UsersModal");
+        if (sapUsersModalElem) {
+            sapUsersModalElem.addEventListener("click", function (e) {
+                if (e.target === sapUsersModalElem) {
+                    closeSapB1UsersModal();
+                }
+            });
+            sapUsersModalElem.addEventListener("hidden.bs.modal", function () {
+                cleanupChildModalBackdrop();
+            });
+        }
+
+        var savedQueryModalElem = document.getElementById("openSavedQueryModal");
+        if (savedQueryModalElem) {
+            savedQueryModalElem.addEventListener("click", function (e) {
+                if (e.target === savedQueryModalElem) {
+                    closeSavedQueryModal();
+                }
+            });
+            savedQueryModalElem.addEventListener("hidden.bs.modal", function () {
+                cleanupChildModalBackdrop();
             });
         }
     });</script>
