@@ -1,16 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace _10xFlow360.Models
 {
-    [Table("WAI_WORKFLOW")]
+    [Table("WAI_WORKFLOW", Schema = "ZLEVERIWMS")]
     public class Workflow
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("WORKFLOW_ID")]
         public long WorkflowId { get; set; }
 

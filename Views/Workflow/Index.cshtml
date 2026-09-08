@@ -6,103 +6,141 @@
 
 <div class="container-fluid">
 
-    <!-- ===================================================== -->
-    <!-- HEADER -->
-    <!-- ===================================================== -->
+    <!-- ========================================================= -->
+    <!-- MAIN CARD -->
+    <!-- ========================================================= -->
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-
-        <div>
-            <h2 class="mb-1">Workflows</h2>
-
-            <p class="text-muted mb-0">
-                Manage and design your SAP business workflows
-            </p>
-        </div>
-
-        <button type="button"
-                class="btn btn-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#createWorkflowModal">
-
-            <i class="bi bi-plus-lg"></i>
-
-            New Workflow
-
-        </button>
-
-    </div>
-
-
-    <!-- ===================================================== -->
-    <!-- SUCCESS MESSAGE -->
-    <!-- ===================================================== -->
-
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show">
-
-            @TempData["SuccessMessage"]
-
-            <button type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert">
-            </button>
-
-        </div>
-    }
-
-
-    <!-- ===================================================== -->
-    <!-- ERROR MESSAGE -->
-    <!-- ===================================================== -->
-
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-danger alert-dismissible fade show">
-
-            @TempData["ErrorMessage"]
-
-            <button type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert">
-            </button>
-
-        </div>
-    }
-
-
-    <!-- ===================================================== -->
-    <!-- WORKFLOW TABLE -->
-    <!-- ===================================================== -->
-
-    <div class="card shadow-sm">
+    <div class="card shadow-sm border-0">
 
         <div class="card-body">
 
+            <!-- ===================================================== -->
+            <!-- CARD HEADER -->
+            <!-- ===================================================== -->
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <div>
+
+                    <h4 class="mb-1">
+                        Workflows
+                    </h4>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- ADD NEW WORKFLOW -->
+                <!-- ================================================= -->
+
+                <button type="button"
+                        class="btn btn-sm btn-danger"
+                        data-bs-toggle="modal"
+                        data-bs-target="#createWorkflowModal">
+
+                    <i class="bi bi-plus-lg me-1"></i>
+
+                    Add New Workflow
+
+                </button>
+
+            </div>
+
+
+            <!-- ===================================================== -->
+            <!-- SUCCESS MESSAGE -->
+            <!-- ===================================================== -->
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show"
+                     role="alert">
+
+                    @TempData["SuccessMessage"]
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert">
+                    </button>
+
+                </div>
+            }
+
+
+            <!-- ===================================================== -->
+            <!-- ERROR MESSAGE -->
+            <!-- ===================================================== -->
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show"
+                     role="alert">
+
+                    @TempData["ErrorMessage"]
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert">
+                    </button>
+
+                </div>
+            }
+
+
+            <!-- ===================================================== -->
+            <!-- WORKFLOW TABLE -->
+            <!-- ===================================================== -->
+
             <div class="table-responsive">
 
-                <table class="table table-hover align-middle mb-0">
+                <table id="workflowTable"
+                       class="table">
 
-                    <thead>
+                    <!-- ================================================= -->
+                    <!-- TABLE HEADER -->
+                    <!-- ================================================= -->
+
+                    <thead class="table-light">
+
                         <tr>
 
-                            <th>Workflow</th>
+                            <th style="width:45px;">
+                                #
+                            </th>
 
-                            <th>SAP Module</th>
+                            <th>
+                                Workflow
+                            </th>
 
-                            <th>Version</th>
+                            <th>
+                                SAP Module
+                            </th>
 
-                            <th>Status</th>
+                            <th>
+                                Version
+                            </th>
 
-                            <th>Updated On</th>
+                            <th>
+                                Status
+                            </th>
 
-                            <th class="text-center">
-                                Action
+                            <th>
+                                Updated On
+                            </th>
+
+                            <th class="text-center"
+                                style="width:120px;">
+                                Actions
                             </th>
 
                         </tr>
+
                     </thead>
+
+
+                    <!-- ================================================= -->
+                    <!-- TABLE BODY -->
+                    <!-- ================================================= -->
 
                     <tbody>
 
@@ -112,29 +150,50 @@
                             {
                                 <tr>
 
-                                    <!-- Workflow Name -->
+                                    <!-- ================================= -->
+                                    <!-- SERIAL NUMBER -->
+                                    <!-- ================================= -->
+
+                                    <td class="text-center">
+                                        #
+                                    </td>
+
+
+                                    <!-- ================================= -->
+                                    <!-- WORKFLOW -->
+                                    <!-- ================================= -->
+
                                     <td>
 
-                                        <div class="fw-semibold">
+                                        <span class="fw-semibold">
                                             @workflow.WorkflowName
-                                        </div>
+                                        </span>
 
                                     </td>
 
 
-                                    <!-- SAP Module -->
+                                    <!-- ================================= -->
+                                    <!-- SAP MODULE -->
+                                    <!-- ================================= -->
+
                                     <td>
                                         @workflow.SAPModule
                                     </td>
 
 
-                                    <!-- Version -->
+                                    <!-- ================================= -->
+                                    <!-- VERSION -->
+                                    <!-- ================================= -->
+
                                     <td>
                                         @workflow.Version
                                     </td>
 
 
-                                    <!-- Status -->
+                                    <!-- ================================= -->
+                                    <!-- STATUS -->
+                                    <!-- ================================= -->
+
                                     <td>
 
                                         @if (workflow.Status == "Published")
@@ -159,24 +218,51 @@
                                     </td>
 
 
-                                    <!-- Updated Date -->
+                                    <!-- ================================= -->
+                                    <!-- UPDATED ON -->
+                                    <!-- ================================= -->
+
                                     <td>
                                         @workflow.UpdatedOn
                                     </td>
 
 
-                                    <!-- Action -->
+                                    <!-- ================================= -->
+                                    <!-- ACTIONS -->
+                                    <!-- ================================= -->
+
                                     <td class="text-center">
 
+                                        <!-- DESIGN -->
+
                                         <a href="@Url.Action(
-                                            "Design",
-                                            "Workflow",
-                                            new { workflowId = workflow.Id })"
-                                           class="btn btn-sm btn-primary">
+                                                "Design",
+                                                "Workflow",
+                                                new
+                                                {
+                                                    workflowId = workflow.Id
+                                                })"
+                                           class="btn btn-sm btn-outline-primary"
+                                           title="Design">
 
-                                            <i class="bi bi-pencil-square"></i>
+                                            <i class="bi bi-diagram-3"></i>
 
-                                            Design
+                                        </a>
+
+
+                                        <!-- AUTOMATE / TEST -->
+
+                                        <a href="@Url.Action(
+                                                "Test",
+                                                "Workflow",
+                                                new
+                                                {
+                                                    workflowId = workflow.Id
+                                                })"
+                                           class="btn btn-sm btn-outline-primary ms-1"
+                                           title="Automate / Test">
+
+                                            <i class="bi bi-play-circle-fill"></i>
 
                                         </a>
 
@@ -189,7 +275,7 @@
                         {
                             <tr>
 
-                                <td colspan="6"
+                                <td colspan="7"
                                     class="text-center py-5">
 
                                     <div class="text-muted">
@@ -200,10 +286,16 @@
                                             No workflows found
                                         </h5>
 
-                                        <p>
+                                        <p class="mb-0">
+
                                             Click
-                                            <strong>New Workflow</strong>
+
+                                            <strong>
+                                                Add New Workflow
+                                            </strong>
+
                                             to create your first workflow.
+
                                         </p>
 
                                     </div>
@@ -226,8 +318,256 @@
 </div>
 
 
-<!-- ========================================================= -->
+<!-- ============================================================= -->
 <!-- CREATE WORKFLOW POPUP -->
-<!-- ========================================================= -->
+<!-- ============================================================= -->
 
-@Html.Partial("_CreateWorkflow")
+@Html.Partial(
+    "_CreateWorkflow",
+    new _10xFlow360.Models.WorkflowCreateVM()
+)
+
+
+<!-- ============================================================= -->
+<!-- DATATABLE -->
+<!-- ============================================================= -->
+
+@section scripts {
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('#workflowTable').DataTable({
+
+                /* =================================================
+                   PAGE SIZE
+                   ================================================= */
+
+                pageLength: 10,
+
+
+                /* =================================================
+                   PAGE SIZE OPTIONS
+                   ================================================= */
+
+                lengthMenu: [
+                    [10, 25, 50, 100],
+                    [10, 25, 50, 100]
+                ],
+
+
+                /* =================================================
+                   FEATURES
+                   ================================================= */
+
+                searching: true,
+
+                ordering: true,
+
+                paging: true,
+
+                pagingType: "full_numbers",
+
+                info: true,
+
+
+                /* =================================================
+                   DATATABLE LAYOUT
+                   ================================================= */
+
+                dom:
+
+                    '<"row align-items-center mb-3"' +
+
+                    '<"col-md-6"l>' +
+
+                    '<"col-md-6 d-flex justify-content-end"f>' +
+
+                    '>' +
+
+                    '<"row mb-2"' +
+
+                    '<"col-12 d-flex justify-content-end"B>' +
+
+                    '>' +
+
+                    'rt' +
+
+                    '<"row align-items-center mt-3"' +
+
+                    '<"col-md-6"i>' +
+
+                    '<"col-md-6 d-flex justify-content-end"p>' +
+
+                    '>',
+
+
+                /* =================================================
+                   EXPORT BUTTONS
+                   ================================================= */
+
+                buttons: [
+
+                    {
+                        extend: 'copy',
+
+                        text: 'Copy',
+
+                        className:
+                            'btn btn-sm btn-outline-secondary'
+                    },
+
+                    {
+                        extend: 'excel',
+
+                        text: 'Excel',
+
+                        className:
+                            'btn btn-sm btn-outline-secondary'
+                    },
+
+                    {
+                        extend: 'pdf',
+
+                        text: 'PDF',
+
+                        className:
+                            'btn btn-sm btn-outline-secondary'
+                    },
+
+                    {
+                        extend: 'print',
+
+                        text: 'Print',
+
+                        className:
+                            'btn btn-sm btn-outline-secondary'
+                    }
+
+                ],
+
+
+                /* =================================================
+                   LANGUAGE
+                   ================================================= */
+
+                language: {
+
+                    search: "Search:",
+
+                    searchPlaceholder: "Search...",
+
+                    lengthMenu:
+                        "_MENU_ entries per page",
+
+                    info:
+                        "Showing _START_ to _END_ of _TOTAL_ entries",
+
+                    infoEmpty:
+                        "Showing 0 to 0 of 0 entries",
+
+                    emptyTable:
+                        "No workflows found",
+
+                    zeroRecords:
+                        "No matching workflows found",
+
+                    paginate: {
+
+                        first: "«",
+
+                        previous: "‹",
+
+                        next: "›",
+
+                        last: "»"
+
+                    }
+
+                },
+
+
+                /* =================================================
+                   COLUMN DEFINITIONS
+                   ================================================= */
+
+                columnDefs: [
+
+                    {
+                        targets: 0,
+
+                        orderable: false,
+
+                        searchable: false
+                    },
+
+                    {
+                        targets: 6,
+
+                        orderable: false,
+
+                        searchable: false
+                    }
+
+                ],
+
+
+                /* =================================================
+                   DRAW CALLBACK
+                   ================================================= */
+
+                drawCallback: function () {
+
+                    var api = this.api();
+
+                    var pageInfo = api.page.info();
+
+
+                    /* =============================================
+                       SERIAL NUMBER
+                       ============================================= */
+
+                    api.column(0, {
+                        page: 'current'
+                    })
+                        .nodes()
+                        .each(function (cell, i) {
+
+                            cell.innerHTML =
+                                pageInfo.start + i + 1;
+
+                        });
+
+
+                    /* =============================================
+                       ACTIVE PAGINATION BUTTON
+                       BOOTSTRAP DANGER = PINK/RED
+                       ============================================= */
+
+                    $('.dataTables_paginate .paginate_button.current')
+                        .removeClass('btn-primary')
+                        .addClass('btn-danger');
+
+
+                    /* =============================================
+                       BOOTSTRAP DATATABLES PAGINATION
+                       ============================================= */
+
+                    $('.dataTables_paginate .page-item.active .page-link')
+                        .removeClass(
+                            'bg-primary border-primary text-primary'
+                        )
+                        .addClass(
+                            'bg-danger border-danger text-white'
+                        );
+
+                }
+
+            });
+
+        });
+
+    </script>
+
+}

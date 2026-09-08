@@ -17,7 +17,12 @@
     <!-- Font Awesome -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <!-- DataTables Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" />
 
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" />
 </head>
 
 <body>
@@ -71,8 +76,8 @@
 
 
             <!-- =================================================
-         DASHBOARD
-         ================================================= -->
+    DASHBOARD
+    ================================================= -->
 
             <li class="flow-menu-item
                 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard"
@@ -97,69 +102,56 @@
 
             </li>
             <!-- =================================================
-        WORKFLOW LIST
-        NEW MENU
-        ================================================= -->
+    WORKFLOW LIST
+    ================================================= -->
 
             <li class="flow-menu-item
-                @(ViewContext.RouteData.Values["controller"]?.ToString() == "Workflow"
-                    && ViewContext.RouteData.Values["action"]?.ToString() == "WorkflowList"
-                    ? "active"
-                    : "")">
+    @(ViewContext.RouteData.Values["controller"]?.ToString() == "Workflow"
+        && ViewContext.RouteData.Values["action"]?.ToString() == "WorkflowList"
+        ? "active"
+        : "")">
 
                 <a href="@Url.Action("WorkflowList", "Workflow")">
 
                     <span class="flow-icon">
-
                         <i class="fa-solid fa-diagram-project"></i>
-
                     </span>
 
                     <span class="flow-menu-text">
-
                         Workflows
-
                     </span>
 
                 </a>
 
             </li>
 
-
-
-
             <!-- =================================================
-         DESIGN
-         ================================================= -->
+    DESIGN
+    ================================================= -->
 
             <li class="flow-menu-item
-                @(ViewContext.RouteData.Values["controller"]?.ToString() == "Workflow"
-                    && ViewContext.RouteData.Values["action"]?.ToString() == "Design"
-                    ? "active"
-                    : "")">
+    @(ViewContext.RouteData.Values["controller"]?.ToString() == "Workflow"
+        && ViewContext.RouteData.Values["action"]?.ToString() == "Design"
+        ? "active"
+        : "")">
 
                 <a href="@Url.Action("Design", "Workflow")">
 
                     <span class="flow-icon">
-
                         <i class="fa-solid fa-compass-drafting"></i>
-
                     </span>
 
                     <span class="flow-menu-text">
-
                         Design
-
                     </span>
 
                 </a>
 
             </li>
 
-
             <!-- =================================================
-         AUTOMATE / TEST
-         ================================================= -->
+    AUTOMATE / TEST
+    ================================================= -->
 
             <li class="flow-menu-item
                 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Workflow"
@@ -187,8 +179,8 @@
 
 
             <!-- =================================================
-         TRACKING
-         ================================================= -->
+    TRACKING
+    ================================================= -->
 
             <li class="flow-menu-item
                 @(ViewContext.RouteData.Values["controller"]?.ToString() == "WorkflowTracking"
@@ -389,6 +381,66 @@
 
     @Scripts.Render("~/bundles/bootstrap")
 
+
+    <!-- DataTables -->
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
+
+    <!-- DataTables Buttons -->
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
+
+
+    <!-- Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+
+    <!-- PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+
+    <!-- Export Buttons -->
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <!-- DataTables Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" />
+
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" />
+
+
+    <!-- ========================================================= -->
+    <!-- GLOBAL BOOTSTRAP PINK FOCUS -->
+    <!-- ========================================================= -->
+
+    <style>
+        .form-control:focus,
+        .form-select:focus,
+        .form-check-input:focus {
+            border-color: #e9005b !important;
+            box-shadow: 0 0 0 0.2rem rgba(233, 0, 91, 0.25) !important;
+            outline: none !important;
+        }
+
+        .form-control:active,
+        .form-select:active {
+            border-color: #e9005b !important;
+        }
+    </style>
+
+
+    <!-- Page-specific scripts -->
     @RenderSection("scripts", required: false)
 
 

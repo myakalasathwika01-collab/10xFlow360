@@ -8,23 +8,22 @@
 
     <div class="modal-dialog modal-lg modal-dialog-centered">
 
-        <div class="modal-content">
+        <div class="modal-content border-0 shadow">
 
-
-            <!-- ================================================= -->
             <!-- HEADER -->
-            <!-- ================================================= -->
 
             <div class="modal-header">
 
-                <h5 class="modal-title"
-                    id="createWorkflowModalLabel">
+                <div>
 
-                    <i class="bi bi-diagram-3 me-2"></i>
+                    <h5 class="modal-title fw-semibold"
+                        id="createWorkflowModalLabel">
 
-                    Create New Workflow
+                        <i class="bi bi-diagram-3 me-2"></i>
+                        Create New Workflow
 
-                </h5>
+                    </h5>
+                </div>
 
                 <button type="button"
                         class="btn-close"
@@ -35,182 +34,239 @@
             </div>
 
 
-            <!-- ================================================= -->
             <!-- FORM -->
-            <!-- ================================================= -->
 
             @using (Html.BeginForm(
                 "Create",
                 "Workflow",
                 FormMethod.Post,
-                new { id = "createWorkflowForm" }))
+                new { @class = "needs-validation" }))
             {
-
                 @Html.AntiForgeryToken()
 
+                <!-- BODY -->
 
                 <div class="modal-body">
-
-                    <!-- Validation Summary -->
 
                     @Html.ValidationSummary(
                         true,
                         "",
-                        new { @class = "text-danger" })
+                        new { @class = "text-danger mb-3" })
 
+
+                    <!-- ============================= -->
+                    <!-- ROW 1 -->
+                    <!-- ============================= -->
 
                     <div class="row g-3">
 
-
-                        <!-- ===================================== -->
                         <!-- WORKFLOW NAME -->
-                        <!-- ===================================== -->
 
-                        <div class="col-md-12">
+                        <div class="col-md-6">
 
-                            @Html.LabelFor(
-                                model => model.WorkflowName,
-                                new { @class = "form-label" })
+                            <label class="form-label fw-semibold">
+
+                                Workflow Name
+                                <span class="text-danger">*</span>
+
+                            </label>
 
                             @Html.TextBoxFor(
-                                model => model.WorkflowName,
+                                m => m.WorkflowName,
                                 new
                                 {
                                     @class = "form-control",
-                                    placeholder = "Enter workflow name"
+                                    placeholder = "Enter workflow name",
+                                    autocomplete = "off"
                                 })
 
                             @Html.ValidationMessageFor(
-                                model => model.WorkflowName,
+                                m => m.WorkflowName,
                                 "",
-                                new { @class = "text-danger" })
+                                new
+                                {
+                                    @class = "text-danger small"
+                                })
 
                         </div>
 
 
-                        <!-- ===================================== -->
                         <!-- SAP MODULE -->
-                        <!-- ===================================== -->
 
                         <div class="col-md-6">
 
-                            @Html.LabelFor(
-                                model => model.SapModule,
-                                new { @class = "form-label" })
+                            <label class="form-label fw-semibold">
+
+                                SAP Module
+                                <span class="text-danger">*</span>
+
+                            </label>
 
                             @Html.DropDownListFor(
-                                model => model.SapModule,
+                                m => m.SapModule,
+
                                 new SelectList(
                                     new[]
                                     {
                                         new
                                         {
-                                            Value = "Sales",
+                                            Value = "",
+                                            Text = "-- Select Module --"
+                                        },
+
+                                        new
+                                        {
+                                            Value = "SALES",
                                             Text = "Sales"
                                         },
+
                                         new
                                         {
-                                            Value = "Purchase",
+                                            Value = "PURCHASE",
                                             Text = "Purchase"
                                         },
+
                                         new
                                         {
-                                            Value = "Inventory",
+                                            Value = "INVENTORY",
                                             Text = "Inventory"
                                         },
+
                                         new
                                         {
-                                            Value = "Finance",
+                                            Value = "FINANCE",
                                             Text = "Finance"
                                         },
+
                                         new
                                         {
-                                            Value = "Production",
+                                            Value = "PRODUCTION",
                                             Text = "Production"
                                         },
+
                                         new
                                         {
-                                            Value = "Service",
+                                            Value = "SERVICE",
                                             Text = "Service"
                                         }
+
                                     },
                                     "Value",
-                                    "Text"
+                                    "Text",
+                                    Model == null
+                                        ? ""
+                                        : Model.SapModule
                                 ),
-                                "Select SAP Module",
+
                                 new
                                 {
                                     @class = "form-select"
                                 })
 
                             @Html.ValidationMessageFor(
-                                model => model.SapModule,
+                                m => m.SapModule,
                                 "",
-                                new { @class = "text-danger" })
+                                new
+                                {
+                                    @class = "text-danger small"
+                                })
 
                         </div>
 
 
-                        <!-- ===================================== -->
+                        <!-- ============================= -->
+                        <!-- ROW 2 -->
+                        <!-- ============================= -->
                         <!-- COMPANY -->
-                        <!-- ===================================== -->
 
                         <div class="col-md-6">
 
-                            @Html.LabelFor(
-                                model => model.CompanyName,
-                                new { @class = "form-label" })
+                            <label class="form-label fw-semibold">
 
-                            @Html.DropDownListFor(
-                                model => model.CompanyName,
-                                new SelectList(
-                                    new[]
-                                    {
-                                        new
-                                        {
-                                            Value = "10X Demo Company",
-                                            Text = "10X Demo Company"
-                                        }
-                                    },
-                                    "Value",
-                                    "Text"
-                                ),
-                                "Select Company",
-                                new
-                                {
-                                    @class = "form-select"
-                                })
+                                Company
+                                <span class="text-danger">*</span>
 
-                            @Html.ValidationMessageFor(
-                                model => model.CompanyName,
-                                "",
-                                new { @class = "text-danger" })
-
-                        </div>
-
-
-                        <!-- ===================================== -->
-                        <!-- VERSION -->
-                        <!-- ===================================== -->
-
-                        <div class="col-md-6">
-
-                            @Html.LabelFor(
-                                model => model.VersionNo,
-                                new { @class = "form-label" })
+                            </label>
 
                             @Html.TextBoxFor(
-                                model => model.VersionNo,
+                                m => m.CompanyName,
                                 new
                                 {
                                     @class = "form-control",
-                                    value = "V1.0"
+                                    placeholder = "Enter company name",
+                                    autocomplete = "off"
                                 })
 
                             @Html.ValidationMessageFor(
-                                model => model.VersionNo,
+                                m => m.CompanyName,
                                 "",
-                                new { @class = "text-danger" })
+                                new
+                                {
+                                    @class = "text-danger small"
+                                })
+
+                        </div>
+
+
+                        <!-- VERSION -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label fw-semibold">
+
+                                Version
+                                <span class="text-danger">*</span>
+
+                            </label>
+
+                            @Html.TextBoxFor(
+                                m => m.VersionNo,
+                                new
+                                {
+                                    @class = "form-control",
+                                    placeholder = "Example: 1.0",
+                                    autocomplete = "off"
+                                })
+
+                            @Html.ValidationMessageFor(
+                                m => m.VersionNo,
+                                "",
+                                new
+                                {
+                                    @class = "text-danger small"
+                                })
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ============================= -->
+                    <!-- STATUS INFORMATION -->
+                    <!-- ============================= -->
+
+                    <div class="alert alert-light border mt-4 mb-0">
+
+                        <div class="d-flex align-items-start">
+
+                            <i class="bi bi-info-circle me-2 mt-1"></i>
+
+                            <div>
+
+                                <div class="fw-semibold">
+                                    Workflow Status
+                                </div>
+
+                                <small class="text-muted">
+
+                                    The workflow will be created in
+                                    <strong>Draft</strong> status.
+                                    You can configure the workflow steps
+                                    from the Design screen.
+
+                                </small>
+
+                            </div>
 
                         </div>
 
@@ -219,27 +275,31 @@
                 </div>
 
 
-                <!-- ================================================= -->
                 <!-- FOOTER -->
-                <!-- ================================================= -->
 
                 <div class="modal-footer">
+
+                    <!-- CANCEL -->
 
                     <button type="button"
                             class="btn btn-secondary"
                             data-bs-dismiss="modal">
+
+                        <i class="bi bi-x-circle me-1"></i>
 
                         Cancel
 
                     </button>
 
 
+                    <!-- SAVE -->
+
                     <button type="submit"
-                            class="btn btn-primary">
+                            class="btn btn-danger">
 
                         <i class="bi bi-save me-1"></i>
 
-                        Save Workflow
+                        Save
 
                     </button>
 
