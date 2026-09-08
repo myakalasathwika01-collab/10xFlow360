@@ -49,7 +49,7 @@
 
             <!-- ===================================================== -->
             <!-- SUCCESS MESSAGE -->
-            <!-- ===================================================== -->
+            <!-- ================================================= -->
 
             @if (TempData["SuccessMessage"] != null)
             {
@@ -104,29 +104,56 @@
 
                         <tr>
 
-                            <th style="width:45px;">
-                                #
+                            <!-- WORKFLOW ID -->
+
+                            <th style="width:70px;">
+                                ID
                             </th>
+
+
+                            <!-- WORKFLOW CODE -->
+
+                            <th>
+                                Workflow Code
+                            </th>
+
+
+                            <!-- WORKFLOW NAME -->
 
                             <th>
                                 Workflow
                             </th>
 
+
+                            <!-- SAP MODULE -->
+
                             <th>
                                 SAP Module
                             </th>
+
+
+                            <!-- VERSION -->
 
                             <th>
                                 Version
                             </th>
 
+
+                            <!-- STATUS -->
+
                             <th>
                                 Status
                             </th>
 
+
+                            <!-- UPDATED ON -->
+
                             <th>
                                 Updated On
                             </th>
+
+
+                            <!-- ACTIONS -->
 
                             <th class="text-center"
                                 style="width:120px;">
@@ -151,11 +178,24 @@
                                 <tr>
 
                                     <!-- ================================= -->
-                                    <!-- SERIAL NUMBER -->
+                                    <!-- WORKFLOW ID -->
                                     <!-- ================================= -->
 
-                                    <td class="text-center">
-                                        #
+                                    <td>
+                                        @workflow.Id
+                                    </td>
+
+
+                                    <!-- ================================= -->
+                                    <!-- WORKFLOW CODE -->
+                                    <!-- ================================= -->
+
+                                    <td>
+
+                                        <span class="fw-semibold">
+                                            @workflow.WorkflowCode
+                                        </span>
+
                                     </td>
 
 
@@ -275,7 +315,7 @@
                         {
                             <tr>
 
-                                <td colspan="7"
+                                <td colspan="8"
                                     class="text-center py-5">
 
                                     <div class="text-muted">
@@ -495,15 +535,17 @@
                 columnDefs: [
 
                     {
+                        // ID column
                         targets: 0,
 
-                        orderable: false,
+                        orderable: true,
 
-                        searchable: false
+                        searchable: true
                     },
 
                     {
-                        targets: 6,
+                        // Actions column
+                        targets: 7,
 
                         orderable: false,
 
@@ -520,25 +562,6 @@
                 drawCallback: function () {
 
                     var api = this.api();
-
-                    var pageInfo = api.page.info();
-
-
-                    /* =============================================
-                       SERIAL NUMBER
-                       ============================================= */
-
-                    api.column(0, {
-                        page: 'current'
-                    })
-                        .nodes()
-                        .each(function (cell, i) {
-
-                            cell.innerHTML =
-                                pageInfo.start + i + 1;
-
-                        });
-
 
                     /* =============================================
                        ACTIVE PAGINATION BUTTON

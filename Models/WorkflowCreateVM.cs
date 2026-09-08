@@ -23,5 +23,43 @@ namespace _10xFlow360.Models
         [Required(ErrorMessage = "Version is required.")]
         [Display(Name = "Version")]
         public string VersionNo { get; set; }
+
+        // Workflow steps
+        public List<WorkflowCreateStepVM> Steps { get; set; }
+
+        // JSON sent from Create Workflow screen
+        public string WorkflowStepsJson { get; set; }
+
+        public WorkflowCreateVM()
+        {
+            Steps = new List<WorkflowCreateStepVM>();
+        }
+    }
+
+    public class WorkflowCreateStepVM
+    {
+        public int StepNo { get; set; }
+
+        public string StepName { get; set; }
+
+        public string StepType { get; set; }
+
+        public string TriggerType { get; set; }
+
+        public string SapObject { get; set; }
+
+        public string ConditionExpression { get; set; }
+
+        public string NotificationType { get; set; }
+
+        public string Recipient { get; set; }
+
+        public string MessageTemplate { get; set; }
+
+        public string WaitType { get; set; }
+
+        public string FieldName { get; set; }
+
+        public decimal? SlaHours { get; set; }
     }
 }

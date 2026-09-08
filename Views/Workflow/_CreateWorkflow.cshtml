@@ -10,7 +10,9 @@
 
         <div class="modal-content border-0 shadow">
 
+            <!-- ===================================================== -->
             <!-- HEADER -->
+            <!-- ===================================================== -->
 
             <div class="modal-header">
 
@@ -20,10 +22,13 @@
                         id="createWorkflowModalLabel">
 
                         <i class="bi bi-diagram-3 me-2"></i>
+
                         Create New Workflow
 
                     </h5>
+
                 </div>
+
 
                 <button type="button"
                         class="btn-close"
@@ -34,73 +39,112 @@
             </div>
 
 
+            <!-- ===================================================== -->
             <!-- FORM -->
+            <!-- ===================================================== -->
 
             @using (Html.BeginForm(
                 "Create",
                 "Workflow",
                 FormMethod.Post,
-                new { @class = "needs-validation" }))
+                new
+                {
+                    @class = "needs-validation",
+                    id = "createWorkflowForm"
+                }))
             {
+
                 @Html.AntiForgeryToken()
 
+
+                <!-- ================================================= -->
                 <!-- BODY -->
+                <!-- ================================================= -->
 
                 <div class="modal-body">
 
                     @Html.ValidationSummary(
                         true,
                         "",
-                        new { @class = "text-danger mb-3" })
+                        new
+                        {
+                            @class = "text-danger mb-3"
+                        })
 
 
-                    <!-- ============================= -->
+                    <!-- ============================================= -->
+                    <!-- WORKFLOW INFORMATION -->
+                    <!-- ============================================= -->
+
+                    <div class="fw-semibold mb-3">
+
+                        <i class="bi bi-info-circle me-1"></i>
+
+                        Workflow Information
+
+                    </div>
+
+
+                    <!-- ============================================= -->
                     <!-- ROW 1 -->
-                    <!-- ============================= -->
+                    <!-- ============================================= -->
 
                     <div class="row g-3">
 
+
+                        <!-- ========================================= -->
                         <!-- WORKFLOW NAME -->
+                        <!-- ========================================= -->
 
                         <div class="col-md-6">
 
                             <label class="form-label fw-semibold">
 
                                 Workflow Name
+
                                 <span class="text-danger">*</span>
 
                             </label>
+
 
                             @Html.TextBoxFor(
                                 m => m.WorkflowName,
                                 new
                                 {
                                     @class = "form-control",
-                                    placeholder = "Enter workflow name",
-                                    autocomplete = "off"
+                                    placeholder =
+                                        "Enter workflow name",
+                                    autocomplete = "off",
+                                    id = "WorkflowName"
                                 })
+
 
                             @Html.ValidationMessageFor(
                                 m => m.WorkflowName,
                                 "",
                                 new
                                 {
-                                    @class = "text-danger small"
+                                    @class =
+                                        "text-danger small"
                                 })
 
                         </div>
 
 
+                        <!-- ========================================= -->
                         <!-- SAP MODULE -->
+                        <!-- ========================================= -->
 
                         <div class="col-md-6">
 
                             <label class="form-label fw-semibold">
 
                                 SAP Module
+
                                 <span class="text-danger">*</span>
 
                             </label>
+
 
                             @Html.DropDownListFor(
                                 m => m.SapModule,
@@ -111,7 +155,8 @@
                                         new
                                         {
                                             Value = "",
-                                            Text = "-- Select Module --"
+                                            Text =
+                                                "-- Select Module --"
                                         },
 
                                         new
@@ -149,10 +194,11 @@
                                             Value = "SERVICE",
                                             Text = "Service"
                                         }
-
                                     },
+
                                     "Value",
                                     "Text",
+
                                     Model == null
                                         ? ""
                                         : Model.SapModule
@@ -160,80 +206,18 @@
 
                                 new
                                 {
-                                    @class = "form-select"
+                                    @class = "form-select",
+                                    id = "SapModule"
                                 })
+
 
                             @Html.ValidationMessageFor(
                                 m => m.SapModule,
                                 "",
                                 new
                                 {
-                                    @class = "text-danger small"
-                                })
-
-                        </div>
-
-
-                        <!-- ============================= -->
-                        <!-- ROW 2 -->
-                        <!-- ============================= -->
-                        <!-- COMPANY -->
-
-                        <div class="col-md-6">
-
-                            <label class="form-label fw-semibold">
-
-                                Company
-                                <span class="text-danger">*</span>
-
-                            </label>
-
-                            @Html.TextBoxFor(
-                                m => m.CompanyName,
-                                new
-                                {
-                                    @class = "form-control",
-                                    placeholder = "Enter company name",
-                                    autocomplete = "off"
-                                })
-
-                            @Html.ValidationMessageFor(
-                                m => m.CompanyName,
-                                "",
-                                new
-                                {
-                                    @class = "text-danger small"
-                                })
-
-                        </div>
-
-
-                        <!-- VERSION -->
-
-                        <div class="col-md-6">
-
-                            <label class="form-label fw-semibold">
-
-                                Version
-                                <span class="text-danger">*</span>
-
-                            </label>
-
-                            @Html.TextBoxFor(
-                                m => m.VersionNo,
-                                new
-                                {
-                                    @class = "form-control",
-                                    placeholder = "Example: 1.0",
-                                    autocomplete = "off"
-                                })
-
-                            @Html.ValidationMessageFor(
-                                m => m.VersionNo,
-                                "",
-                                new
-                                {
-                                    @class = "text-danger small"
+                                    @class =
+                                        "text-danger small"
                                 })
 
                         </div>
@@ -241,9 +225,121 @@
                     </div>
 
 
-                    <!-- ============================= -->
-                    <!-- STATUS INFORMATION -->
-                    <!-- ============================= -->
+                    <!-- ============================================= -->
+                    <!-- ROW 2 -->
+                    <!-- ============================================= -->
+
+                    <div class="row g-3 mt-1">
+
+
+                        <!-- ========================================= -->
+                        <!-- COMPANY -->
+                        <!-- ========================================= -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label fw-semibold">
+
+                                Company
+
+                                <span class="text-danger">*</span>
+
+                            </label>
+
+
+                            @Html.DropDownListFor(
+                                m => m.CompanyName,
+
+                                new SelectList(
+                                    new[]
+                                    {
+                                        new
+                                        {
+                                            Value = "",
+                                            Text =
+                                                "-- Select Company --"
+                                        },
+
+                                        new
+                                        {
+                                            Value =
+                                                "10X Demo Company",
+                                            Text =
+                                                "10X Demo Company"
+                                        }
+                                    },
+
+                                    "Value",
+                                    "Text",
+
+                                    Model == null
+                                        ? ""
+                                        : Model.CompanyName
+                                ),
+
+                                new
+                                {
+                                    @class = "form-select",
+                                    id = "CompanyName"
+                                })
+
+
+                            @Html.ValidationMessageFor(
+                                m => m.CompanyName,
+                                "",
+                                new
+                                {
+                                    @class =
+                                        "text-danger small"
+                                })
+
+                        </div>
+
+
+                        <!-- ========================================= -->
+                        <!-- VERSION -->
+                        <!-- ========================================= -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label fw-semibold">
+
+                                Version
+
+                                <span class="text-danger">*</span>
+
+                            </label>
+
+
+                            @Html.TextBoxFor(
+                                m => m.VersionNo,
+                                new
+                                {
+                                    @class = "form-control",
+                                    placeholder =
+                                        "Example: V1.0",
+                                    autocomplete = "off",
+                                    id = "VersionNo"
+                                })
+
+
+                            @Html.ValidationMessageFor(
+                                m => m.VersionNo,
+                                "",
+                                new
+                                {
+                                    @class =
+                                        "text-danger small"
+                                })
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ============================================= -->
+                    <!-- INFORMATION -->
+                    <!-- ============================================= -->
 
                     <div class="alert alert-light border mt-4 mb-0">
 
@@ -254,15 +350,19 @@
                             <div>
 
                                 <div class="fw-semibold">
-                                    Workflow Status
+                                    Workflow Creation
                                 </div>
 
                                 <small class="text-muted">
 
-                                    The workflow will be created in
-                                    <strong>Draft</strong> status.
-                                    You can configure the workflow steps
-                                    from the Design screen.
+                                    Only the workflow header will be
+                                    created at this stage.
+
+                                    <br />
+
+                                    After the header is saved, the
+                                    generated Workflow ID will be used
+                                    to create workflow steps.
 
                                 </small>
 
@@ -275,11 +375,16 @@
                 </div>
 
 
+                <!-- ================================================= -->
                 <!-- FOOTER -->
+                <!-- ================================================= -->
 
                 <div class="modal-footer">
 
+
+                    <!-- ============================================= -->
                     <!-- CANCEL -->
+                    <!-- ============================================= -->
 
                     <button type="button"
                             class="btn btn-secondary"
@@ -292,14 +397,17 @@
                     </button>
 
 
-                    <!-- SAVE -->
+                    <!-- ============================================= -->
+                    <!-- CREATE HEADER -->
+                    <!-- ============================================= -->
 
                     <button type="submit"
-                            class="btn btn-danger">
+                            class="btn btn-danger"
+                            id="createWorkflowBtn">
 
                         <i class="bi bi-save me-1"></i>
 
-                        Save
+                        Create Workflow
 
                     </button>
 
@@ -312,3 +420,267 @@
     </div>
 
 </div>
+
+
+<!-- ============================================================= -->
+<!-- CREATE WORKFLOW HEADER JAVASCRIPT -->
+<!-- ============================================================= -->
+
+<script>
+
+    $(document).ready(function () {
+
+        // =========================================================
+        // CREATE WORKFLOW HEADER ONLY
+        // =========================================================
+
+        $("#createWorkflowForm").on(
+            "submit",
+            function (e) {
+
+                e.preventDefault();
+
+
+                // =================================================
+                // GET VALUES
+                // =================================================
+
+                var workflowName =
+                    $("#WorkflowName")
+                        .val()
+                        .trim();
+
+
+                var sapModule =
+                    $("#SapModule")
+                        .val();
+
+
+                var companyName =
+                    $("#CompanyName")
+                        .val();
+
+
+                var versionNo =
+                    $("#VersionNo")
+                        .val()
+                        .trim();
+
+
+                // =================================================
+                // VALIDATION
+                // =================================================
+
+                if (workflowName === "") {
+
+                    alert(
+                        "Please enter Workflow Name."
+                    );
+
+                    $("#WorkflowName").focus();
+
+                    return;
+                }
+
+
+                if (!sapModule) {
+
+                    alert(
+                        "Please select SAP Module."
+                    );
+
+                    $("#SapModule").focus();
+
+                    return;
+                }
+
+
+                if (!companyName) {
+
+                    alert(
+                        "Please select Company."
+                    );
+
+                    $("#CompanyName").focus();
+
+                    return;
+                }
+
+
+                if (versionNo === "") {
+
+                    alert(
+                        "Please enter Version."
+                    );
+
+                    $("#VersionNo").focus();
+
+                    return;
+                }
+
+
+                // =================================================
+                // DISABLE BUTTON
+                // =================================================
+
+                var createButton =
+                    $("#createWorkflowBtn");
+
+
+                createButton
+                    .prop("disabled", true);
+
+
+                createButton.html(
+                    '<span class="spinner-border spinner-border-sm me-1"></span>' +
+                    'Creating...'
+                );
+
+
+                // =================================================
+                // CREATE HEADER
+                // =================================================
+
+                $.ajax({
+
+                    url:
+                        '@Url.Action(
+                            "Create",
+                            "Workflow"
+                        )',
+
+                    type: "POST",
+
+                    data: {
+
+                        __RequestVerificationToken:
+                            $(
+                                "#createWorkflowForm " +
+                                "input[name='__RequestVerificationToken']"
+                            ).val(),
+
+                        WorkflowName:
+                            workflowName,
+
+                        SapModule:
+                            sapModule,
+
+                        CompanyName:
+                            companyName,
+
+                        VersionNo:
+                            versionNo
+
+                    },
+
+
+                    success:
+                        function (response) {
+
+                            // =====================================
+                            // CHECK RESPONSE
+                            // =====================================
+
+                            if (!response.success) {
+
+                                alert(
+                                    response.message
+                                );
+
+                                resetCreateButton();
+
+                                return;
+                            }
+
+
+                            // =====================================
+                            // HEADER SUCCESS
+                            // =====================================
+
+                            alert(
+                                "Workflow header created successfully.\n\n" +
+
+                                "Workflow ID: " +
+                                response.workflowId +
+                                "\n" +
+
+                                "Workflow Code: " +
+                                response.workflowCode
+                            );
+
+
+                            // =====================================
+                            // CLOSE MODAL
+                            // =====================================
+
+                            $("#createWorkflowModal")
+                                .modal("hide");
+
+
+                            // =====================================
+                            // REFRESH WORKFLOW LIST
+                            //
+                            // The new Workflow ID is now available
+                            // in the Workflow List.
+                            // =====================================
+
+                            window.location.href =
+                                '@Url.Action(
+                                    "Index",
+                                    "Workflow"
+                                )';
+
+                        },
+
+
+                    error:
+                        function (xhr) {
+
+                            var message =
+                                "Unable to create workflow header.";
+
+
+                            if (
+                                xhr.responseJSON &&
+                                xhr.responseJSON.message
+                            ) {
+
+                                message =
+                                    xhr.responseJSON.message;
+                            }
+
+
+                            alert(message);
+
+
+                            resetCreateButton();
+
+                        }
+
+                });
+
+            }
+        );
+
+
+        // =========================================================
+        // RESET CREATE BUTTON
+        // =========================================================
+
+        function resetCreateButton() {
+
+            $("#createWorkflowBtn")
+                .prop("disabled", false);
+
+
+            $("#createWorkflowBtn")
+                .html(
+                    '<i class="bi bi-save me-1"></i>' +
+                    'Create Workflow'
+                );
+
+        }
+
+    });
+
+</script>

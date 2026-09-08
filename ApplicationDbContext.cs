@@ -29,5 +29,6 @@ namespace _10xFlow360.Data
         }
 
         public DbSet<Workflow> Workflows { get; set; }
+        public DbSet<WorkflowStep> WorkflowSteps { get; set; }
     }
 }

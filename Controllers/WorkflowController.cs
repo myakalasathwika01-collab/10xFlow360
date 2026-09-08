@@ -24,9 +24,7 @@ namespace _10xFlow360.Controllers
             try
             {
                 // -------------------------------------------------
-                // IMPORTANT:
-                // First get data from HANA.
-                // Do NOT use ToString("dd-MMM-yyyy") inside LINQ.
+                // Get workflow data from HANA first.
                 // -------------------------------------------------
 
                 var workflowData = db.Workflows
@@ -36,13 +34,15 @@ namespace _10xFlow360.Controllers
 
                 // -------------------------------------------------
                 // Convert to WorkflowListItem in C#
-                // Date formatting happens AFTER ToList()
+                // Date formatting happens after ToList()
                 // -------------------------------------------------
 
                 var workflows = workflowData
                     .Select(x => new WorkflowListItem
                     {
                         Id = x.WorkflowId,
+
+                        WorkflowCode = x.WorkflowCode,
 
                         WorkflowName = x.WorkflowName,
 
@@ -67,7 +67,9 @@ namespace _10xFlow360.Controllers
                     "Unable to load workflows: "
                     + GetErrorMessage(ex);
 
-                return View(new List<WorkflowListItem>());
+                return View(
+                    new List<WorkflowListItem>()
+                );
             }
         }
 
@@ -84,14 +86,6 @@ namespace _10xFlow360.Controllers
 
 
         // =========================================================
-        // POST: Workflow/Create
-        // CREATE WORKFLOW HEADER
-        //
-        // Saves into:
-        // WAI_WORKFLOW
-        // =========================================================
-
-        // =========================================================
         // GET: Workflow/WorkflowList
         // WORKFLOW LIST SCREEN
         // =========================================================
@@ -105,10 +99,13 @@ namespace _10xFlow360.Controllers
                     .OrderByDescending(x => x.WorkflowId)
                     .ToList();
 
+
                 var workflows = workflowData
                     .Select(x => new WorkflowListItem
                     {
                         Id = x.WorkflowId,
+
+                        WorkflowCode = x.WorkflowCode,
 
                         WorkflowName = x.WorkflowName,
 
@@ -123,7 +120,12 @@ namespace _10xFlow360.Controllers
                             : x.CreatedDate.ToString("dd-MMM-yyyy")
                     })
                     .ToList();
-                return View("WorkflowList", workflows);
+
+
+                return View(
+                    "WorkflowList",
+                    workflows
+                );
             }
             catch (Exception ex)
             {
@@ -138,144 +140,512 @@ namespace _10xFlow360.Controllers
             }
         }
 
+
+        // =========================================================
+        // POST: Workflow/Create
+        //
+        // STEP 1:
+        // CREATE WORKFLOW HEADER ONLY
+        //
+        // Saves into:
+        // WAI_WORKFLOW
+        //
+        // After saving, returns:
+        // WORKFLOW_ID
+        //
+        // Steps are NOT saved here.
+        // =========================================================
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(WorkflowCreateVM model)
+        public JsonResult Create(WorkflowCreateVM model)
         {
             try
             {
-                // -----------------------------------------
+                // =================================================
                 // VALIDATION
-                // -----------------------------------------
+                // =================================================
 
                 if (model == null)
                 {
-                    TempData["ErrorMessage"] =
-                        "Workflow information is required.";
-
-                    return RedirectToAction("Index");
+                    return Json(new
+                    {
+                        success = false,
+                        message =
+                            "Workflow information is required."
+                    });
                 }
 
-                if (string.IsNullOrWhiteSpace(model.WorkflowName))
+
+                if (string.IsNullOrWhiteSpace(
+                    model.WorkflowName))
                 {
-                    TempData["ErrorMessage"] =
-                        "Workflow Name is required.";
-
-                    return RedirectToAction("Index");
+                    return Json(new
+                    {
+                        success = false,
+                        message =
+                            "Workflow Name is required."
+                    });
                 }
 
-                if (string.IsNullOrWhiteSpace(model.SapModule))
+
+                if (string.IsNullOrWhiteSpace(
+                    model.SapModule))
                 {
-                    TempData["ErrorMessage"] =
-                        "SAP Module is required.";
-
-                    return RedirectToAction("Index");
+                    return Json(new
+                    {
+                        success = false,
+                        message =
+                            "SAP Module is required."
+                    });
                 }
 
-                if (string.IsNullOrWhiteSpace(model.CompanyName))
+
+                if (string.IsNullOrWhiteSpace(
+                    model.CompanyName))
                 {
-                    TempData["ErrorMessage"] =
-                        "Company is required.";
-
-                    return RedirectToAction("Index");
+                    return Json(new
+                    {
+                        success = false,
+                        message =
+                            "Company is required."
+                    });
                 }
 
-                if (string.IsNullOrWhiteSpace(model.VersionNo))
+
+                if (string.IsNullOrWhiteSpace(
+                    model.VersionNo))
                 {
-                    TempData["ErrorMessage"] =
-                        "Version is required.";
-
-                    return RedirectToAction("Index");
+                    return Json(new
+                    {
+                        success = false,
+                        message =
+                            "Version is required."
+                    });
                 }
 
 
-                // -----------------------------------------
+                // =================================================
                 // CLEAN VALUES
-                // -----------------------------------------
+                // =================================================
 
-                string workflowName = model.WorkflowName.Trim();
-                string sapModule = model.SapModule.Trim();
-                string company = model.CompanyName.Trim();
-                string version = model.VersionNo.Trim();
+                string workflowName =
+                    model.WorkflowName.Trim();
+
+                string sapModule =
+                    model.SapModule.Trim();
+
+                string company =
+                    model.CompanyName.Trim();
+
+                string version =
+                    model.VersionNo.Trim();
 
 
-                // -----------------------------------------
+                // =================================================
                 // GENERATE WORKFLOW CODE
-                // -----------------------------------------
+                // =================================================
 
                 string workflowCode =
-                    GenerateWorkflowCode(sapModule);
+                    GenerateWorkflowCode(
+                        sapModule
+                    );
 
 
-                // -----------------------------------------
-                // CREATE HEADER
-                // -----------------------------------------
+                // =================================================
+                // CREATE WORKFLOW HEADER
+                // =================================================
 
-                Workflow workflow = new Workflow
-                {
-                    WorkflowCode = workflowCode,
-                    WorkflowName = workflowName,
-                    SapModule = sapModule,
-                    CompanyName = company,
-                    VersionNo = version,
+                Workflow workflow =
+                    new Workflow
+                    {
+                        WorkflowCode =
+                            workflowCode,
 
-                    Status = "Draft",
+                        WorkflowName =
+                            workflowName,
 
-                    CreatedBy = "Admin",
-                    CreatedDate = DateTime.Now,
+                        SapModule =
+                            sapModule,
 
-                    UpdatedBy = "Admin",
-                    UpdatedDate = DateTime.Now
-                };
+                        CompanyName =
+                            company,
+
+                        VersionNo =
+                            version,
+
+                        Status =
+                            "Draft",
+
+                        CreatedBy =
+                            "Admin",
+
+                        CreatedDate =
+                            DateTime.Now,
+
+                        UpdatedBy =
+                            "Admin",
+
+                        UpdatedDate =
+                            DateTime.Now
+                    };
 
 
-                // -----------------------------------------
-                // SAVE TO WAI_WORKFLOW
-                // -----------------------------------------
+                // =================================================
+                // SAVE HEADER
+                //
+                // WAI_WORKFLOW
+                // =================================================
 
                 db.Workflows.Add(workflow);
 
                 db.SaveChanges();
 
 
-                // -----------------------------------------
-                // SUCCESS
-                // -----------------------------------------
+                // =================================================
+                // GET GENERATED WORKFLOW ID
+                // =================================================
 
-                TempData["SuccessMessage"] =
-                    "Workflow created successfully. " +
-                    "Workflow Code: " +
-                    workflow.WorkflowCode;
+                long workflowId =
+                    workflow.WorkflowId;
 
 
-                // -----------------------------------------
-                // BACK TO WORKFLOW LIST
-                // -----------------------------------------
+                // =================================================
+                // RETURN GENERATED ID TO JAVASCRIPT
+                // =================================================
 
-                return RedirectToAction("Index");
+                return Json(new
+                {
+                    success = true,
+
+                    workflowId =
+                        workflowId,
+
+                    workflowCode =
+                        workflow.WorkflowCode,
+
+                    message =
+                        "Workflow header created successfully."
+                });
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] =
-                    "Unable to create workflow: " +
-                    GetErrorMessage(ex);
+                return Json(new
+                {
+                    success = false,
 
-                return RedirectToAction("Index");
+                    message =
+                        "Unable to create workflow: "
+                        + GetErrorMessage(ex)
+                });
             }
         }
 
+
         // =========================================================
-        // GET: Workflow/Design
-        // LOAD EXISTING WORKFLOW
+        // POST: Workflow/SaveCreateWorkflowSteps
+        //
+        // STEP 2:
+        // SAVE STEPS CREATED FROM WORKFLOW LIST
+        //
+        // Parent:
+        // WAI_WORKFLOW
+        //
+        // Child:
+        // WAI_WORKFLOW_STEP
+        //
+        // IMPORTANT:
+        // workflowId comes from the header created by Create()
         // =========================================================
-        // =========================================================
-        // GET: Workflow/Design
-        // OPENS EXISTING DESIGN.CSHTML
-        // =========================================================
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult SaveCreateWorkflowSteps(
+            long workflowId,
+            string workflowStepsJson)
+        {
+            try
+            {
+                // =================================================
+                // CHECK WORKFLOW HEADER
+                // =================================================
+
+                var workflow =
+                    db.Workflows
+                      .FirstOrDefault(x =>
+                          x.WorkflowId == workflowId);
+
+
+                if (workflow == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+
+                        message =
+                            "Workflow not found."
+                    });
+                }
+
+
+                // =================================================
+                // CHECK JSON
+                // =================================================
+
+                if (string.IsNullOrWhiteSpace(
+                    workflowStepsJson))
+                {
+                    return Json(new
+                    {
+                        success = false,
+
+                        message =
+                            "Please add at least one workflow step."
+                    });
+                }
+
+
+                // =================================================
+                // DESERIALIZE JSON
+                // =================================================
+
+                var serializer =
+                    new System.Web.Script.Serialization
+                        .JavaScriptSerializer();
+
+
+                List<WorkflowCreateStepVM> steps =
+                    serializer.Deserialize<
+                        List<WorkflowCreateStepVM>
+                    >(
+                        workflowStepsJson
+                    );
+
+
+                if (steps == null ||
+                    steps.Count == 0)
+                {
+                    return Json(new
+                    {
+                        success = false,
+
+                        message =
+                            "Please add at least one workflow step."
+                    });
+                }
+
+
+                // =================================================
+                // REMOVE OLD STEPS
+                //
+                // This is useful if the user saves the workflow
+                // again and changes the step list.
+                // =================================================
+
+                var oldSteps =
+                    db.WorkflowSteps
+                      .Where(x =>
+                          x.WorkflowId == workflowId)
+                      .ToList();
+
+
+                if (oldSteps.Count > 0)
+                {
+                    db.WorkflowSteps.RemoveRange(
+                        oldSteps
+                    );
+                }
+
+
+                // =================================================
+                // INSERT CURRENT STEPS
+                // =================================================
+
+                int stepNo = 1;
+
+
+                foreach (var item in steps)
+                {
+                    if (item == null)
+                    {
+                        continue;
+                    }
+
+
+                    WorkflowStep workflowStep =
+                        new WorkflowStep
+                        {
+                            // =====================================
+                            // PARENT WORKFLOW ID
+                            // =====================================
+
+                            WorkflowId =
+                                workflowId,
+
+
+                            // =====================================
+                            // STEP NUMBER
+                            // =====================================
+
+                            StepNo =
+                                stepNo,
+
+
+                            // =====================================
+                            // STEP NAME
+                            // =====================================
+
+                            StepName =
+                                string.IsNullOrWhiteSpace(
+                                    item.StepName)
+                                ? "Workflow Step " + stepNo
+                                : item.StepName.Trim(),
+
+
+                            // =====================================
+                            // STEP TYPE
+                            // =====================================
+
+                            StepType =
+                                string.IsNullOrWhiteSpace(
+                                    item.StepType)
+                                ? "Action"
+                                : item.StepType.Trim(),
+
+
+                            // =====================================
+                            // TRIGGER TYPE
+                            // =====================================
+
+                            TriggerType =
+                                item.TriggerType,
+
+
+                            // =====================================
+                            // SAP OBJECT
+                            // =====================================
+
+                            SapObject =
+                                item.SapObject,
+
+
+                            // =====================================
+                            // CONDITION
+                            // =====================================
+
+                            ConditionExpression =
+                                item.ConditionExpression,
+
+
+                            // =====================================
+                            // NOTIFICATION
+                            // =====================================
+
+                            NotificationType =
+                                item.NotificationType,
+
+                            Recipient =
+                                item.Recipient,
+
+                            MessageTemplate =
+                                item.MessageTemplate,
+
+
+                            // =====================================
+                            // WAIT
+                            // =====================================
+
+                            WaitType =
+                                item.WaitType,
+
+
+                            // =====================================
+                            // FIELD
+                            // =====================================
+
+                            FieldName =
+                                item.FieldName,
+
+
+                            // =====================================
+                            // SLA
+                            // =====================================
+
+                            SlaHours =
+                                item.SlaHours,
+
+
+                            // =====================================
+                            // AUDIT
+                            // =====================================
+
+                            CreatedDate =
+                                DateTime.Now,
+
+                            UpdatedDate =
+                                DateTime.Now
+                        };
+
+
+                    // =============================================
+                    // ADD CHILD RECORD
+                    // =============================================
+
+                    db.WorkflowSteps.Add(
+                        workflowStep
+                    );
+
+
+                    stepNo++;
+                }
+
+
+                // =================================================
+                // SAVE ALL STEPS
+                // =================================================
+
+                db.SaveChanges();
+
+
+                // =================================================
+                // SUCCESS
+                // =================================================
+
+                return Json(new
+                {
+                    success = true,
+
+                    workflowId =
+                        workflowId,
+
+                    message =
+                        "Workflow and steps saved successfully."
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+
+                    message =
+                        "Unable to save workflow steps: "
+                        + GetErrorMessage(ex)
+                });
+            }
+        }
+
 
         // =========================================================
         // GET: Workflow/Design
-        // OPENS EXISTING DESIGN.CSHTML
+        //
+        // EXISTING DESIGN SCREEN
+        //
+        // This is kept because your project already has a Design
+        // screen and existing functionality.
+        //
+        // The NEW workflow creation flow does NOT need to redirect
+        // here.
         // =========================================================
 
         [HttpGet]
@@ -284,45 +654,59 @@ namespace _10xFlow360.Controllers
             try
             {
                 // -------------------------------------------------
-                // If sidebar opened Design without workflowId,
-                // get the latest created workflow.
+                // If Design is opened without workflowId,
+                // get latest workflow.
                 // -------------------------------------------------
 
                 if (!workflowId.HasValue)
                 {
-                    var latestWorkflow = db.Workflows
-                        .OrderByDescending(x => x.WorkflowId)
-                        .FirstOrDefault();
+                    var latestWorkflow =
+                        db.Workflows
+                          .OrderByDescending(
+                              x => x.WorkflowId)
+                          .FirstOrDefault();
+
 
                     if (latestWorkflow == null)
                     {
                         TempData["ErrorMessage"] =
                             "Please create a workflow first.";
 
-                        return RedirectToAction("Index");
+                        return RedirectToAction(
+                            "Index"
+                        );
                     }
 
-                    workflowId = latestWorkflow.WorkflowId;
+
+                    workflowId =
+                        latestWorkflow.WorkflowId;
                 }
+
 
                 // -------------------------------------------------
                 // Load selected workflow
                 // -------------------------------------------------
 
-                var workflow = db.Workflows
-                    .FirstOrDefault(x =>
-                        x.WorkflowId == workflowId.Value);
+                var workflow =
+                    db.Workflows
+                      .FirstOrDefault(x =>
+                          x.WorkflowId ==
+                          workflowId.Value);
+
 
                 if (workflow == null)
                 {
                     TempData["ErrorMessage"] =
                         "Workflow not found.";
 
-                    return RedirectToAction("Index");
+                    return RedirectToAction(
+                        "Index"
+                    );
                 }
 
+
                 // -------------------------------------------------
-                // Open EXISTING Design.cshtml
+                // Open existing Design.cshtml
                 // -------------------------------------------------
 
                 return View(workflow);
@@ -333,14 +717,17 @@ namespace _10xFlow360.Controllers
                     "Unable to load workflow: "
                     + GetErrorMessage(ex);
 
-                return RedirectToAction("Index");
+                return RedirectToAction(
+                    "Index"
+                );
             }
         }
 
 
         // =========================================================
         // POST: Workflow/SaveDraft
-        // SAVE WORKFLOW HEADER
+        //
+        // EXISTING DESIGN HEADER UPDATE
         // =========================================================
 
         [HttpPost]
@@ -369,7 +756,9 @@ namespace _10xFlow360.Controllers
                     TempData["ErrorMessage"] =
                         "Workflow not found.";
 
-                    return RedirectToAction("Index");
+                    return RedirectToAction(
+                        "Index"
+                    );
                 }
 
 
@@ -377,7 +766,8 @@ namespace _10xFlow360.Controllers
                 // VALIDATION
                 // -------------------------------------------------
 
-                if (string.IsNullOrWhiteSpace(workflowName))
+                if (string.IsNullOrWhiteSpace(
+                    workflowName))
                 {
                     TempData["ErrorMessage"] =
                         "Workflow Name is required.";
@@ -386,12 +776,15 @@ namespace _10xFlow360.Controllers
                         "Design",
                         new
                         {
-                            workflowId = workflowId
-                        });
+                            workflowId =
+                                workflowId
+                        }
+                    );
                 }
 
 
-                if (string.IsNullOrWhiteSpace(sapModule))
+                if (string.IsNullOrWhiteSpace(
+                    sapModule))
                 {
                     TempData["ErrorMessage"] =
                         "SAP Module is required.";
@@ -400,12 +793,15 @@ namespace _10xFlow360.Controllers
                         "Design",
                         new
                         {
-                            workflowId = workflowId
-                        });
+                            workflowId =
+                                workflowId
+                        }
+                    );
                 }
 
 
-                if (string.IsNullOrWhiteSpace(company))
+                if (string.IsNullOrWhiteSpace(
+                    company))
                 {
                     TempData["ErrorMessage"] =
                         "Company is required.";
@@ -414,12 +810,15 @@ namespace _10xFlow360.Controllers
                         "Design",
                         new
                         {
-                            workflowId = workflowId
-                        });
+                            workflowId =
+                                workflowId
+                        }
+                    );
                 }
 
 
-                if (string.IsNullOrWhiteSpace(version))
+                if (string.IsNullOrWhiteSpace(
+                    version))
                 {
                     TempData["ErrorMessage"] =
                         "Version is required.";
@@ -428,13 +827,15 @@ namespace _10xFlow360.Controllers
                         "Design",
                         new
                         {
-                            workflowId = workflowId
-                        });
+                            workflowId =
+                                workflowId
+                        }
+                    );
                 }
 
 
                 // -------------------------------------------------
-                // UPDATE
+                // UPDATE HEADER
                 // -------------------------------------------------
 
                 workflow.WorkflowName =
@@ -474,8 +875,10 @@ namespace _10xFlow360.Controllers
                     "Design",
                     new
                     {
-                        workflowId = workflowId
-                    });
+                        workflowId =
+                            workflowId
+                    }
+                );
             }
             catch (Exception ex)
             {
@@ -483,15 +886,248 @@ namespace _10xFlow360.Controllers
                     "Unable to save workflow header: "
                     + GetErrorMessage(ex);
 
+
                 return RedirectToAction(
                     "Design",
                     new
                     {
-                        workflowId = workflowId
-                    });
+                        workflowId =
+                            workflowId
+                    }
+                );
             }
         }
 
+
+        // =========================================================
+        // POST: Workflow/SaveWorkflowSteps
+        //
+        // EXISTING DESIGN SCREEN STEP SAVE
+        //
+        // This remains available for your existing Design screen.
+        // =========================================================
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SaveWorkflowSteps(
+            long workflowId,
+            string workflowStepsJson)
+        {
+            try
+            {
+                // -------------------------------------------------
+                // CHECK WORKFLOW HEADER
+                // -------------------------------------------------
+
+                var workflow =
+                    db.Workflows
+                      .FirstOrDefault(x =>
+                          x.WorkflowId == workflowId);
+
+
+                if (workflow == null)
+                {
+                    TempData["ErrorMessage"] =
+                        "Workflow not found.";
+
+                    return RedirectToAction(
+                        "Index"
+                    );
+                }
+
+
+                // -------------------------------------------------
+                // CHECK JSON
+                // -------------------------------------------------
+
+                if (string.IsNullOrWhiteSpace(
+                    workflowStepsJson))
+                {
+                    TempData["ErrorMessage"] =
+                        "Please add at least one workflow step.";
+
+                    return RedirectToAction(
+                        "Design",
+                        new
+                        {
+                            workflowId =
+                                workflowId
+                        }
+                    );
+                }
+
+
+                // -------------------------------------------------
+                // DESERIALIZE
+                // -------------------------------------------------
+
+                var serializer =
+                    new System.Web.Script.Serialization
+                        .JavaScriptSerializer();
+
+
+                var steps =
+                    serializer.Deserialize<
+                        List<WorkflowStepInput>
+                    >(
+                        workflowStepsJson
+                    );
+
+
+                if (steps == null ||
+                    steps.Count == 0)
+                {
+                    TempData["ErrorMessage"] =
+                        "Please add at least one workflow step.";
+
+                    return RedirectToAction(
+                        "Design",
+                        new
+                        {
+                            workflowId =
+                                workflowId
+                        }
+                    );
+                }
+
+
+                // -------------------------------------------------
+                // REMOVE OLD STEPS
+                // -------------------------------------------------
+
+                var oldSteps =
+                    db.WorkflowSteps
+                      .Where(x =>
+                          x.WorkflowId ==
+                          workflowId)
+                      .ToList();
+
+
+                if (oldSteps.Count > 0)
+                {
+                    db.WorkflowSteps.RemoveRange(
+                        oldSteps
+                    );
+                }
+
+
+                // -------------------------------------------------
+                // INSERT CURRENT STEPS
+                // -------------------------------------------------
+
+                int stepNo = 1;
+
+
+                foreach (var item in steps)
+                {
+                    if (item == null)
+                    {
+                        continue;
+                    }
+
+
+                    var workflowStep =
+                        new WorkflowStep
+                        {
+                            WorkflowId =
+                                workflowId,
+
+                            StepNo =
+                                stepNo,
+
+                            StepName =
+                                string.IsNullOrWhiteSpace(
+                                    item.name)
+                                ? "Workflow Step " + stepNo
+                                : item.name.Trim(),
+
+                            StepType =
+                                string.IsNullOrWhiteSpace(
+                                    item.type)
+                                ? "Action"
+                                : item.type.Trim(),
+
+                            TriggerType =
+                                item.triggerType,
+
+                            SapObject =
+                                item.sapObject,
+
+                            ConditionExpression =
+                                item.condition,
+
+                            NotificationType =
+                                item.notificationType,
+
+                            Recipient =
+                                item.recipient,
+
+                            MessageTemplate =
+                                item.messageTemplate,
+
+                            WaitType =
+                                item.waitType,
+
+                            FieldName =
+                                item.fieldName,
+
+                            SlaHours =
+                                item.slaHours,
+
+                            CreatedDate =
+                                DateTime.Now,
+
+                            UpdatedDate =
+                                DateTime.Now
+                        };
+
+
+                    db.WorkflowSteps.Add(
+                        workflowStep
+                    );
+
+
+                    stepNo++;
+                }
+
+
+                // -------------------------------------------------
+                // SAVE
+                // -------------------------------------------------
+
+                db.SaveChanges();
+
+
+                TempData["SuccessMessage"] =
+                    "Workflow steps saved successfully.";
+
+
+                return RedirectToAction(
+                    "Design",
+                    new
+                    {
+                        workflowId =
+                            workflowId
+                    }
+                );
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] =
+                    "Unable to save workflow steps: "
+                    + GetErrorMessage(ex);
+
+
+                return RedirectToAction(
+                    "Design",
+                    new
+                    {
+                        workflowId =
+                            workflowId
+                    }
+                );
+            }
+        }
 
 
         // =========================================================
@@ -501,7 +1137,8 @@ namespace _10xFlow360.Controllers
         [HttpGet]
         public ActionResult Test(long? workflowId)
         {
-            ViewBag.WorkflowId = workflowId;
+            ViewBag.WorkflowId =
+                workflowId;
 
             return View();
         }
@@ -529,7 +1166,8 @@ namespace _10xFlow360.Controllers
                 var workflow =
                     db.Workflows
                       .FirstOrDefault(x =>
-                          x.WorkflowId == workflowId);
+                          x.WorkflowId ==
+                          workflowId);
 
 
                 if (workflow == null)
@@ -541,8 +1179,10 @@ namespace _10xFlow360.Controllers
                         "Test",
                         new
                         {
-                            workflowId = workflowId
-                        });
+                            workflowId =
+                                workflowId
+                        }
+                    );
                 }
 
 
@@ -560,8 +1200,10 @@ namespace _10xFlow360.Controllers
                         "Test",
                         new
                         {
-                            workflowId = workflowId
-                        });
+                            workflowId =
+                                workflowId
+                        }
+                    );
                 }
 
 
@@ -577,8 +1219,10 @@ namespace _10xFlow360.Controllers
                     "Test",
                     new
                     {
-                        workflowId = workflowId
-                    });
+                        workflowId =
+                            workflowId
+                    }
+                );
             }
             catch (Exception ex)
             {
@@ -586,12 +1230,15 @@ namespace _10xFlow360.Controllers
                     "Test failed: "
                     + GetErrorMessage(ex);
 
+
                 return RedirectToAction(
                     "Test",
                     new
                     {
-                        workflowId = workflowId
-                    });
+                        workflowId =
+                            workflowId
+                    }
+                );
             }
         }
 
@@ -601,35 +1248,49 @@ namespace _10xFlow360.Controllers
         // GET WORKFLOW LIST
         // =========================================================
 
-        private List<WorkflowListItem> GetWorkflowList()
+        private List<WorkflowListItem>
+            GetWorkflowList()
         {
-            // IMPORTANT:
+            // -------------------------------------------------
             // Materialize HANA query first.
+            // -------------------------------------------------
 
             var workflowData =
                 db.Workflows
-                  .OrderByDescending(x => x.WorkflowId)
+                  .OrderByDescending(
+                      x => x.WorkflowId)
                   .ToList();
 
 
             return workflowData
                 .Select(x => new WorkflowListItem
                 {
-                    Id = x.WorkflowId,
+                    Id =
+                        x.WorkflowId,
 
-                    WorkflowName = x.WorkflowName,
+                    WorkflowCode =
+                        x.WorkflowCode,
 
-                    SAPModule = x.SapModule,
+                    WorkflowName =
+                        x.WorkflowName,
 
-                    Version = x.VersionNo,
+                    SAPModule =
+                        x.SapModule,
 
-                    Status = x.Status,
+                    Version =
+                        x.VersionNo,
 
-                    UpdatedOn = x.UpdatedDate.HasValue
+                    Status =
+                        x.Status,
+
+                    UpdatedOn =
+                        x.UpdatedDate.HasValue
                         ? x.UpdatedDate.Value
-                            .ToString("dd-MMM-yyyy")
+                            .ToString(
+                                "dd-MMM-yyyy")
                         : x.CreatedDate
-                            .ToString("dd-MMM-yyyy")
+                            .ToString(
+                                "dd-MMM-yyyy")
                 })
                 .ToList();
         }
@@ -643,72 +1304,140 @@ namespace _10xFlow360.Controllers
         private string GenerateWorkflowCode(
             string sapModule)
         {
-            string prefix = "GEN";
+            string prefix =
+                "GEN";
 
 
-            if (!string.IsNullOrWhiteSpace(sapModule))
+            if (!string.IsNullOrWhiteSpace(
+                sapModule))
             {
-                switch (sapModule.Trim().ToUpper())
+                switch (
+                    sapModule.Trim().ToUpper())
                 {
                     case "SALES":
 
-                        prefix = "SALES";
+                        prefix =
+                            "SALES";
 
                         break;
 
 
                     case "PURCHASE":
 
-                        prefix = "PUR";
+                        prefix =
+                            "PUR";
 
                         break;
 
 
                     case "INVENTORY":
 
-                        prefix = "INV";
+                        prefix =
+                            "INV";
 
                         break;
 
 
                     case "FINANCE":
 
-                        prefix = "FIN";
+                        prefix =
+                            "FIN";
 
                         break;
 
 
                     case "PRODUCTION":
 
-                        prefix = "PROD";
+                        prefix =
+                            "PROD";
 
                         break;
 
 
                     case "SERVICE":
 
-                        prefix = "SERV";
+                        prefix =
+                            "SERV";
 
                         break;
                 }
             }
 
 
-            // -------------------------------------------------
-            // Count existing workflow codes
-            // This operation is SQL-translatable.
-            // -------------------------------------------------
+            // ---------------------------------------------------------
+            // Load workflow codes first.
+            //
+            // Avoid StartsWith() inside HANA LINQ query.
+            // ---------------------------------------------------------
 
-            int count =
-                db.Workflows.Count(x =>
-                    x.WorkflowCode.StartsWith(
-                        "WF-" + prefix + "-"));
+            List<string> workflowCodes =
+                db.Workflows
+                  .Select(x => x.WorkflowCode)
+                  .ToList();
 
 
-            return "WF-" +
-                   prefix +
-                   "-" +
-                   (count + 1).ToString("000");
+            string expectedPrefix =
+                "WF-" + prefix + "-";
+
+
+            int maxNumber =
+                0;
+
+
+            foreach (string code
+                     in workflowCodes)
+            {
+                if (string.IsNullOrWhiteSpace(
+                    code))
+                {
+                    continue;
+                }
+
+
+                // -------------------------------------------------
+                // Check prefix in C#
+                // -------------------------------------------------
+
+                if (!code.StartsWith(
+                        expectedPrefix,
+                        StringComparison
+                            .OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+
+                // -------------------------------------------------
+                // Example:
+                //
+                // WF-SALES-001
+                // WF-SALES-002
+                // -------------------------------------------------
+
+                string numberPart =
+                    code.Substring(
+                        expectedPrefix.Length);
+
+
+                int number;
+
+
+                if (int.TryParse(
+                    numberPart,
+                    out number))
+                {
+                    if (number > maxNumber)
+                    {
+                        maxNumber =
+                            number;
+                    }
+                }
+            }
+
+
+            return expectedPrefix +
+                   (maxNumber + 1)
+                       .ToString("000");
         }
 
 
@@ -717,13 +1446,17 @@ namespace _10xFlow360.Controllers
         // GET INNER EXCEPTION
         // =========================================================
 
-        private string GetErrorMessage(Exception ex)
+        private string GetErrorMessage(
+            Exception ex)
         {
             if (ex == null)
+            {
                 return "Unknown error.";
+            }
 
 
-            Exception current = ex;
+            Exception current =
+                ex;
 
 
             while (current.InnerException != null)
@@ -749,6 +1482,7 @@ namespace _10xFlow360.Controllers
                 db.Dispose();
             }
 
+
             base.Dispose(disposing);
         }
     }
@@ -762,6 +1496,8 @@ namespace _10xFlow360.Controllers
     {
         public long Id { get; set; }
 
+        public string WorkflowCode { get; set; }
+
         public string WorkflowName { get; set; }
 
         public string SAPModule { get; set; }
@@ -771,5 +1507,39 @@ namespace _10xFlow360.Controllers
         public string Status { get; set; }
 
         public string UpdatedOn { get; set; }
+    }
+
+
+    // =============================================================
+    // WORKFLOW STEP INPUT
+    //
+    // Used by existing Design screen
+    // =============================================================
+
+    public class WorkflowStepInput
+    {
+        public string name { get; set; }
+
+        public string type { get; set; }
+
+        public string actionType { get; set; }
+
+        public string triggerType { get; set; }
+
+        public string sapObject { get; set; }
+
+        public string condition { get; set; }
+
+        public string notificationType { get; set; }
+
+        public string recipient { get; set; }
+
+        public string messageTemplate { get; set; }
+
+        public string waitType { get; set; }
+
+        public string fieldName { get; set; }
+
+        public decimal? slaHours { get; set; }
     }
 }
