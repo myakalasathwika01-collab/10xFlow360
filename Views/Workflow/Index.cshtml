@@ -276,19 +276,13 @@
                                         <!-- DESIGN -->
 
                                         <a href="@Url.Action(
-                                                "Design",
-                                                "Workflow",
-                                                new
-                                                {
-                                                    workflowId = workflow.Id
-                                                })"
-                                           class="btn btn-sm btn-outline-primary"
-                                           title="Design">
-
-                                            <i class="bi bi-diagram-3"></i>
-
+    "WorkflowList",
+    "Workflow",
+    new { workflowId = workflow.Id })"
+                                           class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-diagram-3 me-1"></i>
+                                            Workflow
                                         </a>
-
 
                                         <!-- AUTOMATE / TEST -->
 

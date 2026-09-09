@@ -1,503 +1,794 @@
-﻿@{
-    ViewBag.Title = "New Workflow";
+﻿@using System.Web.Helpers
+@model IEnumerable<_10xFlow360.Controllers.WorkflowListItem>
+
+@{
+    ViewBag.Title = "Workflows";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var selectedWorkflow =
+        ViewBag.SelectedWorkflow as _10xFlow360.Models.Workflow;
+
+    var workflowSteps =
+        ViewBag.WorkflowSteps as IEnumerable<_10xFlow360.Models.WorkflowStep>;
+
+    var selectedWorkflowId =
+        selectedWorkflow != null
+            ? selectedWorkflow.WorkflowId
+            : 0;
 }
 
-<link rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+<!-- ============================================================= -->
+<!-- WORKFLOW LIST -->
+<!-- ============================================================= -->
+<!-- ============================================================= -->
+<!-- CREATE WORKFLOW POPUP -->
+<!-- ============================================================= -->
 
-<div class="container-fluid ps-0">
+@Html.Partial(
+    "_CreateWorkflow",
+    new _10xFlow360.Models.WorkflowCreateVM()
+)
 
-    <!-- =========================================================
-         MAIN CARD
-         ========================================================= -->
+@if (selectedWorkflow != null)
+{
+    <!-- ========================================================= -->
+    <!-- WORKFLOW DESIGNER MOVED FROM DESIGN VIEW -->
+    <!-- ========================================================= -->
 
-    <div class="card border-0 shadow-sm">
 
-        <div class="card-body">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 
-            <!-- =================================================
-                 HEADER
-                 ================================================= -->
+    <div class="container-fluid ps-0">
 
-            <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
 
-                <div>
-                    <h4 class="mb-1">
-                        Workflow Designer
-                    </h4>
+                <!-- =========================================================
+                     PAGE HEADER
+                     ========================================================= -->
 
-                    <div class="text-muted small">
-                        Create a new SAP business workflow.
+                <div class="row align-items-center mb-4">
+
+                    <div class="col-md-7">
+
+                        <h2 class="h4 fw-semibold text-dark mb-1">
+                            Workflow Designer
+                        </h2>
+
+                        <p class="text-muted mb-0">
+                            Design your SAP process using reusable workflow blocks.
+                        </p>
+
                     </div>
+
+                    <div class="col-md-5">
+                        <div class="d-flex justify-content-md-end align-items-center mt-3 mt-md-0 gap-2">
+
+                            <!-- SAVE DRAFT -->
+                            @using (Html.BeginForm(
+                                "SaveDraft",
+                                "Workflow",
+                                FormMethod.Post,
+                                new { @class = "d-inline" }))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="workflowId"
+                                       value="@selectedWorkflowId" />
+
+                                <input type="hidden"
+                                       id="draftWorkflowName"
+                                       name="workflowName"
+                                       value="@(selectedWorkflow != null ? selectedWorkflow.WorkflowName : "")" />
+
+                                <input type="hidden"
+                                       id="draftSapModule"
+                                       name="sapModule"
+                                       value="@(selectedWorkflow != null ? selectedWorkflow.SapModule : "")" />
+
+                                <input type="hidden"
+                                       id="draftCompany"
+                                       name="company"
+                                       value="@(selectedWorkflow != null ? selectedWorkflow.CompanyName : "")" />
+
+                                <input type="hidden"
+                                       id="draftVersion"
+                                       name="version"
+                                       value="@(selectedWorkflow != null ? selectedWorkflow.VersionNo : "")" />
+
+                                <button type="submit"
+                                        class="btn btn-danger btn-sm px-3">
+
+                                    <i class="bi bi-save me-1"></i>
+                                    Save Draft
+
+                                </button>
+                            }
+
+                            <!-- SAVE WORKFLOW -->
+                            <button type="button"
+                                    class="btn btn-primary btn-sm px-3"
+                                    id="btnSaveWorkflow"
+                                    onclick="saveWorkflow()">
+
+                                <i class="bi bi-database-check me-1"></i>
+                                Save Workflow
+
+                            </button>
+
+                            <!-- TEST WORKFLOW -->
+                            <a href="@Url.Action(
+        "Test",
+        "Workflow",
+        new { workflowId = selectedWorkflowId })"
+                               class="btn btn-success btn-sm px-3">
+
+                                <i class="bi bi-play-fill me-1"></i>
+                                Test Workflow
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
                 </div>
 
-                <div>
 
-                    <button type="button"
-                            class="btn btn-sm me-2"
-                            style="background:#ed1764;color:white;"
-                            onclick="saveNewWorkflow()">
+                <!-- =========================================================
+                     ALERTS
+                     ========================================================= -->
 
-                        <i class="bi bi-save me-1"></i>
-                        Save Draft
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success d-flex align-items-center mb-3"
+                         role="alert">
 
-                    </button>
+                        <i class="bi bi-check-circle-fill me-2"></i>
 
-                    <button type="button"
-                            class="btn btn-sm btn-success"
-                            onclick="testNewWorkflow()">
+                        <span>
+                            @TempData["SuccessMessage"]
+                        </span>
 
-                        <i class="bi bi-play-fill me-1"></i>
-                        Test Workflow
+                    </div>
+                }
 
-                    </button>
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger d-flex align-items-center mb-3"
+                         role="alert">
+
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+                        <span>
+                            @TempData["ErrorMessage"]
+                        </span>
+
+                    </div>
+                }
+
+                @if (TempData["TestMessage"] != null)
+                {
+                    <div class="alert alert-info d-flex align-items-center mb-3"
+                         role="alert">
+
+                        <i class="bi bi-info-circle-fill me-2"></i>
+
+                        <span>
+                            @TempData["TestMessage"]
+                        </span>
+
+                    </div>
+                }
+
+
+                <!-- =========================================================
+                     WORKFLOW INFORMATION
+                     ========================================================= -->
+
+                <div class="card border shadow-sm mb-4">
+
+                    <div class="card-body p-3">
+
+                        <div class="row g-3">
+
+                            <!-- WORKFLOW NAME -->
+
+                            <div class="col-lg-4 col-md-6">
+
+                                <label for="workflowName"
+                                       class="form-label fw-medium">
+
+                                    Workflow Name
+
+                                </label>
+
+                                <input type="text"
+                                       id="workflowName"
+                                       class="form-control"
+                                       value="@(selectedWorkflow != null ? selectedWorkflow.WorkflowName : "")" />
+
+                            </div>
+
+
+                            <!-- SAP MODULE -->
+
+                            <div class="col-lg-3 col-md-6">
+
+                                <label for="sapModule"
+                                       class="form-label fw-medium">
+
+                                    SAP Module
+
+                                </label>
+
+                                <select id="sapModule"
+                                        class="form-select">
+
+                                    <option value="Sales"
+                                            @(selectedWorkflow != null && selectedWorkflow.SapModule == "Sales" ? "selected" : "")>
+                                        Sales
+                                    </option>
+
+                                    <option value="Purchase"
+                                            @(selectedWorkflow != null && selectedWorkflow.SapModule == "Purchase" ? "selected" : "")>
+                                        Purchase
+                                    </option>
+
+                                    <option value="Inventory"
+                                            @(selectedWorkflow != null && selectedWorkflow.SapModule == "Inventory" ? "selected" : "")>
+                                        Inventory
+                                    </option>
+
+                                    <option value="Finance"
+                                            @(selectedWorkflow != null && selectedWorkflow.SapModule == "Finance" ? "selected" : "")>
+                                        Finance
+                                    </option>
+
+                                    <option value="Production"
+                                            @(selectedWorkflow != null && selectedWorkflow.SapModule == "Production" ? "selected" : "")>
+                                        Production
+                                    </option>
+
+                                    <option value="Service"
+                                            @(selectedWorkflow != null && selectedWorkflow.SapModule == "Service" ? "selected" : "")>
+                                        Service
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- COMPANY -->
+
+                            <div class="col-lg-3 col-md-6">
+
+                                <label for="company"
+                                       class="form-label fw-medium">
+
+                                    Company
+
+                                </label>
+
+                                <select id="company"
+                                        class="form-select">
+
+                                    <option value="10X Demo Company"
+                                            @(selectedWorkflow != null && selectedWorkflow.CompanyName == "10X Demo Company" ? "selected" : "")>
+                                        10X Demo Company
+                                    </option>
+
+                                    <option value="10X Production Company"
+                                            @(selectedWorkflow != null && selectedWorkflow.CompanyName == "10X Production Company" ? "selected" : "")>
+                                        10X Production Company
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- VERSION -->
+
+                            <div class="col-lg-2 col-md-6">
+
+                                <label for="version"
+                                       class="form-label fw-medium">
+
+                                    Version
+
+                                </label>
+
+                                <input type="text"
+                                       id="version"
+                                       class="form-control"
+                                       value="@(selectedWorkflow != null ? selectedWorkflow.VersionNo : "")"
+                                       readonly />
+
+                            </div>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
-            </div>
 
-
-            <!-- =================================================
-                 WORKFLOW INFORMATION
-                 ================================================= -->
-
-            <div class="border rounded p-3 mb-3">
+                <!-- =========================================================
+                     WORKFLOW DESIGNER
+                     ========================================================= -->
 
                 <div class="row g-3">
 
-                    <div class="col-md-4">
 
-                        <label class="form-label small">
-                            Workflow Name
-                        </label>
+                    <!-- =====================================================
+                         COMPONENTS
+                         ===================================================== -->
 
-                        <input type="text"
-                               id="workflowName"
-                               class="form-control"
-                               placeholder="Enter workflow name" />
+                    <div class="col-xl-3 col-lg-3">
 
-                    </div>
+                        <div class="card border shadow-sm h-100">
 
+                            <div class="card-header bg-white border-0">
 
-                    <div class="col-md-3">
+                                <h5 class="mb-0 fw-semibold">
 
-                        <label class="form-label small">
-                            SAP Module
-                        </label>
+                                    <i class="bi bi-boxes me-2 text-primary"></i>
 
-                        <select id="sapModule"
-                                class="form-select">
+                                    Components
 
-                            <option value="">
-                                Select Module
-                            </option>
-
-                            <option value="Sales">
-                                Sales
-                            </option>
-
-                            <option value="Purchase">
-                                Purchase
-                            </option>
-
-                            <option value="Inventory">
-                                Inventory
-                            </option>
-
-                            <option value="Finance">
-                                Finance
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="col-md-3">
-
-                        <label class="form-label small">
-                            Company
-                        </label>
-
-                        <select id="company"
-                                class="form-select">
-
-                            <option value="10X Demo Company">
-                                10X Demo Company
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="col-md-2">
-
-                        <label class="form-label small">
-                            Version
-                        </label>
-
-                        <input type="text"
-                               id="version"
-                               class="form-control"
-                               value="V1.0" />
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- =================================================
-                 MAIN DESIGN AREA
-                 ================================================= -->
-
-            <div class="row g-3">
-
-
-                <!-- =================================================
-                     COMPONENTS
-                     ================================================= -->
-
-                <div class="col-md-3">
-
-                    <div class="border rounded h-100">
-
-                        <div class="card-body">
-
-                            <h6 class="fw-semibold mb-3">
-
-                                <i class="bi bi-boxes text-primary me-2"></i>
-
-                                Components
-
-                            </h6>
-
-
-                            <!-- =================================================
-                                 TRIGGER
-                                 ================================================= -->
-
-                            <div class="small text-muted mb-2">
-                                TRIGGER
-                            </div>
-
-
-                            <button type="button"
-                                    class="btn btn-light border w-100 text-start mb-2"
-                                    onclick="addComponent('SAP Event')">
-
-                                <i class="bi bi-lightning text-primary me-2"></i>
-
-                                SAP Event
-
-                            </button>
-
-
-                            <button type="button"
-                                    class="btn btn-light border w-100 text-start mb-3"
-                                    onclick="addComponent('Query Trigger')">
-
-                                <i class="bi bi-database text-primary me-2"></i>
-
-                                Query Trigger
-
-                            </button>
-
-
-                            <!-- =================================================
-                                 LOGIC
-                                 ================================================= -->
-
-                            <div class="small text-muted mb-2">
-                                LOGIC
-                            </div>
-
-
-                            <button type="button"
-                                    class="btn btn-light border w-100 text-start mb-2"
-                                    onclick="addComponent('Condition')">
-
-                                <i class="bi bi-signpost-split text-primary me-2"></i>
-
-                                Condition
-
-                            </button>
-
-
-                            <button type="button"
-                                    class="btn btn-light border w-100 text-start mb-3"
-                                    onclick="addComponent('Wait')">
-
-                                <i class="bi bi-hourglass-split text-warning me-2"></i>
-
-                                Wait
-
-                            </button>
-
-
-                            <!-- =================================================
-                                 ACTIONS
-                                 ================================================= -->
-
-                            <div class="small text-muted mb-2">
-                                ACTIONS
-                            </div>
-
-
-                            <button type="button"
-                                    class="btn btn-light border w-100 text-start mb-2"
-                                    onclick="addComponent('WhatsApp')">
-
-                                <i class="bi bi-whatsapp text-success me-2"></i>
-
-                                WhatsApp
-
-                            </button>
-
-
-                            <button type="button"
-                                    class="btn btn-light border w-100 text-start mb-2"
-                                    onclick="addComponent('Email')">
-
-                                <i class="bi bi-envelope text-danger me-2"></i>
-
-                                Email
-
-                            </button>
-
-
-                            <button type="button"
-                                    class="btn btn-light border w-100 text-start mb-2"
-                                    onclick="addComponent('Assign Task')">
-
-                                <i class="bi bi-person-plus text-primary me-2"></i>
-
-                                Assign Task
-
-                            </button>
-
-
-                            <button type="button"
-                                    class="btn btn-light border w-100 text-start"
-                                    onclick="addComponent('Update SAP Field')">
-
-                                <i class="bi bi-pencil-square text-primary me-2"></i>
-
-                                Update SAP Field
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     WORKFLOW CANVAS
-                     ================================================= -->
-
-                <div class="col-md-6">
-
-                    <div class="border rounded h-100">
-
-                        <div class="card-body">
-
-                            <div id="workflowCanvas"
-                                 style="min-height:520px;">
-
-                                <!-- EMPTY STATE -->
-
-                                <div id="emptyState"
-                                     class="d-flex flex-column
-                                            justify-content-center
-                                            align-items-center"
-                                     style="min-height:450px;">
-
-                                    <i class="bi bi-diagram-3"
-                                       style="font-size:48px;color:#64748b;">
-                                    </i>
-
-                                    <h6 class="mt-3 mb-1">
-                                        No workflow steps yet
-                                    </h6>
-
-                                    <p class="text-muted small mb-0 text-center">
-                                        Select a component from the
-                                        Components panel to start your workflow.
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     PROPERTIES
-                     ================================================= -->
-
-                <div class="col-md-3">
-
-                    <div class="border rounded h-100">
-
-                        <div class="card-body">
-
-                            <h6 class="fw-semibold mb-3">
-
-                                <i class="bi bi-sliders text-primary me-2"></i>
-
-                                Properties
-
-                            </h6>
-
-
-                            <!-- EMPTY PROPERTIES -->
-
-                            <div id="propertiesEmpty"
-                                 class="text-center text-muted py-5">
-
-                                <i class="bi bi-info-circle"
-                                   style="font-size:30px;">
-                                </i>
-
-                                <div class="small mt-2">
-                                    Select a step to configure its properties.
-                                </div>
+                                </h5>
 
                             </div>
 
 
-                            <!-- PROPERTIES PANEL -->
-
-                            <div id="propertiesPanel"
-                                 style="display:none;">
-
-                                <div class="mb-3">
-
-                                    <label class="form-label small">
-                                        Step Name
-                                    </label>
-
-                                    <input type="text"
-                                           id="stepName"
-                                           class="form-control form-control-sm" />
-
-                                </div>
+                            <div class="card-body p-3">
 
 
-                                <div class="mb-3">
+                                <!-- TRIGGER -->
 
-                                    <label class="form-label small">
-                                        Action Type
-                                    </label>
+                                <div class="mb-4">
 
-                                    <select id="actionType"
-                                            class="form-select form-select-sm">
+                                    <div class="text-uppercase text-muted small fw-semibold mb-2">
+                                        Trigger
+                                    </div>
 
-                                        <option value="SAP Document Created">
-                                            SAP Document Created
-                                        </option>
+                                    <button type="button"
+                                            class="btn btn-light border w-100 text-start mb-2"
+                                            onclick="addWorkflowNode('trigger')">
 
-                                        <option value="SAP Event">
-                                            SAP Event
-                                        </option>
+                                        <i class="bi bi-lightning-charge-fill text-primary me-2"></i>
+                                        SAP Event
 
-                                        <option value="Query Trigger">
-                                            Query Trigger
-                                        </option>
+                                    </button>
 
-                                        <option value="WhatsApp">
-                                            WhatsApp
-                                        </option>
 
-                                        <option value="Email">
-                                            Email
-                                        </option>
+                                    <button type="button"
+                                            class="btn btn-light border w-100 text-start"
+                                            onclick="addWorkflowNode('query')">
 
-                                        <option value="Wait">
-                                            Wait
-                                        </option>
+                                        <i class="bi bi-database-check text-primary me-2"></i>
+                                        Query Trigger
 
-                                        <option value="Condition">
-                                            Condition
-                                        </option>
-
-                                        <option value="Assign Task">
-                                            Assign Task
-                                        </option>
-
-                                        <option value="Update SAP Field">
-                                            Update SAP Field
-                                        </option>
-
-                                    </select>
+                                    </button>
 
                                 </div>
 
 
-                                <div class="mb-3">
+                                <!-- LOGIC -->
 
-                                    <label class="form-label small">
-                                        SAP Object
-                                    </label>
+                                <div class="mb-4">
 
-                                    <select id="sapObject"
-                                            class="form-select form-select-sm">
-
-                                        <option value="">
-                                            Select SAP Object
-                                        </option>
-
-                                        <option value="Sales Order - ORDR">
-                                            Sales Order - ORDR
-                                        </option>
-
-                                        <option value="Delivery - ODLN">
-                                            Delivery - ODLN
-                                        </option>
-
-                                        <option value="A/R Invoice - OINV">
-                                            A/R Invoice - OINV
-                                        </option>
-
-                                    </select>
-
-                                </div>
+                                    <div class="text-uppercase text-muted small fw-semibold mb-2">
+                                        Logic
+                                    </div>
 
 
-                                <div class="mb-3">
+                                    <button type="button"
+                                            class="btn btn-light border w-100 text-start mb-2"
+                                            onclick="addWorkflowNode('condition')">
 
-                                    <label class="form-label small">
+                                        <i class="bi bi-signpost-split text-info me-2"></i>
                                         Condition
-                                    </label>
 
-                                    <textarea id="condition"
-                                              class="form-control"
-                                              rows="4"></textarea>
+                                    </button>
+
+
+                                    <button type="button"
+                                            class="btn btn-light border w-100 text-start"
+                                            onclick="addWorkflowNode('wait')">
+
+                                        <i class="bi bi-hourglass-split text-warning me-2"></i>
+                                        Wait
+
+                                    </button>
 
                                 </div>
 
 
-                                <button type="button"
-                                        class="btn w-100"
-                                        style="background:#ed1764;color:white;"
-                                        onclick="applyProperties()">
+                                <!-- ACTIONS -->
 
-                                    <i class="bi bi-check-lg me-1"></i>
+                                <div>
 
-                                    Apply Changes
+                                    <div class="text-uppercase text-muted small fw-semibold mb-2">
+                                        Actions
+                                    </div>
 
-                                </button>
+
+                                    <button type="button"
+                                            class="btn btn-light border w-100 text-start mb-2"
+                                            onclick="addWorkflowNode('whatsapp')">
+
+                                        <i class="bi bi-whatsapp text-success me-2"></i>
+                                        WhatsApp
+
+                                    </button>
+
+
+                                    <button type="button"
+                                            class="btn btn-light border w-100 text-start mb-2"
+                                            onclick="addWorkflowNode('email')">
+
+                                        <i class="bi bi-envelope text-danger me-2"></i>
+                                        Email
+
+                                    </button>
+
+
+                                    <button type="button"
+                                            class="btn btn-light border w-100 text-start mb-2"
+                                            onclick="addWorkflowNode('task')">
+
+                                        <i class="bi bi-person-check text-info me-2"></i>
+                                        Assign Task
+
+                                    </button>
+
+
+                                    <button type="button"
+                                            class="btn btn-light border w-100 text-start"
+                                            onclick="addWorkflowNode('update')">
+
+                                        <i class="bi bi-pencil-square text-primary me-2"></i>
+                                        Update SAP Field
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =====================================================
+                         WORKFLOW CANVAS
+                         ===================================================== -->
+
+                    <div class="col-xl-6 col-lg-6">
+
+                        <div class="card border shadow-sm h-100">
+
+                            <div class="card-body p-3">
+
+                                <div id="workflowFlow"
+                                     class="d-flex flex-column align-items-center">
+
+                                    <!--
+                                        Existing database steps are rendered
+                                        here by JavaScript.
+                                    -->
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =====================================================
+                         PROPERTIES
+                         ===================================================== -->
+
+                    <div class="col-xl-3 col-lg-3">
+
+                        <div class="card border shadow-sm h-100">
+
+                            <div class="card-header bg-white border-0">
+
+                                <h5 class="mb-0 fw-semibold">
+
+                                    <i class="bi bi-sliders me-2 text-primary"></i>
+
+                                    Properties
+
+                                </h5>
+
+                            </div>
+
+
+                            <div class="card-body p-3">
+
+                                <div id="workflowProperties">
+
+                                    <!-- STEP NAME -->
+
+                                    <div class="mb-3">
+
+                                        <label for="propertyStepName"
+                                               class="form-label fw-medium">
+
+                                            Step Name
+
+                                        </label>
+
+                                        <input type="text"
+                                               id="propertyStepName"
+                                               class="form-control"
+                                               placeholder="Enter step name" />
+
+                                    </div>
+
+
+                                    <!-- STEP TYPE -->
+
+                                    <div class="mb-3">
+
+                                        <label for="propertyStepType"
+                                               class="form-label fw-medium">
+
+                                            Step Type
+
+                                        </label>
+
+                                        <input type="text"
+                                               id="propertyStepType"
+                                               class="form-control"
+                                               readonly />
+
+                                    </div>
+
+
+                                    <!-- TRIGGER TYPE -->
+
+                                    <div class="mb-3">
+
+                                        <label for="propertyTriggerType"
+                                               class="form-label fw-medium">
+
+                                            Trigger Type
+
+                                        </label>
+
+                                        <select id="propertyTriggerType"
+                                                class="form-select">
+
+                                            <option value="">
+                                                Select Trigger Type
+                                            </option>
+
+                                            <option value="SAP Document Created">
+                                                SAP Document Created
+                                            </option>
+
+                                            <option value="SAP Document Updated">
+                                                SAP Document Updated
+                                            </option>
+
+                                            <option value="Query Trigger">
+                                                Query Trigger
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- SAP OBJECT -->
+
+                                    <div class="mb-3">
+
+                                        <label for="propertySapObject"
+                                               class="form-label fw-medium">
+
+                                            SAP Object
+
+                                        </label>
+
+                                        <select id="propertySapObject"
+                                                class="form-select">
+
+                                            <option value="">
+                                                Select SAP Object
+                                            </option>
+
+                                            <option value="Sales Order - ORDR">
+                                                Sales Order - ORDR
+                                            </option>
+
+                                            <option value="Delivery - ODLN">
+                                                Delivery - ODLN
+                                            </option>
+
+                                            <option value="A/R Invoice - OINV">
+                                                A/R Invoice - OINV
+                                            </option>
+
+                                            <option value="Purchase Order - OPOR">
+                                                Purchase Order - OPOR
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- CONDITION -->
+
+                                    <div class="mb-3">
+
+                                        <label for="propertyCondition"
+                                               class="form-label fw-medium">
+
+                                            Condition
+
+                                        </label>
+
+                                        <textarea id="propertyCondition"
+                                                  class="form-control"
+                                                  rows="4"
+                                                  placeholder="Enter condition"></textarea>
+
+                                    </div>
+
+
+                                    <!-- NOTIFICATION TYPE -->
+
+                                    <div class="mb-3">
+
+                                        <label for="propertyNotificationType"
+                                               class="form-label fw-medium">
+
+                                            Notification Type
+
+                                        </label>
+
+                                        <select id="propertyNotificationType"
+                                                class="form-select">
+
+                                            <option value="">
+                                                Select
+                                            </option>
+
+                                            <option value="WhatsApp">
+                                                WhatsApp
+                                            </option>
+
+                                            <option value="Email">
+                                                Email
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- RECIPIENT -->
+
+                                    <div class="mb-3">
+
+                                        <label for="propertyRecipient"
+                                               class="form-label fw-medium">
+
+                                            Recipient
+
+                                        </label>
+
+                                        <input type="text"
+                                               id="propertyRecipient"
+                                               class="form-control"
+                                               placeholder="Enter recipient" />
+
+                                    </div>
+
+
+                                    <!-- MESSAGE -->
+
+                                    <div class="mb-3">
+
+                                        <label for="propertyMessageTemplate"
+                                               class="form-label fw-medium">
+
+                                            Message Template
+
+                                        </label>
+
+                                        <textarea id="propertyMessageTemplate"
+                                                  class="form-control"
+                                                  rows="3"
+                                                  placeholder="Enter message"></textarea>
+
+                                    </div>
+
+
+                                    <!-- WAIT TYPE -->
+
+                                    <div class="mb-3">
+
+                                        <label for="propertyWaitType"
+                                               class="form-label fw-medium">
+
+                                            Wait Type
+
+                                        </label>
+
+                                        <input type="text"
+                                               id="propertyWaitType"
+                                               class="form-control"
+                                               placeholder="Enter wait type" />
+
+                                    </div>
+
+
+                                    <!-- FIELD -->
+
+                                    <div class="mb-3">
+
+                                        <label for="propertyFieldName"
+                                               class="form-label fw-medium">
+
+                                            Field Name
+
+                                        </label>
+
+                                        <input type="text"
+                                               id="propertyFieldName"
+                                               class="form-control"
+                                               placeholder="Enter SAP field" />
+
+                                    </div>
+
+
+                                    <!-- SLA -->
+
+                                    <div class="mb-3">
+
+                                        <label for="propertySlaHours"
+                                               class="form-label fw-medium">
+
+                                            SLA Hours
+
+                                        </label>
+
+                                        <input type="number"
+                                               id="propertySlaHours"
+                                               class="form-control"
+                                               step="0.01"
+                                               min="0"
+                                               placeholder="0" />
+
+                                    </div>
+
+
+                                    <!-- APPLY -->
+
+                                    <button type="button"
+                                            class="btn btn-flow-pink w-100"
+                                            onclick="saveNodeProperties()">
+
+                                        <i class="bi bi-check2 me-1"></i>
+                                        Apply Changes
+
+                                    </button>
+
+                                </div>
 
                             </div>
 
@@ -513,821 +804,1055 @@
 
     </div>
 
-</div>
+
+    @Html.Partial("_EditAlertModal")
+
+}
+
+@section Scripts {
+
+    <style>
+
+        .workflow-node {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+            .workflow-node:hover {
+                box-shadow: 0 4px 12px rgba(0,0,0,.08) !important;
+            }
+
+            .workflow-node.selected {
+                border-color: #0d6efd !important;
+                border-width: 2px !important;
+            }
+
+        .workflow-edit-btn,
+        .workflow-delete-btn {
+            width: 32px !important;
+            height: 32px !important;
+            min-width: 32px !important;
+            max-width: 32px !important;
+            padding: 0 !important;
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1;
+            flex-shrink: 0;
+            transition: all .15s ease-in-out;
+        }
+
+            .workflow-edit-btn:hover,
+            .workflow-edit-btn:focus {
+                background-color: #ffc107 !important;
+                border-color: #ffc107 !important;
+                color: #212529 !important;
+            }
+
+            .workflow-delete-btn:hover,
+            .workflow-delete-btn:focus {
+                background-color: #dc3545 !important;
+                border-color: #dc3545 !important;
+                color: #ffffff !important;
+            }
+
+        .workflow-connector {
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+        }
+
+        .workflow-empty {
+            width: 100%;
+            min-height: 180px;
+            border: 2px dashed #dee2e6;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            text-align: center;
+            padding: 30px;
+        }
+    </style>
 
 
-<script>
+    <script>
 
-    // =========================================================
-    // WORKFLOW DATA
-    // =========================================================
+    var hasSelectedWorkflow = @(selectedWorkflow != null ? "true" : "false");
 
-    var workflowSteps = [];
+    /* =========================================================
+       WORKFLOW ID
+       ========================================================= */
 
-    var selectedStepIndex = -1;
+    var workflowId = @selectedWorkflowId;
 
 
-    // =========================================================
-    // ADD COMPONENT
-    // =========================================================
+    /* =========================================================
+       DATABASE STEPS
+       ========================================================= */
 
-    function addComponent(type) {
+    var databaseSteps =
+        @Html.Raw(
+            Json.Encode(
+                (workflowSteps ?? Enumerable.Empty<_10xFlow360.Models.WorkflowStep>())
+                .Select(x => new
+                {
+                    stepNo = x.StepNo,
+                    name = x.StepName,
+                    type = x.StepType,
+                    triggerType = x.TriggerType,
+                    sapObject = x.SapObject,
+                    condition = x.ConditionExpression,
+                    notificationType = x.NotificationType,
+                    recipient = x.Recipient,
+                    messageTemplate = x.MessageTemplate,
+                    waitType = x.WaitType,
+                    fieldName = x.FieldName,
+                    slaHours = x.SlaHours
+                })
+                .ToList()
+            )
+        );
 
-        var step = {
+    // "Process Completed" is a visual end node only.
+    // Never load old END rows from WAI_WORKFLOW_STEP as real steps.
+    databaseSteps = databaseSteps.filter(function (step) {
+        return (step.type || "").toLowerCase() !== "end";
+    });
 
-            name: type,
 
-            description: "New " + type + " workflow step",
+    /* =========================================================
+       CURRENT SELECTED NODE
+       ========================================================= */
+
+    var selectedWorkflowNode = null;
+
+
+    /* =========================================================
+       NODE DEFINITIONS
+       ========================================================= */
+
+    var workflowNodeDefinitions = {
+
+        trigger: {
+            title: "SAP Event",
+            subtitle: "SAP document event",
+            icon: "bi-lightning-charge-fill",
+            iconColor: "text-primary",
+            iconBackground: "bg-primary bg-opacity-10"
+        },
+
+        query: {
+            title: "Query Trigger",
+            subtitle: "Trigger using SAP query",
+            icon: "bi-database-check",
+            iconColor: "text-primary",
+            iconBackground: "bg-primary bg-opacity-10"
+        },
+
+        condition: {
+            title: "Condition",
+            subtitle: "Evaluate workflow condition",
+            icon: "bi-signpost-split",
+            iconColor: "text-info",
+            iconBackground: "bg-info bg-opacity-10"
+        },
+
+        wait: {
+            title: "Wait",
+            subtitle: "Wait for configured event",
+            icon: "bi-hourglass-split",
+            iconColor: "text-warning",
+            iconBackground: "bg-warning bg-opacity-10"
+        },
+
+        whatsapp: {
+            title: "WhatsApp",
+            subtitle: "Send WhatsApp notification",
+            icon: "bi-whatsapp",
+            iconColor: "text-success",
+            iconBackground: "bg-success bg-opacity-10"
+        },
+
+        email: {
+            title: "Email",
+            subtitle: "Send email notification",
+            icon: "bi-envelope",
+            iconColor: "text-danger",
+            iconBackground: "bg-danger bg-opacity-10"
+        },
+
+        task: {
+            title: "Assign Task",
+            subtitle: "Assign task to user/team",
+            icon: "bi-person-check",
+            iconColor: "text-info",
+            iconBackground: "bg-info bg-opacity-10"
+        },
+
+        update: {
+            title: "Update SAP Field",
+            subtitle: "Update SAP document field",
+            icon: "bi-pencil-square",
+            iconColor: "text-primary",
+            iconBackground: "bg-primary bg-opacity-10"
+        },
+
+        end: {
+            title: "Process Completed",
+            subtitle: "Workflow successfully completed",
+            icon: "bi-check-lg",
+            iconColor: "text-secondary",
+            iconBackground: "bg-secondary bg-opacity-10"
+        }
+
+    };
+
+
+    /* =========================================================
+       DEFAULT DATA
+       ========================================================= */
+
+    function getDefaultStep(type) {
+
+        var data = {
+
+            name: workflowNodeDefinitions[type]
+                ? workflowNodeDefinitions[type].title
+                : "New Workflow Step",
 
             type: type,
 
-            icon: "bi-plus-circle",
+            actionType: "",
 
-            iconClass: "text-primary",
-
-            actionType: type,
+            triggerType: "",
 
             sapObject: "",
 
-            condition: ""
+            condition: "",
+
+            notificationType: "",
+
+            recipient: "",
+
+            messageTemplate: "",
+
+            waitType: "",
+
+            fieldName: "",
+
+            slaHours: null
 
         };
 
 
-        // =====================================================
-        // SAP EVENT
-        // First SAP Event becomes Sales Order Created
-        // =====================================================
+        if (type === "trigger") {
 
-        if (type === "SAP Event") {
+            data.triggerType = "SAP Document Created";
+            data.sapObject = "Sales Order - ORDR";
+            data.condition = "DocStatus = 'O'";
 
-            if (workflowSteps.length === 0) {
+        }
+        else if (type === "query") {
 
-                step.name =
-                    "Sales Order Created";
+            data.triggerType = "Query Trigger";
 
-                step.description =
-                    "SAP ORDR - New document created";
+        }
+        else if (type === "condition") {
 
-                step.icon =
-                    "bi-lightning";
+            data.condition = "Enter workflow condition";
 
-                step.iconClass =
-                    "text-primary";
+        }
+        else if (type === "wait") {
 
-                step.actionType =
-                    "SAP Document Created";
+            data.waitType = "Event";
+            data.slaHours = 2;
 
-                step.sapObject =
-                    "Sales Order - ORDR";
+        }
+        else if (type === "whatsapp") {
 
-                step.condition =
-                    "DocStatus = 'O'";
+            data.notificationType = "WhatsApp";
+            data.messageTemplate = "Workflow notification";
 
-            }
-            else {
+        }
+        else if (type === "email") {
 
-                step.name =
-                    "SAP Event";
+            data.notificationType = "Email";
+            data.messageTemplate = "Workflow notification";
 
-                step.description =
-                    "Monitor SAP document event";
+        }
+        else if (type === "task") {
 
-                step.icon =
-                    "bi-lightning";
+            data.actionType = "Assign Task";
 
-                step.iconClass =
-                    "text-primary";
+        }
+        else if (type === "update") {
 
-                step.actionType =
-                    "SAP Event";
-
-            }
+            data.actionType = "Update SAP Field";
 
         }
 
+        return data;
+    }
 
-        // =====================================================
-        // QUERY TRIGGER
-        // =====================================================
 
-        else if (type === "Query Trigger") {
+    /* =========================================================
+       ESCAPE HTML
+       ========================================================= */
 
-            step.name =
-                "Query Trigger";
+    function escapeHtml(value) {
 
-            step.description =
-                "Execute SAP query trigger";
-
-            step.icon =
-                "bi-database";
-
-            step.iconClass =
-                "text-primary";
-
-            step.actionType =
-                "Query Trigger";
-
+        if (value === null || value === undefined) {
+            return "";
         }
 
-
-        // =====================================================
-        // WHATSAPP
-        // =====================================================
-
-        else if (type === "WhatsApp") {
-
-            step.name =
-                "Notify Delivery Team";
-
-            step.description =
-                "Notify Delivery Team via WhatsApp";
-
-            step.icon =
-                "bi-whatsapp";
-
-            step.iconClass =
-                "text-success";
-
-            step.actionType =
-                "WhatsApp";
-
-        }
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
 
 
-        // =====================================================
-        // EMAIL
-        // =====================================================
+    /* =========================================================
+       GET NODE DISPLAY
+       ========================================================= */
 
-        else if (type === "Email") {
+    function getNodeDefinition(type) {
 
-            step.name =
-                "Send Email";
-
-            step.description =
-                "Send notification email";
-
-            step.icon =
-                "bi-envelope";
-
-            step.iconClass =
-                "text-danger";
-
-            step.actionType =
-                "Email";
-
-        }
-
-
-        // =====================================================
-        // WAIT
-        // =====================================================
-
-        else if (type === "Wait") {
-
-            step.name =
-                "Wait for Delivery Date";
-
-            step.description =
-                "Continue when Expected Delivery Date is updated";
-
-            step.icon =
-                "bi-hourglass-split";
-
-            step.iconClass =
-                "text-warning";
-
-            step.actionType =
-                "Wait";
-
-        }
-
-
-        // =====================================================
-        // CONDITION
-        // =====================================================
-
-        else if (type === "Condition") {
-
-            step.name =
-                "Check Sales Order Condition";
-
-            step.description =
-                "Validate Sales Order condition";
-
-            step.icon =
-                "bi-signpost-split";
-
-            step.iconClass =
-                "text-primary";
-
-            step.actionType =
-                "Condition";
-
-            step.condition =
-                "DocStatus = 'O'";
-
-        }
-
-
-        // =====================================================
-        // ASSIGN TASK
-        // =====================================================
-
-        else if (type === "Assign Task") {
-
-            step.name =
-                "Assign Task";
-
-            step.description =
-                "Assign task to responsible user";
-
-            step.icon =
-                "bi-person-plus";
-
-            step.iconClass =
-                "text-primary";
-
-            step.actionType =
-                "Assign Task";
-
-        }
-
-
-        // =====================================================
-        // UPDATE SAP FIELD
-        // =====================================================
-
-        else if (type === "Update SAP Field") {
-
-            step.name =
-                "Update SAP Field";
-
-            step.description =
-                "Update field in SAP";
-
-            step.icon =
-                "bi-pencil-square";
-
-            step.iconClass =
-                "text-primary";
-
-            step.actionType =
-                "Update SAP Field";
-
-        }
-
-
-        // =====================================================
-        // ADD TO WORKFLOW
-        // =====================================================
-
-        workflowSteps.push(step);
-
-        renderWorkflow();
-
-        selectStep(workflowSteps.length - 1);
+        return workflowNodeDefinitions[type]
+            || workflowNodeDefinitions["condition"];
 
     }
 
 
-    // =========================================================
-    // RENDER WORKFLOW
-    // =========================================================
+    /* =========================================================
+       BUILD NODE
+       ========================================================= */
 
-    function renderWorkflow() {
+    function buildWorkflowNode(step) {
 
-        var canvas =
-            document.getElementById("workflowCanvas");
+        var definition =
+            getNodeDefinition(step.type);
+
+        var node =
+            document.createElement("div");
+
+        node.className =
+            "workflow-node border rounded-3 bg-white shadow-sm p-3 w-100";
+
+        node.setAttribute(
+            "data-node",
+            step.type
+        );
 
 
-        if (!canvas) {
-            return;
+        node.setAttribute(
+            "data-step",
+            "true"
+        );
+
+
+        node.stepData = step;
+
+
+        node.innerHTML =
+
+            '<div class="d-flex align-items-center">' +
+
+                '<div class="' +
+                    definition.iconBackground +
+                    ' ' +
+                    definition.iconColor +
+                    ' rounded-3 d-flex align-items-center justify-content-center me-3" ' +
+                    'style="width:42px;height:42px;">' +
+
+                    '<i class="bi ' +
+                        definition.icon +
+                    ' fs-5"></i>' +
+
+                '</div>' +
+
+                '<div class="flex-grow-1">' +
+
+                    '<div class="workflow-node-title fw-semibold text-dark">' +
+                        escapeHtml(step.name || definition.title) +
+                    '</div>' +
+
+                    '<div class="workflow-node-subtitle small text-muted">' +
+                        escapeHtml(
+                            createNodeSubtitle(step)
+                        ) +
+                    '</div>' +
+
+                '</div>' +
+
+                '<button type="button" ' +
+                    'class="btn btn-sm btn-outline-warning ms-2 workflow-edit-btn" ' +
+                    'title="Edit Step">' +
+
+                    '<i class="bi bi-pencil-square"></i>' +
+
+                '</button>' +
+
+                '<button type="button" ' +
+                    'class="btn btn-sm btn-outline-danger ms-1 workflow-delete-btn" ' +
+                    'title="Delete Step">' +
+
+                    '<i class="bi bi-trash"></i>' +
+
+                '</button>' +
+
+            '</div>';
+
+
+        node.onclick =
+            function () {
+
+                selectWorkflowNode(
+                    node,
+                    step.type
+                );
+
+            };
+
+
+        var editButton =
+            node.querySelector(".workflow-edit-btn");
+
+        editButton.onclick =
+            function (event) {
+
+                event.stopPropagation();
+
+                selectWorkflowNode(
+                    node,
+                    step.type
+                );
+
+                editWorkflowNode(
+                    event,
+                    node,
+                    step.type
+                );
+
+            };
+
+
+        var deleteButton =
+            node.querySelector(".workflow-delete-btn");
+
+        deleteButton.onclick =
+            function (event) {
+
+                deleteWorkflowNode(
+                    event,
+                    node
+                );
+
+            };
+
+
+        return node;
+
+    }
+
+
+    /* =========================================================
+       CREATE SUBTITLE
+       ========================================================= */
+
+    function createNodeSubtitle(step) {
+
+        if (step.sapObject) {
+
+            if (step.condition) {
+
+                return step.sapObject +
+                    " - " +
+                    step.condition;
+
+            }
+
+            return step.sapObject;
+
         }
 
 
-        // =====================================================
-        // EMPTY
-        // =====================================================
+        if (step.notificationType) {
 
-        if (workflowSteps.length === 0) {
+            if (step.recipient) {
 
-            canvas.innerHTML = `
+                return step.notificationType +
+                    " - " +
+                    step.recipient;
 
-                <div id="emptyState"
-                     class="d-flex flex-column
-                            justify-content-center
-                            align-items-center"
-                     style="min-height:450px;">
+            }
 
-                    <i class="bi bi-diagram-3"
-                       style="font-size:48px;color:#64748b;">
-                    </i>
+            return step.notificationType +
+                " notification";
 
-                    <h6 class="mt-3 mb-1">
-                        No workflow steps yet
-                    </h6>
+        }
 
-                    <p class="text-muted small mb-0 text-center">
-                        Select a component from the
-                        Components panel to start your workflow.
-                    </p>
 
-                </div>
+        if (step.condition) {
 
-            `;
+            return step.condition;
+
+        }
+
+
+        if (step.waitType) {
+
+            return "Wait - " +
+                step.waitType +
+                (
+                    step.slaHours !== null &&
+                    step.slaHours !== undefined
+                        ? " - SLA " + step.slaHours + " hrs"
+                        : ""
+                );
+
+        }
+
+
+        if (step.fieldName) {
+
+            return "SAP Field - " +
+                step.fieldName;
+
+        }
+
+
+        return getNodeDefinition(step.type).subtitle;
+
+    }
+
+
+    /* =========================================================
+       RENDER WORKFLOW
+       ========================================================= */
+
+    function renderWorkflow() {
+
+        var flow =
+            document.getElementById(
+                "workflowFlow"
+            );
+
+        flow.innerHTML = "";
+
+
+        if (!databaseSteps ||
+            databaseSteps.length === 0) {
+
+            var empty =
+                document.createElement("div");
+
+            empty.className =
+                "workflow-empty";
+
+            empty.innerHTML =
+                '<div>' +
+                    '<i class="bi bi-diagram-3 fs-1 d-block mb-2"></i>' +
+                    '<div class="fw-semibold">No workflow steps yet</div>' +
+                    '<div class="small">Click a component on the left to create a step.</div>' +
+                '</div>';
+
+            flow.appendChild(empty);
 
             clearProperties();
 
             return;
+
         }
 
 
-        var html = "";
+        databaseSteps
+            .sort(function (a, b) {
 
-
-        // =====================================================
-        // CREATE EACH STEP
-        // =====================================================
-
-        workflowSteps.forEach(function (step, index) {
-
-            html += `
-
-                <div class="workflow-step-wrapper">
-
-                    <div class="workflow-step"
-                         id="workflowStep_${index}"
-                         onclick="selectStep(${index})"
-                         style="
-                            border:1px solid #d9dee5;
-                            border-radius:7px;
-                            padding:14px;
-                            margin:0 auto;
-                            max-width:520px;
-                            text-align:left;
-                            background:white;
-                            cursor:pointer;
-                            box-shadow:0 2px 5px rgba(0,0,0,.06);
-                         ">
-
-                        <div class="d-flex align-items-center">
-
-                            <div class="me-3"
-                                 style="
-                                    width:34px;
-                                    height:34px;
-                                    min-width:34px;
-                                    border-radius:7px;
-                                    background:#eef5ff;
-                                    display:flex;
-                                    align-items:center;
-                                    justify-content:center;
-                                 ">
-
-                                <i class="
-                                    bi ${step.icon}
-                                    ${step.iconClass}
-                                "></i>
-
-                            </div>
-
-
-                            <div class="flex-grow-1">
-
-                                <div class="fw-semibold">
-
-                                    ${index + 1}.
-                                    ${escapeHtml(step.name)}
-
-                                </div>
-
-                                <div class="small text-muted">
-
-                                    ${escapeHtml(step.description)}
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- DELETE BUTTON -->
-
-                            <button type="button"
-                                    class="btn btn-sm btn-outline-danger ms-2"
-                                    title="Delete Step"
-                                    onclick="deleteStep(event, ${index})">
-
-                                <i class="bi bi-trash"></i>
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                    ${
-                        index < workflowSteps.length - 1
-                        ?
-                        `
-                            <div class="text-center text-muted py-2">
-
-                                <i class="bi bi-arrow-down"></i>
-
-                            </div>
-                        `
-                        :
-                        ""
-                    }
-
-                </div>
-
-            `;
-
-        });
-
-
-        // =====================================================
-        // IMPORTANT:
-        // NO ADD NEXT STEP BUTTON HERE
-        // COMPONENTS PANEL IS USED TO ADD STEPS
-        // =====================================================
-
-
-        canvas.innerHTML = html;
-
-    }
-
-
-    // =========================================================
-    // SELECT STEP / EDIT
-    // =========================================================
-
-    function selectStep(index) {
-
-        if (
-            index < 0 ||
-            index >= workflowSteps.length
-        ) {
-            return;
-        }
-
-
-        selectedStepIndex =
-            index;
-
-
-        // Remove selection from all steps
-
-        document
-            .querySelectorAll(".workflow-step")
-            .forEach(function (element) {
-
-                element.style.border =
-                    "1px solid #d9dee5";
+                return (a.stepNo || 0) -
+                    (b.stepNo || 0);
 
             });
 
 
-        // Highlight selected step
+        databaseSteps.forEach(
+            function (step, index) {
 
-        var selected =
-            document.getElementById(
-                "workflowStep_" + index
+                var node =
+                    buildWorkflowNode(step);
+
+                flow.appendChild(node);
+
+
+                if (index <
+                    databaseSteps.length - 1) {
+
+                    addConnector(flow);
+
+                }
+
+            });
+
+
+        if (databaseSteps.length > 0) {
+
+            var endStep =
+                getDefaultStep("end");
+
+            var endNode =
+                buildWorkflowNode(endStep);
+
+            endNode.setAttribute(
+                "data-node",
+                "end"
             );
 
+            // IMPORTANT: this is a visual-only node.
+            // It must NOT be included in WAI_WORKFLOW_STEP save data.
+            endNode.setAttribute(
+                "data-step",
+                "false"
+            );
 
-        if (selected) {
+            endNode.stepData = {
+                name: "Process Completed",
+                type: "end",
+                actionType: "",
+                triggerType: "",
+                sapObject: "",
+                condition: "",
+                notificationType: "",
+                recipient: "",
+                messageTemplate: "",
+                waitType: "",
+                fieldName: "",
+                slaHours: null
+            };
 
-            selected.style.border =
-                "1px solid #ed1764";
+
+            endNode.onclick =
+                function () {
+
+                    selectWorkflowNode(
+                        endNode,
+                        "end"
+                    );
+
+                };
+
+
+            var edit =
+                endNode.querySelector(
+                    ".workflow-edit-btn"
+                );
+
+            if (edit) {
+                edit.remove();
+            }
+
+
+            var del =
+                endNode.querySelector(
+                    ".workflow-delete-btn"
+                );
+
+            if (del) {
+                del.remove();
+            }
+
+
+            addConnector(flow);
+
+            flow.appendChild(endNode);
 
         }
 
 
-        var step =
-            workflowSteps[index];
+        if (databaseSteps.length > 0) {
 
+            var firstNode =
+                flow.querySelector(
+                    '.workflow-node[data-node="' +
+                    databaseSteps[0].type +
+                    '"]'
+                );
 
-        // Show properties
+            if (firstNode) {
 
-        document.getElementById(
-            "propertiesEmpty"
-        ).style.display =
-            "none";
+                selectWorkflowNode(
+                    firstNode,
+                    databaseSteps[0].type
+                );
 
+            }
 
-        document.getElementById(
-            "propertiesPanel"
-        ).style.display =
-            "block";
-
-
-        // Load Step Name
-
-        document.getElementById(
-            "stepName"
-        ).value =
-            step.name || "";
-
-
-        // Load Action Type
-
-        document.getElementById(
-            "actionType"
-        ).value =
-            step.actionType || step.type || "";
-
-
-        // Load SAP Object
-
-        document.getElementById(
-            "sapObject"
-        ).value =
-            step.sapObject || "";
-
-
-        // Load Condition
-
-        document.getElementById(
-            "condition"
-        ).value =
-            step.condition || "";
+        }
 
     }
 
 
-    // =========================================================
-    // APPLY EDITED PROPERTIES
-    // =========================================================
+    /* =========================================================
+       ADD CONNECTOR
+       ========================================================= */
 
-    function applyProperties() {
+    function addConnector(flow) {
 
-        if (selectedStepIndex < 0) {
+        var connector =
+            document.createElement("div");
 
-            return;
+        connector.className =
+            "workflow-connector";
 
-        }
+        connector.innerHTML =
+            '<i class="bi bi-arrow-down fs-5"></i>';
 
-
-        var step =
-            workflowSteps[
-                selectedStepIndex
-            ];
-
-
-        step.name =
-            document.getElementById(
-                "stepName"
-            ).value;
-
-
-        step.actionType =
-            document.getElementById(
-                "actionType"
-            ).value;
-
-
-        step.sapObject =
-            document.getElementById(
-                "sapObject"
-            ).value;
-
-
-        step.condition =
-            document.getElementById(
-                "condition"
-            ).value;
-
-
-        // Update description
-
-        step.description =
-            getStepDescription(step);
-
-
-        var currentIndex =
-            selectedStepIndex;
-
-
-        renderWorkflow();
-
-
-        selectStep(currentIndex);
+        flow.appendChild(connector);
 
     }
 
 
-    // =========================================================
-    // DELETE STEP
-    // =========================================================
+    /* =========================================================
+       SELECT NODE
+       ========================================================= */
 
-    function deleteStep(event, index) {
+    function selectWorkflowNode(element, type) {
 
-        // Prevent selecting the step
+        document
+            .querySelectorAll(
+                "#workflowFlow .workflow-node"
+            )
+            .forEach(
+                function (node) {
 
-        event.stopPropagation();
+                    node.classList.remove(
+                        "selected",
+                        "border-primary",
+                        "border-2"
+                    );
 
-
-        if (
-            index < 0 ||
-            index >= workflowSteps.length
-        ) {
-            return;
-        }
-
-
-        var stepName =
-            workflowSteps[index].name;
-
-
-        var confirmed =
-            confirm(
-                "Delete workflow step '" +
-                stepName +
-                "'?"
+                }
             );
 
 
-        if (!confirmed) {
-
+        if (!element) {
             return;
-
         }
 
 
-        // Remove step
-
-        workflowSteps.splice(
-            index,
-            1
+        element.classList.add(
+            "selected",
+            "border-primary",
+            "border-2"
         );
 
 
-        // Reset selected step
-
-        selectedStepIndex =
-            -1;
+        selectedWorkflowNode =
+            element;
 
 
-        // Render again
+        if (element.stepData) {
+
+            loadProperties(
+                element.stepData
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       LOAD PROPERTIES
+       ========================================================= */
+
+    function loadProperties(step) {
+
+        setValue(
+            "propertyStepName",
+            step.name
+        );
+
+        setValue(
+            "propertyStepType",
+            step.type
+        );
+
+        setValue(
+            "propertyTriggerType",
+            step.triggerType
+        );
+
+        setValue(
+            "propertySapObject",
+            step.sapObject
+        );
+
+        setValue(
+            "propertyCondition",
+            step.condition
+        );
+
+        setValue(
+            "propertyNotificationType",
+            step.notificationType
+        );
+
+        setValue(
+            "propertyRecipient",
+            step.recipient
+        );
+
+        setValue(
+            "propertyMessageTemplate",
+            step.messageTemplate
+        );
+
+        setValue(
+            "propertyWaitType",
+            step.waitType
+        );
+
+        setValue(
+            "propertyFieldName",
+            step.fieldName
+        );
+
+        setValue(
+            "propertySlaHours",
+            step.slaHours
+        );
+
+    }
+
+
+    /* =========================================================
+       SET VALUE
+       ========================================================= */
+
+    function setValue(id, value) {
+
+        var element =
+            document.getElementById(id);
+
+        if (!element) {
+            return;
+        }
+
+        element.value =
+            value === null ||
+            value === undefined
+                ? ""
+                : value;
+
+    }
+
+
+    /* =========================================================
+       CLEAR PROPERTIES
+       ========================================================= */
+
+    function clearProperties() {
+
+        [
+            "propertyStepName",
+            "propertyStepType",
+            "propertyTriggerType",
+            "propertySapObject",
+            "propertyCondition",
+            "propertyNotificationType",
+            "propertyRecipient",
+            "propertyMessageTemplate",
+            "propertyWaitType",
+            "propertyFieldName",
+            "propertySlaHours"
+        ].forEach(
+            function (id) {
+
+                setValue(id, "");
+
+            }
+        );
+
+        selectedWorkflowNode = null;
+
+    }
+
+
+    /* =========================================================
+       ADD NEW NODE
+       ========================================================= */
+
+    function addWorkflowNode(type) {
+
+        var flow =
+            document.getElementById(
+                "workflowFlow"
+            );
+
+
+        var empty =
+            flow.querySelector(
+                ".workflow-empty"
+            );
+
+        if (empty) {
+            flow.innerHTML = "";
+        }
+
+
+        var step =
+            getDefaultStep(type);
+
+
+        step.stepNo =
+            databaseSteps.length + 1;
+
+
+        databaseSteps.push(step);
+
+
+        var nodes =
+            flow.querySelectorAll(
+                '.workflow-node[data-node]:not([data-node="end"])'
+            );
+
+
+        var endNode =
+            flow.querySelector(
+                '.workflow-node[data-node="end"]'
+            );
+
+
+        var node =
+            buildWorkflowNode(step);
+
+
+        if (endNode) {
+
+            var connector =
+                endNode.previousElementSibling;
+
+            if (connector &&
+                connector.classList.contains(
+                    "workflow-connector"
+                )) {
+
+                connector.remove();
+
+            }
+
+            flow.insertBefore(
+                node,
+                endNode
+            );
+
+            addConnectorBeforeEnd(
+                flow,
+                endNode
+            );
+
+        }
+        else {
+
+            if (nodes.length > 0) {
+
+                addConnector(flow);
+
+            }
+
+            flow.appendChild(node);
+
+        }
+
+
+        /* Re-render to keep connectors correct */
 
         renderWorkflow();
 
 
-        // Clear properties
+        /* Select newly added node */
 
-        clearProperties();
-
-    }
-
-
-    // =========================================================
-    // CLEAR PROPERTIES
-    // =========================================================
-
-    function clearProperties() {
-
-        var empty =
-            document.getElementById(
-                "propertiesEmpty"
-            );
-
-        var panel =
-            document.getElementById(
-                "propertiesPanel"
+        var renderedNodes =
+            flow.querySelectorAll(
+                '.workflow-node[data-node="' +
+                type +
+                '"]'
             );
 
 
-        if (empty) {
-
-            empty.style.display =
-                "block";
-
-        }
+        var lastNode =
+            renderedNodes[
+                renderedNodes.length - 1
+            ];
 
 
-        if (panel) {
+        if (lastNode) {
 
-            panel.style.display =
-                "none";
+            selectWorkflowNode(
+                lastNode,
+                type
+            );
 
-        }
+            setTimeout(
+                function () {
 
+                    lastNode.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
 
-        selectedStepIndex =
-            -1;
-
-    }
-
-
-    // =========================================================
-    // STEP DESCRIPTION
-    // =========================================================
-
-    function getStepDescription(step) {
-
-        switch (step.actionType) {
-
-            case "SAP Document Created":
-
-                return "SAP ORDR - New document created";
-
-
-            case "WhatsApp":
-
-                return "Notify Delivery Team via WhatsApp";
-
-
-            case "Email":
-
-                return "Send notification email";
-
-
-            case "Wait":
-
-                return "Continue when the required event occurs";
-
-
-            case "Condition":
-
-                return "Validate workflow condition";
-
-
-            case "SAP Event":
-
-                return "Monitor SAP document event";
-
-
-            case "Query Trigger":
-
-                return "Execute SAP query trigger";
-
-
-            case "Assign Task":
-
-                return "Assign task to responsible user";
-
-
-            case "Update SAP Field":
-
-                return "Update field in SAP";
-
-
-            default:
-
-                return "Workflow step";
+                },
+                100
+            );
 
         }
 
     }
 
 
-    // =========================================================
-    // ESCAPE HTML
-    // =========================================================
+    /* =========================================================
+       ADD CONNECTOR BEFORE END
+       ========================================================= */
 
-    function escapeHtml(value) {
+    function addConnectorBeforeEnd(
+        flow,
+        endNode) {
 
-        if (!value) {
+        var connector =
+            document.createElement("div");
 
-            return "";
+        connector.className =
+            "workflow-connector";
 
-        }
+        connector.innerHTML =
+            '<i class="bi bi-arrow-down fs-5"></i>';
 
-
-        return String(value)
-
-            .replace(/&/g, "&amp;")
-
-            .replace(/</g, "&lt;")
-
-            .replace(/>/g, "&gt;")
-
-            .replace(/"/g, "&quot;")
-
-            .replace(/'/g, "&#039;");
+        flow.insertBefore(
+            connector,
+            endNode
+        );
 
     }
 
 
-    // =========================================================
-    // SAVE
-    // =========================================================
+    /* =========================================================
+       APPLY PROPERTY CHANGES
+       ========================================================= */
 
-    function saveNewWorkflow() {
+    function saveNodeProperties() {
 
-        var name =
-            document.getElementById(
-                "workflowName"
-            ).value;
-
-
-        if (!name.trim()) {
+        if (!selectedWorkflowNode) {
 
             alert(
-                "Please enter Workflow Name."
+                "Please select a workflow step first."
             );
 
             return;
@@ -1335,7 +1860,396 @@
         }
 
 
-        if (workflowSteps.length === 0) {
+        if (
+            selectedWorkflowNode.getAttribute(
+                "data-node"
+            ) === "end"
+        ) {
+
+            return;
+
+        }
+
+
+        var step =
+            selectedWorkflowNode.stepData;
+
+
+        var name =
+            document.getElementById(
+                "propertyStepName"
+            ).value.trim();
+
+
+        if (!name) {
+
+            alert(
+                "Step Name is required."
+            );
+
+            return;
+
+        }
+
+
+        step.name =
+            name;
+
+        step.triggerType =
+            getValue(
+                "propertyTriggerType"
+            );
+
+        step.sapObject =
+            getValue(
+                "propertySapObject"
+            );
+
+        step.condition =
+            getValue(
+                "propertyCondition"
+            );
+
+        step.notificationType =
+            getValue(
+                "propertyNotificationType"
+            );
+
+        step.recipient =
+            getValue(
+                "propertyRecipient"
+            );
+
+        step.messageTemplate =
+            getValue(
+                "propertyMessageTemplate"
+            );
+
+        step.waitType =
+            getValue(
+                "propertyWaitType"
+            );
+
+        step.fieldName =
+            getValue(
+                "propertyFieldName"
+            );
+
+
+        var sla =
+            getValue(
+                "propertySlaHours"
+            );
+
+
+        step.slaHours =
+            sla === ""
+                ? null
+                : parseFloat(sla);
+
+
+        selectedWorkflowNode.stepData =
+            step;
+
+
+        var title =
+            selectedWorkflowNode.querySelector(
+                ".workflow-node-title"
+            );
+
+        if (title) {
+
+            title.textContent =
+                step.name;
+
+        }
+
+
+        var subtitle =
+            selectedWorkflowNode.querySelector(
+                ".workflow-node-subtitle"
+            );
+
+        if (subtitle) {
+
+            subtitle.textContent =
+                createNodeSubtitle(step);
+
+        }
+
+
+        alert(
+            "Step properties updated."
+        );
+
+    }
+
+
+    /* =========================================================
+       GET VALUE
+       ========================================================= */
+
+    function getValue(id) {
+
+        var element =
+            document.getElementById(id);
+
+        return element
+            ? element.value.trim()
+            : "";
+
+    }
+
+
+    /* =========================================================
+       EDIT NODE
+       ========================================================= */
+
+    function editWorkflowNode(
+        event,
+        node,
+        type) {
+
+        if (event) {
+
+            event.stopPropagation();
+
+        }
+
+
+        selectWorkflowNode(
+            node,
+            type
+        );
+
+    }
+
+
+    /* =========================================================
+       DELETE NODE
+       ========================================================= */
+
+    function deleteWorkflowNode(
+        event,
+        node) {
+
+        if (event) {
+
+            event.stopPropagation();
+
+        }
+
+
+        if (!node) {
+            return;
+        }
+
+
+        if (
+            node.getAttribute(
+                "data-node"
+            ) === "end"
+        ) {
+
+            return;
+
+        }
+
+
+        var step =
+            node.stepData;
+
+
+        var stepName =
+            step &&
+            step.name
+                ? step.name
+                : "this step";
+
+
+        if (!confirm(
+            "Are you sure you want to delete '" +
+            stepName +
+            "'?"
+        )) {
+
+            return;
+
+        }
+
+
+        var index =
+            databaseSteps.indexOf(
+                step
+            );
+
+
+        if (index >= 0) {
+
+            databaseSteps.splice(
+                index,
+                1
+            );
+
+        }
+
+
+        /* Re-number steps */
+
+        databaseSteps.forEach(
+            function (item, i) {
+
+                item.stepNo =
+                    i + 1;
+
+            }
+        );
+
+
+        renderWorkflow();
+
+    }
+
+
+    /* =========================================================
+       BUILD JSON FOR DATABASE
+       ========================================================= */
+
+    function getWorkflowStepsForSave() {
+
+        var result = [];
+
+
+        var stepNodes =
+            document.querySelectorAll(
+                '#workflowFlow .workflow-node[data-step="true"]'
+            );
+
+
+        stepNodes.forEach(
+            function (node, index) {
+
+                if (!node.stepData) {
+                    return;
+                }
+
+
+                var step =
+                    node.stepData;
+
+
+                if (!step.name ||
+                    !step.name.trim()) {
+
+                    return;
+
+                }
+
+                // Safety check: never save the visual END node.
+                if ((step.type || "").toLowerCase() === "end") {
+                    return;
+                }
+
+
+                result.push({
+
+                    name:
+                        step.name.trim(),
+
+                    type:
+                        step.type || "",
+
+                    actionType:
+                        step.actionType || "",
+
+                    triggerType:
+                        step.triggerType || "",
+
+                    sapObject:
+                        step.sapObject || "",
+
+                    condition:
+                        step.condition || "",
+
+                    notificationType:
+                        step.notificationType || "",
+
+                    recipient:
+                        step.recipient || "",
+
+                    messageTemplate:
+                        step.messageTemplate || "",
+
+                    waitType:
+                        step.waitType || "",
+
+                    fieldName:
+                        step.fieldName || "",
+
+                    slaHours:
+                        step.slaHours === null ||
+                        step.slaHours === undefined ||
+                        step.slaHours === ""
+                            ? null
+                            : parseFloat(step.slaHours)
+
+                });
+
+            }
+        );
+
+
+        return result;
+
+    }
+
+
+    /* =========================================================
+       SAVE WORKFLOW
+       ========================================================= */
+
+    function saveWorkflow() {
+
+        var workflowName =
+            document.getElementById(
+                "workflowName"
+            ).value.trim();
+
+
+        var sapModule =
+            document.getElementById(
+                "sapModule"
+            ).value;
+
+
+        var company =
+            document.getElementById(
+                "company"
+            ).value;
+
+
+        var version =
+            document.getElementById(
+                "version"
+            ).value;
+
+
+        if (!workflowName) {
+
+            alert(
+                "Workflow Name is required."
+            );
+
+            return;
+
+        }
+
+
+        var steps =
+            getWorkflowStepsForSave();
+
+
+        if (steps.length === 0) {
 
             alert(
                 "Please add at least one workflow step."
@@ -1346,35 +2260,254 @@
         }
 
 
-        alert(
-            "Workflow '" +
-            name +
-            "' saved as Draft."
+        var button =
+            document.getElementById(
+                "btnSaveWorkflow"
+            );
+
+
+        button.disabled = true;
+
+        button.innerHTML =
+            '<span class="spinner-border spinner-border-sm me-1"></span>' +
+            'Saving...';
+
+
+        var token =
+            document.querySelector(
+                'input[name="__RequestVerificationToken"]'
+            );
+
+
+        var formData =
+            new FormData();
+
+
+        formData.append(
+            "__RequestVerificationToken",
+            token ? token.value : ""
+        );
+
+
+        formData.append(
+            "workflowId",
+            workflowId
+        );
+
+
+        formData.append(
+            "workflowStepsJson",
+            JSON.stringify(steps)
+        );
+
+
+        fetch(
+            '@Url.Action("SaveWorkflowSteps", "Workflow")',
+            {
+                method: "POST",
+                body: formData
+            }
+        )
+        .then(
+            function (response) {
+
+                return response.json();
+
+            }
+        )
+        .then(
+            function (result) {
+
+                if (result.success) {
+
+                    /*
+                     * Keep header values synchronized with
+                     * the current designer values.
+                     */
+
+                    document.getElementById(
+                        "draftWorkflowName"
+                    ).value =
+                        workflowName;
+
+                    document.getElementById(
+                        "draftSapModule"
+                    ).value =
+                        sapModule;
+
+                    document.getElementById(
+                        "draftCompany"
+                    ).value =
+                        company;
+
+                    document.getElementById(
+                        "draftVersion"
+                    ).value =
+                        version;
+
+
+                    alert(
+                        result.message ||
+                        "Workflow and steps saved successfully."
+                    );
+
+
+                    /*
+                     * Reload from database.
+                     * This proves that the steps were actually
+                     * persisted and loaded again.
+                     */
+
+                    window.location.href =
+                        '@Url.Action("WorkflowList", "Workflow")' +
+                        '?workflowId=' +
+                        workflowId;
+
+                }
+                else {
+
+                    alert(
+                        result.message ||
+                        "Unable to save workflow."
+                    );
+
+                    resetSaveButton();
+
+                }
+
+            }
+        )
+        .catch(
+            function (error) {
+
+                console.error(error);
+
+                alert(
+                    "Unable to save workflow. Please check the server."
+                );
+
+                resetSaveButton();
+
+            }
         );
 
     }
 
 
-    // =========================================================
-    // TEST
-    // =========================================================
+    /* =========================================================
+       RESET SAVE BUTTON
+       ========================================================= */
 
-    function testNewWorkflow() {
+    function resetSaveButton() {
 
-        if (workflowSteps.length === 0) {
-
-            alert(
-                "Please add workflow steps first."
+        var button =
+            document.getElementById(
+                "btnSaveWorkflow"
             );
 
-            return;
+        button.disabled = false;
 
-        }
-
-
-        window.location.href =
-            '@Url.Action("Test", "Workflow")';
+        button.innerHTML =
+            '<i class="bi bi-database-check me-1"></i>' +
+            'Save Workflow';
 
     }
 
-</script>
+
+    /* =========================================================
+       INITIAL LOAD
+       ========================================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            if (!hasSelectedWorkflow) {
+                return;
+            }
+
+            renderWorkflow();
+
+
+            /*
+             * Keep draft header values synchronized.
+             */
+
+            var workflowName =
+                document.getElementById(
+                    "workflowName"
+                );
+
+            var sapModule =
+                document.getElementById(
+                    "sapModule"
+                );
+
+            var company =
+                document.getElementById(
+                    "company"
+                );
+
+            var version =
+                document.getElementById(
+                    "version"
+                );
+
+
+            workflowName.addEventListener(
+                "input",
+                function () {
+
+                    document.getElementById(
+                        "draftWorkflowName"
+                    ).value =
+                        workflowName.value;
+
+                }
+            );
+
+
+            sapModule.addEventListener(
+                "change",
+                function () {
+
+                    document.getElementById(
+                        "draftSapModule"
+                    ).value =
+                        sapModule.value;
+
+                }
+            );
+
+
+            company.addEventListener(
+                "change",
+                function () {
+
+                    document.getElementById(
+                        "draftCompany"
+                    ).value =
+                        company.value;
+
+                }
+            );
+
+
+            version.addEventListener(
+                "input",
+                function () {
+
+                    document.getElementById(
+                        "draftVersion"
+                    ).value =
+                        version.value;
+
+                }
+            );
+
+        }
+    );
+
+    </script>
+
+}

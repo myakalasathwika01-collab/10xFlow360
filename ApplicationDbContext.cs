@@ -28,7 +28,45 @@ namespace _10xFlow360.Data
             return new HanaConnection(connectionString);
         }
 
+        // =========================================================
+        // DBSETS
+        // =========================================================
+
         public DbSet<Workflow> Workflows { get; set; }
+
         public DbSet<WorkflowStep> WorkflowSteps { get; set; }
+
+
+        // =========================================================
+        // HANA TABLE MAPPING
+        // =========================================================
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // -----------------------------------------------------
+            // WORKFLOW HEADER
+            // ZLEVERIWMS.WAI_WORKFLOW
+            // -----------------------------------------------------
+
+            modelBuilder.Entity<Workflow>()
+                .ToTable(
+                    "WAI_WORKFLOW",
+                    "ZLEVERIWMS"
+                );
+
+
+            // -----------------------------------------------------
+            // WORKFLOW STEPS
+            // ZLEVERIWMS.WAI_WORKFLOW_STEP
+            // -----------------------------------------------------
+
+            modelBuilder.Entity<WorkflowStep>()
+                .ToTable(
+                    "WAI_WORKFLOW_STEP",
+                    "ZLEVERIWMS"
+                );
+        }
     }
 }

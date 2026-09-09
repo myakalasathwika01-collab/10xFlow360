@@ -84,6 +84,11 @@ namespace _10xFlow360.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public ActionResult Design()
+        {
+            return View("Design");
+        }
 
         // =========================================================
         // GET: Workflow/WorkflowList
@@ -91,69 +96,105 @@ namespace _10xFlow360.Controllers
         // =========================================================
 
         [HttpGet]
-        public ActionResult WorkflowList()
+        public ActionResult WorkflowList(long? workflowId)
         {
             try
             {
+                // -------------------------------------------------
+                // 1. LOAD ALL WORKFLOW HEADERS
+                //    Latest workflow first.
+                // -------------------------------------------------
                 var workflowData = db.Workflows
                     .OrderByDescending(x => x.WorkflowId)
                     .ToList();
 
-
+                // -------------------------------------------------
+                // 2. CONVERT TO LIST MODEL
+                // -------------------------------------------------
                 var workflows = workflowData
                     .Select(x => new WorkflowListItem
                     {
                         Id = x.WorkflowId,
-
                         WorkflowCode = x.WorkflowCode,
-
                         WorkflowName = x.WorkflowName,
-
                         SAPModule = x.SapModule,
-
                         Version = x.VersionNo,
-
                         Status = x.Status,
-
                         UpdatedOn = x.UpdatedDate.HasValue
                             ? x.UpdatedDate.Value.ToString("dd-MMM-yyyy")
                             : x.CreatedDate.ToString("dd-MMM-yyyy")
                     })
                     .ToList();
 
+                // -------------------------------------------------
+                // 3. WHEN THE WORKFLOWS MENU IS CLICKED WITHOUT
+                //    A workflowId, AUTOMATICALLY SELECT THE
+                //    LATEST WORKFLOW.
+                //
+                //    URL from menu:
+                //    /Workflow/WorkflowList
+                //
+                //    becomes internally equivalent to:
+                //    /Workflow/WorkflowList?workflowId=<latest id>
+                // -------------------------------------------------
+                if (!workflowId.HasValue && workflowData.Count > 0)
+                {
+                    workflowId = workflowData.First().WorkflowId;
+                }
 
-                return View(
-                    "WorkflowList",
-                    workflows
-                );
+                // -------------------------------------------------
+                // 4. LOAD SELECTED WORKFLOW HEADER + CHILD STEPS
+                // -------------------------------------------------
+                if (workflowId.HasValue)
+                {
+                    var selectedWorkflow = db.Workflows
+                        .FirstOrDefault(x =>
+                            x.WorkflowId == workflowId.Value);
+
+                    if (selectedWorkflow == null)
+                    {
+                        TempData["ErrorMessage"] =
+                            "Workflow not found.";
+
+                        return View("WorkflowList", workflows);
+                    }
+
+                    // Load only the steps belonging to this header.
+                    var workflowSteps = db.WorkflowSteps
+                        .Where(x =>
+                            x.WorkflowId == workflowId.Value)
+                        .OrderBy(x => x.StepNo)
+                        .ToList();
+
+                    // -------------------------------------------------
+                    // 5. SEND SELECTED HEADER + STEPS TO VIEW
+                    // -------------------------------------------------
+                    ViewBag.SelectedWorkflow = selectedWorkflow;
+                    ViewBag.WorkflowSteps = workflowSteps;
+                    ViewBag.WorkflowId = selectedWorkflow.WorkflowId;
+                    ViewBag.StepCount = workflowSteps.Count;
+                }
+
+                // -------------------------------------------------
+                // 6. RETURN WORKFLOW LIST + DESIGNER
+                // -------------------------------------------------
+                return View("WorkflowList", workflows);
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] =
-                    "Unable to load workflows: "
-                    + GetErrorMessage(ex);
+                    "Unable to load workflows: " +
+                    GetErrorMessage(ex);
 
                 return View(
                     "WorkflowList",
-                    new List<WorkflowListItem>()
-                );
+                    new List<WorkflowListItem>());
             }
         }
 
 
         // =========================================================
         // POST: Workflow/Create
-        //
-        // STEP 1:
-        // CREATE WORKFLOW HEADER ONLY
-        //
-        // Saves into:
-        // WAI_WORKFLOW
-        //
-        // After saving, returns:
-        // WORKFLOW_ID
-        //
-        // Steps are NOT saved here.
         // =========================================================
 
         [HttpPost]
@@ -341,395 +382,22 @@ namespace _10xFlow360.Controllers
             }
         }
 
-
-        // =========================================================
-        // POST: Workflow/SaveCreateWorkflowSteps
-        //
-        // STEP 2:
-        // SAVE STEPS CREATED FROM WORKFLOW LIST
-        //
-        // Parent:
-        // WAI_WORKFLOW
-        //
-        // Child:
-        // WAI_WORKFLOW_STEP
-        //
-        // IMPORTANT:
-        // workflowId comes from the header created by Create()
-        // =========================================================
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public JsonResult SaveCreateWorkflowSteps(
-            long workflowId,
-            string workflowStepsJson)
-        {
-            try
-            {
-                // =================================================
-                // CHECK WORKFLOW HEADER
-                // =================================================
-
-                var workflow =
-                    db.Workflows
-                      .FirstOrDefault(x =>
-                          x.WorkflowId == workflowId);
-
-
-                if (workflow == null)
-                {
-                    return Json(new
-                    {
-                        success = false,
-
-                        message =
-                            "Workflow not found."
-                    });
-                }
-
-
-                // =================================================
-                // CHECK JSON
-                // =================================================
-
-                if (string.IsNullOrWhiteSpace(
-                    workflowStepsJson))
-                {
-                    return Json(new
-                    {
-                        success = false,
-
-                        message =
-                            "Please add at least one workflow step."
-                    });
-                }
-
-
-                // =================================================
-                // DESERIALIZE JSON
-                // =================================================
-
-                var serializer =
-                    new System.Web.Script.Serialization
-                        .JavaScriptSerializer();
-
-
-                List<WorkflowCreateStepVM> steps =
-                    serializer.Deserialize<
-                        List<WorkflowCreateStepVM>
-                    >(
-                        workflowStepsJson
-                    );
-
-
-                if (steps == null ||
-                    steps.Count == 0)
-                {
-                    return Json(new
-                    {
-                        success = false,
-
-                        message =
-                            "Please add at least one workflow step."
-                    });
-                }
-
-
-                // =================================================
-                // REMOVE OLD STEPS
-                //
-                // This is useful if the user saves the workflow
-                // again and changes the step list.
-                // =================================================
-
-                var oldSteps =
-                    db.WorkflowSteps
-                      .Where(x =>
-                          x.WorkflowId == workflowId)
-                      .ToList();
-
-
-                if (oldSteps.Count > 0)
-                {
-                    db.WorkflowSteps.RemoveRange(
-                        oldSteps
-                    );
-                }
-
-
-                // =================================================
-                // INSERT CURRENT STEPS
-                // =================================================
-
-                int stepNo = 1;
-
-
-                foreach (var item in steps)
-                {
-                    if (item == null)
-                    {
-                        continue;
-                    }
-
-
-                    WorkflowStep workflowStep =
-                        new WorkflowStep
-                        {
-                            // =====================================
-                            // PARENT WORKFLOW ID
-                            // =====================================
-
-                            WorkflowId =
-                                workflowId,
-
-
-                            // =====================================
-                            // STEP NUMBER
-                            // =====================================
-
-                            StepNo =
-                                stepNo,
-
-
-                            // =====================================
-                            // STEP NAME
-                            // =====================================
-
-                            StepName =
-                                string.IsNullOrWhiteSpace(
-                                    item.StepName)
-                                ? "Workflow Step " + stepNo
-                                : item.StepName.Trim(),
-
-
-                            // =====================================
-                            // STEP TYPE
-                            // =====================================
-
-                            StepType =
-                                string.IsNullOrWhiteSpace(
-                                    item.StepType)
-                                ? "Action"
-                                : item.StepType.Trim(),
-
-
-                            // =====================================
-                            // TRIGGER TYPE
-                            // =====================================
-
-                            TriggerType =
-                                item.TriggerType,
-
-
-                            // =====================================
-                            // SAP OBJECT
-                            // =====================================
-
-                            SapObject =
-                                item.SapObject,
-
-
-                            // =====================================
-                            // CONDITION
-                            // =====================================
-
-                            ConditionExpression =
-                                item.ConditionExpression,
-
-
-                            // =====================================
-                            // NOTIFICATION
-                            // =====================================
-
-                            NotificationType =
-                                item.NotificationType,
-
-                            Recipient =
-                                item.Recipient,
-
-                            MessageTemplate =
-                                item.MessageTemplate,
-
-
-                            // =====================================
-                            // WAIT
-                            // =====================================
-
-                            WaitType =
-                                item.WaitType,
-
-
-                            // =====================================
-                            // FIELD
-                            // =====================================
-
-                            FieldName =
-                                item.FieldName,
-
-
-                            // =====================================
-                            // SLA
-                            // =====================================
-
-                            SlaHours =
-                                item.SlaHours,
-
-
-                            // =====================================
-                            // AUDIT
-                            // =====================================
-
-                            CreatedDate =
-                                DateTime.Now,
-
-                            UpdatedDate =
-                                DateTime.Now
-                        };
-
-
-                    // =============================================
-                    // ADD CHILD RECORD
-                    // =============================================
-
-                    db.WorkflowSteps.Add(
-                        workflowStep
-                    );
-
-
-                    stepNo++;
-                }
-
-
-                // =================================================
-                // SAVE ALL STEPS
-                // =================================================
-
-                db.SaveChanges();
-
-
-                // =================================================
-                // SUCCESS
-                // =================================================
-
-                return Json(new
-                {
-                    success = true,
-
-                    workflowId =
-                        workflowId,
-
-                    message =
-                        "Workflow and steps saved successfully."
-                });
-            }
-            catch (Exception ex)
-            {
-                return Json(new
-                {
-                    success = false,
-
-                    message =
-                        "Unable to save workflow steps: "
-                        + GetErrorMessage(ex)
-                });
-            }
-        }
-
-
-        // =========================================================
-        // GET: Workflow/Design
-        //
-        // EXISTING DESIGN SCREEN
-        //
-        // This is kept because your project already has a Design
-        // screen and existing functionality.
-        //
-        // The NEW workflow creation flow does NOT need to redirect
-        // here.
-        // =========================================================
-
-        [HttpGet]
-        public ActionResult Design(long? workflowId)
-        {
-            try
-            {
-                // -------------------------------------------------
-                // If Design is opened without workflowId,
-                // get latest workflow.
-                // -------------------------------------------------
-
-                if (!workflowId.HasValue)
-                {
-                    var latestWorkflow =
-                        db.Workflows
-                          .OrderByDescending(
-                              x => x.WorkflowId)
-                          .FirstOrDefault();
-
-
-                    if (latestWorkflow == null)
-                    {
-                        TempData["ErrorMessage"] =
-                            "Please create a workflow first.";
-
-                        return RedirectToAction(
-                            "Index"
-                        );
-                    }
-
-
-                    workflowId =
-                        latestWorkflow.WorkflowId;
-                }
-
-
-                // -------------------------------------------------
-                // Load selected workflow
-                // -------------------------------------------------
-
-                var workflow =
-                    db.Workflows
-                      .FirstOrDefault(x =>
-                          x.WorkflowId ==
-                          workflowId.Value);
-
-
-                if (workflow == null)
-                {
-                    TempData["ErrorMessage"] =
-                        "Workflow not found.";
-
-                    return RedirectToAction(
-                        "Index"
-                    );
-                }
-
-
-                // -------------------------------------------------
-                // Open existing Design.cshtml
-                // -------------------------------------------------
-
-                return View(workflow);
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] =
-                    "Unable to load workflow: "
-                    + GetErrorMessage(ex);
-
-                return RedirectToAction(
-                    "Index"
-                );
-            }
-        }
-
-
-        // =========================================================
-        // POST: Workflow/SaveDraft
-        //
-        // EXISTING DESIGN HEADER UPDATE
-        // =========================================================
-
+        //[HttpGet]
+        //public ActionResult Design(long? workflowId)
+        //{
+        //    if (workflowId.HasValue)
+        //    {
+        //        return RedirectToAction(
+        //            "WorkflowList",
+        //            new
+        //            {
+        //                workflowId = workflowId.Value
+        //            }
+        //        );
+        //    }
+
+        //    return RedirectToAction("Index");
+        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult SaveDraft(
@@ -773,7 +441,7 @@ namespace _10xFlow360.Controllers
                         "Workflow Name is required.";
 
                     return RedirectToAction(
-                        "Design",
+                        "WorkflowList",
                         new
                         {
                             workflowId =
@@ -790,7 +458,7 @@ namespace _10xFlow360.Controllers
                         "SAP Module is required.";
 
                     return RedirectToAction(
-                        "Design",
+                        "WorkflowList",
                         new
                         {
                             workflowId =
@@ -807,7 +475,7 @@ namespace _10xFlow360.Controllers
                         "Company is required.";
 
                     return RedirectToAction(
-                        "Design",
+                        "WorkflowList",
                         new
                         {
                             workflowId =
@@ -824,7 +492,7 @@ namespace _10xFlow360.Controllers
                         "Version is required.";
 
                     return RedirectToAction(
-                        "Design",
+                        "WorkflowList",
                         new
                         {
                             workflowId =
@@ -872,7 +540,7 @@ namespace _10xFlow360.Controllers
 
 
                 return RedirectToAction(
-                    "Design",
+                    "WorkflowList",
                     new
                     {
                         workflowId =
@@ -888,7 +556,7 @@ namespace _10xFlow360.Controllers
 
 
                 return RedirectToAction(
-                    "Design",
+                    "WorkflowList",
                     new
                     {
                         workflowId =
@@ -902,121 +570,78 @@ namespace _10xFlow360.Controllers
         // =========================================================
         // POST: Workflow/SaveWorkflowSteps
         //
-        // EXISTING DESIGN SCREEN STEP SAVE
+        // Saves the currently displayed designer steps into:
+        // WAI_WORKFLOW_STEP
         //
-        // This remains available for your existing Design screen.
+        // workflowId is ALWAYS the selected WAI_WORKFLOW header ID.
+        // Existing steps for that workflow are replaced on Save.
         // =========================================================
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveWorkflowSteps(
+        public JsonResult SaveWorkflowSteps(
             long workflowId,
             string workflowStepsJson)
         {
             try
             {
-                // -------------------------------------------------
-                // CHECK WORKFLOW HEADER
-                // -------------------------------------------------
-
-                var workflow =
-                    db.Workflows
-                      .FirstOrDefault(x =>
-                          x.WorkflowId == workflowId);
-
+                // 1. Verify parent/header.
+                var workflow = db.Workflows
+                    .FirstOrDefault(x =>
+                        x.WorkflowId == workflowId);
 
                 if (workflow == null)
                 {
-                    TempData["ErrorMessage"] =
-                        "Workflow not found.";
-
-                    return RedirectToAction(
-                        "Index"
-                    );
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Workflow header not found."
+                    });
                 }
 
-
-                // -------------------------------------------------
-                // CHECK JSON
-                // -------------------------------------------------
-
-                if (string.IsNullOrWhiteSpace(
-                    workflowStepsJson))
+                // 2. Validate step JSON.
+                if (string.IsNullOrWhiteSpace(workflowStepsJson))
                 {
-                    TempData["ErrorMessage"] =
-                        "Please add at least one workflow step.";
-
-                    return RedirectToAction(
-                        "Design",
-                        new
-                        {
-                            workflowId =
-                                workflowId
-                        }
-                    );
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Please add at least one workflow step."
+                    });
                 }
 
-
-                // -------------------------------------------------
-                // DESERIALIZE
-                // -------------------------------------------------
-
+                // 3. Deserialize the designer array.
                 var serializer =
                     new System.Web.Script.Serialization
                         .JavaScriptSerializer();
 
-
                 var steps =
                     serializer.Deserialize<
                         List<WorkflowStepInput>
-                    >(
-                        workflowStepsJson
-                    );
+                    >(workflowStepsJson);
 
-
-                if (steps == null ||
-                    steps.Count == 0)
+                if (steps == null || steps.Count == 0)
                 {
-                    TempData["ErrorMessage"] =
-                        "Please add at least one workflow step.";
-
-                    return RedirectToAction(
-                        "Design",
-                        new
-                        {
-                            workflowId =
-                                workflowId
-                        }
-                    );
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Please add at least one workflow step."
+                    });
                 }
 
-
-                // -------------------------------------------------
-                // REMOVE OLD STEPS
-                // -------------------------------------------------
-
-                var oldSteps =
-                    db.WorkflowSteps
-                      .Where(x =>
-                          x.WorkflowId ==
-                          workflowId)
-                      .ToList();
-
+                // 4. Delete only the child rows belonging
+                //    to this selected workflow.
+                var oldSteps = db.WorkflowSteps
+                    .Where(x =>
+                        x.WorkflowId == workflowId)
+                    .ToList();
 
                 if (oldSteps.Count > 0)
                 {
-                    db.WorkflowSteps.RemoveRange(
-                        oldSteps
-                    );
+                    db.WorkflowSteps.RemoveRange(oldSteps);
                 }
 
-
-                // -------------------------------------------------
-                // INSERT CURRENT STEPS
-                // -------------------------------------------------
-
+                // 5. Insert the current designer steps.
                 int stepNo = 1;
-
 
                 foreach (var item in steps)
                 {
@@ -1025,107 +650,83 @@ namespace _10xFlow360.Controllers
                         continue;
                     }
 
+                    var workflowStep = new WorkflowStep
+                    {
+                        // IMPORTANT:
+                        // This is the WAI_WORKFLOW WORKFLOW_ID.
+                        WorkflowId = workflowId,
 
-                    var workflowStep =
-                        new WorkflowStep
-                        {
-                            WorkflowId =
-                                workflowId,
+                        StepNo = stepNo,
 
-                            StepNo =
-                                stepNo,
-
-                            StepName =
-                                string.IsNullOrWhiteSpace(
-                                    item.name)
+                        StepName =
+                            string.IsNullOrWhiteSpace(item.name)
                                 ? "Workflow Step " + stepNo
                                 : item.name.Trim(),
 
-                            StepType =
-                                string.IsNullOrWhiteSpace(
-                                    item.type)
+                        StepType =
+                            string.IsNullOrWhiteSpace(item.type)
                                 ? "Action"
                                 : item.type.Trim(),
 
-                            TriggerType =
-                                item.triggerType,
+                        TriggerType = item.triggerType,
 
-                            SapObject =
-                                item.sapObject,
+                        SapObject = item.sapObject,
 
-                            ConditionExpression =
-                                item.condition,
+                        ConditionExpression = item.condition,
 
-                            NotificationType =
-                                item.notificationType,
+                        NotificationType =
+                            item.notificationType,
 
-                            Recipient =
-                                item.recipient,
+                        Recipient =
+                            item.recipient,
 
-                            MessageTemplate =
-                                item.messageTemplate,
+                        MessageTemplate =
+                            item.messageTemplate,
 
-                            WaitType =
-                                item.waitType,
+                        WaitType =
+                            item.waitType,
 
-                            FieldName =
-                                item.fieldName,
+                        FieldName =
+                            item.fieldName,
 
-                            SlaHours =
-                                item.slaHours,
+                        SlaHours =
+                            item.slaHours,
 
-                            CreatedDate =
-                                DateTime.Now,
+                        CreatedDate = DateTime.Now,
 
-                            UpdatedDate =
-                                DateTime.Now
-                        };
+                        UpdatedDate = DateTime.Now
+                    };
 
-
-                    db.WorkflowSteps.Add(
-                        workflowStep
-                    );
-
+                    db.WorkflowSteps.Add(workflowStep);
 
                     stepNo++;
                 }
 
-
-                // -------------------------------------------------
-                // SAVE
-                // -------------------------------------------------
-
+                // 6. Save parent-child changes to HANA.
                 db.SaveChanges();
 
+                // 7. Update header audit information.
+                workflow.UpdatedBy = "Admin";
+                workflow.UpdatedDate = DateTime.Now;
+                db.SaveChanges();
 
-                TempData["SuccessMessage"] =
-                    "Workflow steps saved successfully.";
-
-
-                return RedirectToAction(
-                    "Design",
-                    new
-                    {
-                        workflowId =
-                            workflowId
-                    }
-                );
+                return Json(new
+                {
+                    success = true,
+                    workflowId = workflowId,
+                    stepCount = stepNo - 1,
+                    message = "Workflow steps saved successfully."
+                });
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] =
-                    "Unable to save workflow steps: "
-                    + GetErrorMessage(ex);
-
-
-                return RedirectToAction(
-                    "Design",
-                    new
-                    {
-                        workflowId =
-                            workflowId
-                    }
-                );
+                return Json(new
+                {
+                    success = false,
+                    message =
+                        "Unable to save workflow steps: " +
+                        GetErrorMessage(ex)
+                });
             }
         }
 
